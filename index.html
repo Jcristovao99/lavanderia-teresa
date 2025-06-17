@@ -47,7 +47,7 @@
         }
         .item-name {
             font-weight: bold;
-            color: var(--primary);
+            color: var(--primary;
             font-size: 1.1rem;
         }
         .item-price {
@@ -218,10 +218,10 @@
             });
         }
 
-        // Change quantity
+        // Change quantity - FIXED THIS LINE
         function changeQuantity(itemId, delta) {
             quantities[itemId] = Math.max(0, quantities[itemId] + delta);
-            document.getElementById(`qty-${item.id}`).textContent = quantities[itemId];
+            document.getElementById(`qty-${itemId}`).textContent = quantities[itemId]; // Fixed: itemId instead of item.id
         }
 
         // Calculate cost
