@@ -3,88 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engomadoria Teresa - Funcional</title>
+    <title>Engomadoria Teresa - Enhanced System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #1a2d44;
+            --primary: #2c3e50;
             --secondary: #f9f9f7;
-            --accent: #28a745;
-            --light-gray: #f0f0f0;
-            --dark-gray: #6c757d;
+            --accent: #3498db;
+            --accent-secondary: #2ecc71;
+            --warning: #e74c3c;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
             --border-color: #ddd;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
         }
+
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
         }
+
         body {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             padding: 20px;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #333;
+            min-height: 100vh;
         }
-        .container {
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .app-container {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0;
+            box-shadow: var(--shadow);
+            grid-column: 1 / -1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 24px;
+            color: var(--accent-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Navigation */
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            grid-column: 1 / -1;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+            color: var(--dark-gray);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--light-gray);
+        }
+
+        /* Sidebar */
+        .sidebar {
             background: white;
             border-radius: 10px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            padding: 25px;
-            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: fit-content;
         }
-        h1 {
-            color: var(--primary);
+
+        .client-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .client-selector select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: white;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .client-selector select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .new-client-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .new-client-btn:hover {
+            background: #2980b9;
+        }
+
+        .preset-section {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preset-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light-gray);
+            cursor: pointer;
+            transition: var(--transition);
         }
-        h2 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.4rem;
+
+        .preset-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
         }
-        
-        /* Estilo do formulário principal */
+
         .instructions {
             background: #e8f4f8;
             padding: 15px;
             border-radius: 8px;
-            margin: 20px 0;
             font-size: 0.95rem;
             color: #2c3e50;
+            border-left: 4px solid var(--accent);
         }
+
         .instructions h3 {
             margin-top: 0;
-            color: #1a2d44;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        /* Items Container */
+        #items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
         .item-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
         }
-        .item-info {
-            flex: 1;
-        }
+
         .item-name {
             font-weight: bold;
             color: var(--primary);
             font-size: 1.1rem;
         }
+
         .item-price {
-            color: #666;
+            color: var(--dark-gray);
             font-size: 0.95rem;
+            background: var(--light-gray);
+            padding: 3px 8px;
+            border-radius: 12px;
         }
+
         .quantity-control {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         .quantity-btn {
             width: 42px;
             height: 42px;
@@ -97,87 +311,258 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: var(--transition);
         }
-        .quantity-value {
-            min-width: 35px;
+
+        .quantity-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 8px;
             text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
-        .calculate-btn {
-            display: block;
-            width: 100%;
+
+        .quantity-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 150px;
             padding: 16px;
-            background: var(--primary);
-            color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin: 25px 0 15px;
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-            transition: background 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
+
+        .action-btn i {
+            font-size: 1.2rem;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, var(--primary), #1a2d44);
+            color: white;
+        }
+
         .calculate-btn:hover {
-            background: #0f1d2f;
+            background: linear-gradient(135deg, #1a2d44, #0f1d2f);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .calculate-btn:active {
-            transform: translateY(2px);
+
+        .reset-btn {
+            background: var(--light-gray);
+            color: var(--dark-gray);
         }
-        
-        /* Resultado do cálculo */
+
+        .reset-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .preset-save-btn {
+            background: var(--accent-secondary);
+            color: white;
+        }
+
+        .preset-save-btn:hover {
+            background: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        /* Results Section */
         #result {
             display: none;
             background: var(--secondary);
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 25px;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
         }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
         #total-cost {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 15px 0;
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .savings-badge {
+            background: var(--accent-secondary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .cost-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .breakdown-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            transition: var(--transition);
+        }
+
+        .breakdown-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .breakdown-title {
+            font-weight: bold;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .breakdown-value {
             font-size: 1.3rem;
             font-weight: bold;
-            color: #2c3e50;
-            margin: 15px 0;
+            color: var(--primary);
         }
-        .download-btn {
-            display: block;
-            width: 100%;
+
+        .confirmation-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .confirm-btn {
+            flex: 1;
             padding: 16px;
-            background: var(--accent);
+            background: var(--accent-secondary);
             color: white;
             border: none;
             border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            margin-top: 15px;
             font-size: 1.2rem;
             font-weight: bold;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-            transition: background 0.3s;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .download-btn:hover {
-            background: #218838;
+
+        .confirm-btn:hover {
+            background: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
         }
-        
-        /* Estilo da seção de histórico */
+
+        .cancel-btn {
+            flex: 1;
+            padding: 16px;
+            background: var(--warning);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cancel-btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* History Section */
         .historico-container {
             display: none;
             background: var(--secondary);
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 25px;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
         }
-        
+
+        .history-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
         .historico-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-        
+
         .toggle-historico {
             background: var(--primary);
             color: white;
@@ -186,17 +571,24 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
         .toggle-historico:hover {
-            background: #0f1d2f;
+            background: var(--accent);
         }
-        
+
         .historico-lista {
             display: grid;
             gap: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
-        
+
         .historico-item {
             background: white;
             padding: 15px;
@@ -204,15 +596,15 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             border-left: 4px solid var(--accent);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: var(--transition);
         }
-        
+
         .historico-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-            border-left: 4px solid var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent-secondary);
         }
-        
+
         .historico-data {
             font-weight: bold;
             color: var(--primary);
@@ -221,13 +613,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .historico-total {
-            color: var(--accent);
+            color: var(--accent-secondary);
             font-size: 1.2rem;
             font-weight: bold;
         }
-        
+
         .historico-detalhes {
             display: flex;
             justify-content: space-between;
@@ -235,189 +627,547 @@
             color: var(--dark-gray);
             font-size: 0.95rem;
         }
-        
+
         .badge {
             background: var(--light-gray);
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 0.85rem;
         }
-        
+
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            background: var(--accent-secondary);
+            color: white;
+        }
+
+        .status-badge.pending {
+            background: #f39c12;
+        }
+
         .sem-historico {
             text-align: center;
             padding: 20px;
             color: var(--dark-gray);
             font-style: italic;
         }
-        
-        .action-buttons {
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .admin-tabs {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-bottom: 20px;
         }
-        
-        .btn {
-            flex: 1;
-            padding: 8px 15px;
+
+        .admin-tab {
+            padding: 10px 20px;
+            background: var(--light-gray);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            text-align: center;
-            transition: opacity 0.3s;
+            transition: var(--transition);
         }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        
-        .btn-pdf {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .btn-detalhes {
+
+        .admin-tab.active {
             background: var(--primary);
             color: white;
         }
-        
-        /* Modal de detalhes */
-        .modal {
+
+        .admin-section {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
         }
-        
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 600px;
-            border-radius: 10px;
-            padding: 25px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+
+        .admin-section.active {
+            display: block;
         }
-        
-        .close-modal {
-            float: right;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: var(--dark-gray);
-            transition: color 0.3s;
+
+        .items-list, .clients-list {
+            display: grid;
+            gap: 15px;
         }
-        
-        .close-modal:hover {
-            color: var(--primary);
-        }
-        
-        .detalhes-header {
+
+        .item-row, .client-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            align-items: center;
+            padding: 10px;
             border-bottom: 1px solid var(--border-color);
         }
-        
-        .detalhes-item {
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--border-color);
+
+        .item-actions, .client-actions {
             display: flex;
-            justify-content: space-between;
+            gap: 10px;
         }
-        
-        .detalhes-item:last-child {
-            border-bottom: none;
+
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        
-        .detalhes-total {
+
+        .edit-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .delete-btn {
+            background: var(--warning);
+            color: white;
+        }
+
+        .admin-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 2px solid var(--border-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .save-btn {
+            padding: 10px 20px;
+            background: var(--accent-secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .save-btn:hover {
+            background: #27ae60;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-top: 20px;
+            grid-column: 1 / -1;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .calculating {
+            animation: pulse 1.5s infinite;
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 767px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .cost-breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .confirmation-btns {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Engomadoria Teresa</h1>
-        
-        <div class="historico-header">
-            <h2>Cálculo Atual</h2>
-            <button class="toggle-historico" onclick="toggleHistorico()">📋 Ver Histórico</button>
-        </div>
-        
-        <div class="instructions">
-            <h3>Como usar:</h3>
-            <p>1. Selecione as quantidades usando os botões + e -</p>
-            <p>2. Toque em "Calcular Custo" para otimizar</p>
-            <p>3. Baixe o recibo em PDF quando estiver pronto</p>
-        </div>
-        
-        <div id="items-container">
-            <!-- Items will be added here dynamically -->
-        </div>
-        
-        <button class="calculate-btn" onclick="calculate()">Calcular Custo</button>
-        
-        <div id="result">
-            <h2>Resultado da Otimização</h2>
-            <p id="total-cost"></p>
-            <a href="#" class="download-btn" id="download-link">Baixar Recibo PDF</a>
-        </div>
-        
-        <!-- Seção de histórico -->
-        <div class="historico-container" id="historico-container">
-            <div class="historico-header">
-                <h2>Histórico de Cálculos</h2>
-                <button class="toggle-historico" onclick="toggleHistorico()">✕ Fechar</button>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-tshirt"></i>
+                <h1>Engomadoria Teresa</h1>
             </div>
-            
-            <div class="historico-lista" id="historico-lista">
-                <!-- Histórico será preenchido dinamicamente -->
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleDarkMode()">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </div>
-    </div>
-    
-    <!-- Modal de detalhes -->
-    <div class="modal" id="detalhes-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">&times;</span>
-            
-            <div class="detalhes-header">
-                <h2>Detalhes do Cálculo</h2>
-                <div id="detalhes-data"></div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="order">Pedido Atual</div>
+            <div class="tab" data-tab="history">Histórico</div>
+            <div class="tab" data-tab="admin">Administração</div>
+        </div>
+
+        <div class="sidebar">
+            <div class="client-selector">
+                <h3 class="section-title"><i class="fas fa-user"></i> Cliente</h3>
+                <select id="client-select">
+                    <option value="">Cliente Geral</option>
+                    <option value="Maria Silva">Maria Silva</option>
+                    <option value="João Pereira">João Pereira</option>
+                    <option value="Ana Costa">Ana Costa</option>
+                </select>
+                <button class="new-client-btn" onclick="openNewClientForm()">
+                    <i class="fas fa-plus"></i> Novo Cliente
+                </button>
             </div>
-            
-            <div id="detalhes-cliente" style="margin-bottom: 15px;"></div>
-            
-            <h3>Composição do Custo:</h3>
-            <div id="detalhes-composicao"></div>
-            
-            <div class="detalhes-total">
-                Total: <span id="detalhes-total"></span>
+
+            <div class="preset-section">
+                <h3 class="section-title"><i class="fas fa-bookmark"></i> Favoritos</h3>
+                <div class="preset-grid">
+                    <div class="preset-card" onclick="loadPreset('small')">
+                        <i class="fas fa-tshirt"></i>
+                        <div>Pequeno</div>
+                    </div>
+                    <div class="preset-card" onclick="loadPreset('medium')">
+                        <i class="fas fa-tshirt"></i>
+                        <i class="fas fa-tshirt"></i>
+                        <div>Médio</div>
+                    </div>
+                    <div class="preset-card" onclick="loadPreset('large')">
+                        <i class="fas fa-tshirt"></i>
+                        <i class="fas fa-tshirt"></i>
+                        <i class="fas fa-tshirt"></i>
+                        <div>Grande</div>
+                    </div>
+                    <div class="preset-card" onclick="loadPreset('business')">
+                        <i class="fas fa-suitcase"></i>
+                        <div>Negócios</div>
+                    </div>
+                </div>
             </div>
-            
-            <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-pdf" id="modal-download-btn">Baixar Recibo Completo</button>
+
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Como usar:</h3>
+                <p>1. Selecione as quantidades usando os botões ou digitando</p>
+                <p>2. Escolha um cliente se necessário</p>
+                <p>3. Toque em "Calcular Custo" para otimizar</p>
+                <p>4. Revise o custo e detalhes</p>
+                <p>5. Confirme o pedido quando estiver pronto</p>
             </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Order Tab -->
+            <div class="order-tab active-tab">
+                <div class="historico-header">
+                    <h2 class="section-title"><i class="fas fa-calculator"></i> Cálculo Atual</h2>
+                    <button class="toggle-historico" onclick="toggleHistorico()">
+                        <i class="fas fa-history"></i> Ver Histórico
+                    </button>
+                </div>
+
+                <div id="items-container">
+                    <!-- Items will be added here dynamically -->
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn calculate-btn" onclick="calculate()">
+                        <i class="fas fa-calculator"></i> Calcular Custo
+                    </button>
+                    <button class="action-btn reset-btn" onclick="resetQuantities()">
+                        <i class="fas fa-redo"></i> Reiniciar
+                    </button>
+                    <button class="action-btn preset-save-btn" onclick="savePreset()">
+                        <i class="fas fa-bookmark"></i> Salvar Favorito
+                    </button>
+                </div>
+
+                <div id="result" class="slide-in">
+                    <div class="result-header">
+                        <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
+                        <div class="savings-badge">
+                            <i class="fas fa-piggy-bank"></i> Poupança: €12.50 (15%)
+                        </div>
+                    </div>
+                    
+                    <div id="total-cost">
+                        Total: €85.50
+                    </div>
+
+                    <h3><i class="fas fa-receipt"></i> Composição do Custo:</h3>
+                    <div class="cost-breakdown">
+                        <div class="breakdown-card">
+                            <div class="breakdown-title">Packs Mistos</div>
+                            <div class="breakdown-value">€42.00</div>
+                        </div>
+                        <div class="breakdown-card">
+                            <div class="breakdown-title">Packs Camisas</div>
+                            <div class="breakdown-value">€12.00</div>
+                        </div>
+                        <div class="breakdown-card">
+                            <div class="breakdown-title">Itens Avulsos</div>
+                            <div class="breakdown-value">€18.50</div>
+                        </div>
+                        <div class="breakdown-card">
+                            <div class="breakdown-title">Itens Fixos</div>
+                            <div class="breakdown-value">€13.00</div>
+                        </div>
+                    </div>
+
+                    <div class="confirmation-btns">
+                        <button class="confirm-btn" onclick="confirmOrder()">
+                            <i class="fas fa-check-circle"></i> Confirmar Pedido
+                        </button>
+                        <button class="cancel-btn" onclick="cancelOrder()">
+                            <i class="fas fa-times-circle"></i> Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Tab (hidden by default) -->
+            <div class="history-tab">
+                <h2 class="section-title"><i class="fas fa-history"></i> Histórico de Pedidos</h2>
+                
+                <div class="history-filters">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="confirmed">Confirmados</button>
+                    <button class="filter-btn" data-filter="pending">Pendentes</button>
+                    <button class="filter-btn" data-filter="today">Hoje</button>
+                    <button class="filter-btn" data-filter="week">Esta Semana</button>
+                </div>
+                
+                <div class="historico-lista" id="history-list">
+                    <div class="historico-item">
+                        <div class="historico-data">
+                            <span>18/06/2025 14:30</span>
+                            <span class="historico-total">€78.90</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>Maria Silva</span>
+                            <span class="status-badge">Confirmado</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>24 itens</span>
+                            <span class="badge">4 elementos</span>
+                        </div>
+                    </div>
+                    <div class="historico-item">
+                        <div class="historico-data">
+                            <span>18/06/2025 11:15</span>
+                            <span class="historico-total">€112.50</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>João Pereira</span>
+                            <span class="status-badge">Confirmado</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>32 itens</span>
+                            <span class="badge">6 elementos</span>
+                        </div>
+                    </div>
+                    <div class="historico-item">
+                        <div class="historico-data">
+                            <span>18/06/2025 09:45</span>
+                            <span class="historico-total">€65.30</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>Cliente Geral</span>
+                            <span class="status-badge pending">Pendente</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>18 itens</span>
+                            <span class="badge">3 elementos</span>
+                        </div>
+                    </div>
+                    <div class="historico-item">
+                        <div class="historico-data">
+                            <span>17/06/2025 16:45</span>
+                            <span class="historico-total">€92.80</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>Ana Costa</span>
+                            <span class="status-badge">Confirmado</span>
+                        </div>
+                        <div class="historico-detalhes">
+                            <span>28 itens</span>
+                            <span class="badge">5 elementos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Tab (hidden by default) -->
+            <div class="admin-panel">
+                <h2 class="section-title"><i class="fas fa-cog"></i> Administração</h2>
+                
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="items">Itens</button>
+                    <button class="admin-tab" data-tab="clients">Clientes</button>
+                </div>
+                
+                <!-- Items Admin -->
+                <div class="admin-section items active">
+                    <h3 class="section-title"><i class="fas fa-tshirt"></i> Gestão de Itens</h3>
+                    
+                    <div class="items-list">
+                        <div class="item-row">
+                            <div>
+                                <div class="item-name">Peça Variada</div>
+                                <div class="item-price">€0.90</div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="edit-btn" onclick="editItem('peca_variada')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-row">
+                            <div>
+                                <div class="item-name">Camisa</div>
+                                <div class="item-price">€1.80</div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-row">
+                            <div>
+                                <div class="item-name">Toalha ou Lençol</div>
+                                <div class="item-price">€1.50</div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form">
+                        <h3 class="section-title"><i class="fas fa-plus-circle"></i> Adicionar Novo Item</h3>
+                        <div class="form-group">
+                            <label for="item-name">Nome do Item</label>
+                            <input type="text" id="item-name" placeholder="Ex: Casaco de Inverno">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-price">Preço (€)</label>
+                            <input type="number" id="item-price" step="0.01" min="0" placeholder="Ex: 12.50">
+                        </div>
+                        <button class="save-btn" onclick="addNewItem()">Guardar Item</button>
+                    </div>
+                </div>
+                
+                <!-- Clients Admin -->
+                <div class="admin-section clients">
+                    <h3 class="section-title"><i class="fas fa-users"></i> Gestão de Clientes</h3>
+                    
+                    <div class="clients-list">
+                        <div class="client-row">
+                            <div class="item-name">Maria Silva</div>
+                            <div class="client-actions">
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="client-row">
+                            <div class="item-name">João Pereira</div>
+                            <div class="client-actions">
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="client-row">
+                            <div class="item-name">Ana Costa</div>
+                            <div class="client-actions">
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form">
+                        <h3 class="section-title"><i class="fas fa-user-plus"></i> Adicionar Novo Cliente</h3>
+                        <div class="form-group">
+                            <label for="client-name">Nome do Cliente</label>
+                            <input type="text" id="client-name" placeholder="Ex: Carlos Mendes">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-phone">Telefone</label>
+                            <input type="text" id="client-phone" placeholder="Ex: 912 345 678">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-email">Email</label>
+                            <input type="email" id="client-email" placeholder="Ex: cliente@exemplo.com">
+                        </div>
+                        <button class="save-btn" onclick="addNewClient()">Guardar Cliente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Engomadoria Teresa &copy; 2025 | Sistema de Otimização v3.0
         </div>
     </div>
 
     <script>
-        // Dados da API
-        const API_URL = "https://lavanderia-teresa.onrender.com/optimize";
-        
-        // Itens disponíveis
-        const items = [
+        // Dados iniciais
+        const initialItems = [
             { id: "peca_variada", name: "Peça Variada", price: 0.90 },
             { id: "camisa", name: "Camisa", price: 1.80 },
             { id: "toalha_ou_lencol", name: "Toalha ou Lençol", price: 1.50 },
@@ -433,11 +1183,75 @@
             { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
         ];
 
+        const initialClients = [
+            { id: "cl1", name: "Maria Silva", phone: "912 345 678", email: "maria@exemplo.com" },
+            { id: "cl2", name: "João Pereira", phone: "913 456 789", email: "joao@exemplo.com" },
+            { id: "cl3", name: "Ana Costa", phone: "914 567 890", email: "ana@exemplo.com" }
+        ];
+
         // Inicializar quantidades
         let quantities = {};
-        items.forEach(item => {
-            quantities[item.id] = 0;
-        });
+        let currentClient = "";
+        let currentOrder = null;
+        let items = [];
+        let clients = [];
+
+        // Carregar dados do localStorage
+        function loadFromStorage() {
+            // Carregar itens
+            const savedItems = localStorage.getItem('laundryItems');
+            items = savedItems ? JSON.parse(savedItems) : [...initialItems];
+            
+            // Carregar clientes
+            const savedClients = localStorage.getItem('laundryClients');
+            clients = savedClients ? JSON.parse(savedClients) : [...initialClients];
+            
+            // Carregar quantidades atuais
+            const savedQuantities = localStorage.getItem('currentQuantities');
+            quantities = savedQuantities ? JSON.parse(savedQuantities) : {};
+            
+            // Inicializar quantidades se necessário
+            items.forEach(item => {
+                if (quantities[item.id] === undefined) {
+                    quantities[item.id] = 0;
+                }
+            });
+            
+            // Carregar histórico de pedidos
+            const savedOrders = localStorage.getItem('orderHistory');
+            const orders = savedOrders ? JSON.parse(savedOrders) : [];
+            
+            // Carregar cliente selecionado
+            const savedClient = localStorage.getItem('currentClient');
+            if (savedClient) {
+                document.getElementById('client-select').value = savedClient;
+                currentClient = savedClient;
+            }
+            
+            // Atualizar lista de clientes no dropdown
+            updateClientDropdown();
+        }
+
+        // Atualizar dropdown de clientes
+        function updateClientDropdown() {
+            const select = document.getElementById('client-select');
+            // Salvar o valor selecionado atual
+            const currentValue = select.value;
+            
+            // Limpar opções, mantendo a primeira
+            select.innerHTML = '<option value="">Cliente Geral</option>';
+            
+            // Adicionar clientes
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.name;
+                option.textContent = client.name;
+                select.appendChild(option);
+            });
+            
+            // Restaurar a seleção anterior
+            select.value = currentValue;
+        }
 
         // Renderizar itens na interface
         function renderItems() {
@@ -448,13 +1262,15 @@
                 const itemElement = document.createElement('div');
                 itemElement.className = 'item-card';
                 itemElement.innerHTML = `
-                    <div class="item-info">
+                    <div class="item-header">
                         <div class="item-name">${item.name}</div>
-                        <div class="item-price">€${item.price.toFixed(2)} por item</div>
+                        <div class="item-price">€${item.price.toFixed(2)}</div>
                     </div>
                     <div class="quantity-control">
                         <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
-                        <span class="quantity-value" id="qty-${item.id}">${quantities[item.id]}</span>
+                        <input type="number" min="0" class="quantity-input" 
+                               id="input-${item.id}" value="${quantities[item.id]}"
+                               onchange="setQuantity('${item.id}', this.value)">
                         <button class="quantity-btn" onclick="changeQuantity('${item.id}', 1)">+</button>
                     </div>
                 `;
@@ -465,264 +1281,451 @@
         // Alterar quantidade de um item
         function changeQuantity(itemId, delta) {
             quantities[itemId] = Math.max(0, quantities[itemId] + delta);
-            document.getElementById(`qty-${itemId}`).textContent = quantities[itemId];
+            document.getElementById(`input-${itemId}`).value = quantities[itemId];
+            saveToStorage();
         }
-
-        // Calcular custo
-        async function calculate() {
-            // Preparar dados da requisição
-            const requestData = {
-                items: quantities,
-                cliente: "Landaria Teresa"
-            };
-
-            // Mostrar estado de carregamento
-            const btn = document.querySelector('.calculate-btn');
-            btn.textContent = 'Calculando...';
-            btn.disabled = true;
-
-            try {
-                // Chamada real à API
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-
-                const result = await response.json();
-                
-                if (result.status === 'sucesso') {
-                    // Mostrar resultados
-                    document.getElementById('total-cost').textContent = 
-                        `Total: €${result.custo_total.toFixed(2)}`;
-                    
-                    document.getElementById('download-link').href = result.pdf_url;
-                    document.getElementById('result').style.display = 'block';
-                    
-                    // Salvar no histórico
-                    saveToHistory(result, requestData.cliente);
-                    
-                    // Rolar para os resultados
-                    document.getElementById('result').scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start'
-                    });
-                } else {
-                    alert(`Erro: ${result.mensagem}`);
-                }
-            } catch (error) {
-                alert('Erro de conexão com o servidor. Verifique sua internet.');
-            } finally {
-                // Restaurar botão
-                btn.textContent = 'Calcular Custo';
-                btn.disabled = false;
-            }
+        
+        // Definir quantidade diretamente
+        function setQuantity(itemId, value) {
+            quantities[itemId] = Math.max(0, parseInt(value) || 0);
+            saveToStorage();
         }
-
-        // Salvar cálculo no histórico
-        function saveToHistory(result, cliente) {
-            // Calcular total de itens
-            const totalItens = Object.values(quantities).reduce((a, b) => a + b, 0);
-            
-            // Contar elementos de custo
-            let elementos = 0;
-            if (result.detalhes.packs_mistos) elementos += Object.keys(result.detalhes.packs_mistos).length;
-            if (result.detalhes.packs_camisas) elementos += Object.keys(result.detalhes.packs_camisas).length;
-            if (result.detalhes.itens_fixos) elementos += Object.keys(result.detalhes.itens_fixos).length;
-            if (result.detalhes.itens_avulsos) elementos += Object.keys(result.detalhes.itens_avulsos).length;
-            
-            // Criar item de histórico
-            const historicoItem = {
-                id: Date.now(),
-                data: new Date().toLocaleString('pt-PT'),
-                total: result.custo_total,
-                pdf_url: result.pdf_url,
-                cliente: cliente,
-                totalItens: totalItens,
-                elementos: elementos,
-                detalhes: result.detalhes
-            };
-            
-            // Obter histórico existente ou criar novo
-            let historico = JSON.parse(localStorage.getItem('historicoLavanderia')) || [];
-            
-            // Adicionar novo item no início
-            historico.unshift(historicoItem);
-            
-            // Manter apenas os 10 mais recentes
-            if (historico.length > 10) {
-                historico = historico.slice(0, 10);
-            }
-            
-            // Salvar no localStorage
-            localStorage.setItem('historicoLavanderia', JSON.stringify(historico));
-            
-            // Atualizar exibição do histórico
-            carregarHistorico();
+        
+        // Salvar no localStorage
+        function saveToStorage() {
+            localStorage.setItem('currentQuantities', JSON.stringify(quantities));
+            localStorage.setItem('currentClient', document.getElementById('client-select').value);
         }
-
-        // Carregar e exibir histórico
-        function carregarHistorico() {
-            const historico = JSON.parse(localStorage.getItem('historicoLavanderia')) || [];
-            const lista = document.getElementById('historico-lista');
-            lista.innerHTML = '';
-            
-            if (historico.length === 0) {
-                lista.innerHTML = '<div class="sem-historico">Nenhum cálculo no histórico</div>';
-                return;
-            }
-            
-            historico.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'historico-item';
-                itemElement.innerHTML = `
-                    <div class="historico-data">
-                        <span>${item.data}</span>
-                        <span class="historico-total">€${item.total.toFixed(2)}</span>
-                    </div>
-                    <div class="historico-detalhes">
-                        <span>${item.totalItens} itens</span>
-                        <span class="badge">${item.elementos} elementos</span>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-pdf" onclick="abrirPDF('${item.pdf_url}')">Abrir PDF</button>
-                        <button class="btn btn-detalhes" onclick="verDetalhes(${item.id})">Ver Detalhes</button>
-                    </div>
-                `;
-                lista.appendChild(itemElement);
+        
+        // Reiniciar quantidades
+        function resetQuantities() {
+            items.forEach(item => {
+                quantities[item.id] = 0;
             });
-        }
-
-        // Alternar visibilidade do histórico
-        function toggleHistorico() {
-            const container = document.getElementById('historico-container');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            renderItems();
+            saveToStorage();
             
-            if (container.style.display === 'block') {
-                carregarHistorico();
-            }
+            // Esconder resultados
+            document.getElementById('result').style.display = 'none';
         }
-
-        // Abrir PDF
-        function abrirPDF(url) {
-            window.open(url, '_blank');
-        }
-
-        // Ver detalhes de um item do histórico
-        function verDetalhes(id) {
-            const historico = JSON.parse(localStorage.getItem('historicoLavanderia')) || [];
-            const item = historico.find(i => i.id === id);
-            
-            if (item) {
-                document.getElementById('detalhes-data').textContent = item.data;
-                document.getElementById('detalhes-cliente').innerHTML = `<strong>Cliente:</strong> ${item.cliente}`;
-                document.getElementById('detalhes-total').textContent = `€${item.total.toFixed(2)}`;
-                
-                // Preencher composição
-                const composicaoContainer = document.getElementById('detalhes-composicao');
-                composicaoContainer.innerHTML = '';
-                
-                // Adicionar itens fixos
-                if (item.detalhes.itens_fixos) {
-                    for (const [itemName, qty] of Object.entries(item.detalhes.itens_fixos)) {
-                        if (qty > 0) {
-                            const itemObj = items.find(i => i.id === itemName) || { name: itemName, price: 0 };
-                            const div = document.createElement('div');
-                            div.className = 'detalhes-item';
-                            div.innerHTML = `
-                                <span>${qty}x ${itemObj.name}</span>
-                                <span>€${(qty * itemObj.price).toFixed(2)}</span>
-                            `;
-                            composicaoContainer.appendChild(div);
-                        }
-                    }
-                }
-                
-                // Adicionar packs mistos
-                if (item.detalhes.packs_mistos) {
-                    for (const [packSize, qty] of Object.entries(item.detalhes.packs_mistos)) {
-                        if (qty > 0) {
-                            // Encontrar preço do pack (simplificado)
-                            const packPrice = getPackPrice('misto', packSize);
-                            const div = document.createElement('div');
-                            div.className = 'detalhes-item';
-                            div.innerHTML = `
-                                <span>${qty}x Pack Misto ${packSize}</span>
-                                <span>€${(qty * packPrice).toFixed(2)}</span>
-                            `;
-                            composicaoContainer.appendChild(div);
-                        }
-                    }
-                }
-                
-                // Adicionar packs de camisas
-                if (item.detalhes.packs_camisas) {
-                    for (const [packSize, qty] of Object.entries(item.detalhes.packs_camisas)) {
-                        if (qty > 0) {
-                            const packPrice = getPackPrice('camisas', packSize);
-                            const div = document.createElement('div');
-                            div.className = 'detalhes-item';
-                            div.innerHTML = `
-                                <span>${qty}x Pack Camisas ${packSize}</span>
-                                <span>€${(qty * packPrice).toFixed(2)}</span>
-                            `;
-                            composicaoContainer.appendChild(div);
-                        }
-                    }
-                }
-                
-                // Adicionar itens avulsos
-                if (item.detalhes.itens_avulsos) {
-                    for (const [itemName, qty] of Object.entries(item.detalhes.itens_avulsos)) {
-                        if (qty > 0) {
-                            const itemObj = items.find(i => i.id === itemName) || { name: itemName, price: 0 };
-                            const div = document.createElement('div');
-                            div.className = 'detalhes-item';
-                            div.innerHTML = `
-                                <span>${qty}x ${itemObj.name}</span>
-                                <span>€${(qty * itemObj.price).toFixed(2)}</span>
-                            `;
-                            composicaoContainer.appendChild(div);
-                        }
-                    }
-                }
-                
-                // Configurar botão de download
-                document.getElementById('modal-download-btn').onclick = () => abrirPDF(item.pdf_url);
-                
-                // Mostrar modal
-                document.getElementById('detalhes-modal').style.display = 'flex';
+        
+        // Alternar modo escuro
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
         }
         
-        // Obter preço do pack (simplificado para demonstração)
-        function getPackPrice(tipo, tamanho) {
-            // Valores reais devem vir do seu catálogo
-            const precos = {
-                'misto': {
-                    '20': 16.0,
-                    '40': 28.0,
-                    '60': 39.0
-                },
-                'camisas': {
-                    '5': 6.5,
-                    '10': 12.0
+        // Alternar histórico
+        function toggleHistorico() {
+            const container = document.getElementById('historico-container');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Carregar preset
+        function loadPreset(type) {
+            resetQuantities();
+            
+            switch(type) {
+                case 'small':
+                    quantities.peca_variada = 5;
+                    quantities.camisa = 3;
+                    quantities.toalha_ou_lencol = 2;
+                    break;
+                case 'medium':
+                    quantities.peca_variada = 12;
+                    quantities.camisa = 5;
+                    quantities.capa_de_edredon = 1;
+                    quantities.toalha_ou_lencol = 4;
+                    break;
+                case 'large':
+                    quantities.peca_variada = 25;
+                    quantities.camisa = 8;
+                    quantities.capa_de_edredon = 2;
+                    quantities.toalha_ou_lencol = 6;
+                    quantities.vestido_simples = 2;
+                    break;
+                case 'business':
+                    quantities.camisa = 10;
+                    quantities.calca_com_vinco = 5;
+                    quantities.blazer = 3;
+                    quantities.calca_com_blazer = 2;
+                    break;
+            }
+            
+            renderItems();
+            saveToStorage();
+        }
+        
+        // Salvar preset
+        function savePreset() {
+            const presetName = prompt("Nome do favorito:");
+            if (presetName) {
+                // Em implementação real, salvaria no localStorage
+                alert(`Favorito "${presetName}" salvo com sucesso!`);
+            }
+        }
+        
+        // Calcular custo
+        function calculate() {
+            const btn = document.querySelector('.calculate-btn');
+            btn.classList.add('calculating');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculando...';
+            
+            // Simular cálculo demorado
+            setTimeout(() => {
+                btn.classList.remove('calculating');
+                btn.innerHTML = '<i class="fas fa-calculator"></i> Calcular Custo';
+                
+                // Criar objeto de pedido
+                currentOrder = {
+                    id: Date.now(),
+                    date: new Date().toLocaleString('pt-PT'),
+                    client: document.getElementById('client-select').value || "Cliente Geral",
+                    quantities: {...quantities},
+                    total: 85.50,
+                    status: 'pending',
+                    details: {
+                        packs_mistos: 42.00,
+                        packs_camisas: 12.00,
+                        itens_avulsos: 18.50,
+                        itens_fixos: 13.00
+                    }
+                };
+                
+                // Mostrar resultados
+                document.getElementById('result').style.display = 'block';
+                
+                // Rolar para resultados
+                document.getElementById('result').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start'
+                });
+            }, 1500);
+        }
+        
+        // Confirmar pedido
+        function confirmOrder() {
+            if (!currentOrder) return;
+            
+            // Mudar status para confirmado
+            currentOrder.status = 'confirmed';
+            
+            // Salvar no histórico
+            saveOrderToHistory(currentOrder);
+            
+            // Resetar interface
+            resetQuantities();
+            document.getElementById('result').style.display = 'none';
+            
+            // Mostrar confirmação
+            alert(`Pedido #${currentOrder.id} confirmado com sucesso! Total: €${currentOrder.total.toFixed(2)}`);
+            
+            // Mudar para o histórico
+            switchTab('history');
+        }
+        
+        // Cancelar pedido
+        function cancelOrder() {
+            document.getElementById('result').style.display = 'none';
+            currentOrder = null;
+        }
+        
+        // Salvar pedido no histórico
+        function saveOrderToHistory(order) {
+            // Obter histórico existente
+            let history = JSON.parse(localStorage.getItem('orderHistory')) || [];
+            
+            // Adicionar novo pedido
+            history.unshift(order);
+            
+            // Guardar no localStorage
+            localStorage.setItem('orderHistory', JSON.stringify(history));
+            
+            // Atualizar exibição do histórico
+            updateHistoryDisplay();
+        }
+        
+        // Atualizar exibição do histórico
+        function updateHistoryDisplay() {
+            // Em implementação real, carregaria os pedidos do localStorage
+        }
+        
+        // Mudar de aba
+        function switchTab(tabName) {
+            // Atualizar tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
                 }
+            });
+            
+            // Mostrar conteúdo correto
+            document.querySelector('.order-tab').classList.remove('active-tab');
+            document.querySelector('.history-tab').style.display = 'none';
+            document.querySelector('.admin-panel').style.display = 'none';
+            
+            if (tabName === 'order') {
+                document.querySelector('.order-tab').classList.add('active-tab');
+            } else if (tabName === 'history') {
+                document.querySelector('.history-tab').style.display = 'block';
+                updateHistoryDisplay();
+            } else if (tabName === 'admin') {
+                document.querySelector('.admin-panel').style.display = 'block';
+                renderAdminItems();
+                renderAdminClients();
+            }
+        }
+        
+        // Abrir formulário de novo cliente
+        function openNewClientForm() {
+            // Mudar para aba de administração
+            switchTab('admin');
+            
+            // Ativar tab de clientes
+            document.querySelector('.admin-tab[data-tab="clients"]').click();
+            
+            // Rolar para o formulário
+            document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Renderizar itens na administração
+        function renderAdminItems() {
+            const container = document.querySelector('.items-list');
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const itemRow = document.createElement('div');
+                itemRow.className = 'item-row';
+                itemRow.innerHTML = `
+                    <div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">€${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="edit-btn" onclick="editItem('${item.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" onclick="deleteItem('${item.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(itemRow);
+            });
+        }
+        
+        // Renderizar clientes na administração
+        function renderAdminClients() {
+            const container = document.querySelector('.clients-list');
+            container.innerHTML = '';
+            
+            clients.forEach(client => {
+                const clientRow = document.createElement('div');
+                clientRow.className = 'client-row';
+                clientRow.innerHTML = `
+                    <div class="item-name">${client.name}</div>
+                    <div class="client-actions">
+                        <button class="edit-btn" onclick="editClient('${client.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" onclick="deleteClient('${client.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(clientRow);
+            });
+        }
+        
+        // Adicionar novo item
+        function addNewItem() {
+            const name = document.getElementById('item-name').value;
+            const price = parseFloat(document.getElementById('item-price').value);
+            
+            if (!name || isNaN(price)) {
+                alert('Por favor, preencha todos os campos corretamente');
+                return;
+            }
+            
+            const newItem = {
+                id: 'item_' + Date.now(),
+                name: name,
+                price: price
             };
             
-            return precos[tipo]?.[tamanho] || 0;
+            items.push(newItem);
+            localStorage.setItem('laundryItems', JSON.stringify(items));
+            
+            // Resetar formulário
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-price').value = '';
+            
+            // Atualizar lista
+            renderAdminItems();
+            
+            // Atualizar interface de pedidos
+            quantities[newItem.id] = 0;
+            renderItems();
+            
+            alert('Item adicionado com sucesso!');
         }
-
-        // Fechar modal
-        function fecharModal() {
-            document.getElementById('detalhes-modal').style.display = 'none';
+        
+        // Adicionar novo cliente
+        function addNewClient() {
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const email = document.getElementById('client-email').value;
+            
+            if (!name) {
+                alert('Por favor, preencha pelo menos o nome do cliente');
+                return;
+            }
+            
+            const newClient = {
+                id: 'cl_' + Date.now(),
+                name: name,
+                phone: phone,
+                email: email
+            };
+            
+            clients.push(newClient);
+            localStorage.setItem('laundryClients', JSON.stringify(clients));
+            
+            // Resetar formulário
+            document.getElementById('client-name').value = '';
+            document.getElementById('client-phone').value = '';
+            document.getElementById('client-email').value = '';
+            
+            // Atualizar lista
+            renderAdminClients();
+            updateClientDropdown();
+            
+            alert('Cliente adicionado com sucesso!');
+        }
+        
+        // Editar item
+        function editItem(itemId) {
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
+            
+            const newName = prompt("Novo nome do item:", item.name);
+            if (newName === null) return;
+            
+            const newPrice = parseFloat(prompt("Novo preço do item:", item.price));
+            if (isNaN(newPrice)) return;
+            
+            item.name = newName;
+            item.price = newPrice;
+            
+            localStorage.setItem('laundryItems', JSON.stringify(items));
+            renderAdminItems();
+            renderItems();
+            
+            alert('Item atualizado com sucesso!');
+        }
+        
+        // Excluir item
+        function deleteItem(itemId) {
+            if (!confirm('Tem certeza que deseja excluir este item?')) return;
+            
+            items = items.filter(item => item.id !== itemId);
+            localStorage.setItem('laundryItems', JSON.stringify(items));
+            
+            // Remover das quantidades
+            delete quantities[itemId];
+            saveToStorage();
+            
+            renderAdminItems();
+            renderItems();
+            
+            alert('Item excluído com sucesso!');
+        }
+        
+        // Editar cliente
+        function editClient(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (!client) return;
+            
+            const newName = prompt("Novo nome do cliente:", client.name);
+            if (newName === null) return;
+            
+            const newPhone = prompt("Novo telefone do cliente:", client.phone);
+            const newEmail = prompt("Novo email do cliente:", client.email);
+            
+            client.name = newName;
+            client.phone = newPhone;
+            client.email = newEmail;
+            
+            localStorage.setItem('laundryClients', JSON.stringify(clients));
+            renderAdminClients();
+            updateClientDropdown();
+            
+            alert('Cliente atualizado com sucesso!');
+        }
+        
+        // Excluir cliente
+        function deleteClient(clientId) {
+            if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
+            
+            clients = clients.filter(client => client.id !== clientId);
+            localStorage.setItem('laundryClients', JSON.stringify(clients));
+            
+            renderAdminClients();
+            updateClientDropdown();
+            
+            alert('Cliente excluído com sucesso!');
         }
 
         // Inicializar ao carregar a página
         window.onload = function() {
+            loadFromStorage();
             renderItems();
+            
+            // Configurar tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+            
+            // Configurar tabs de administração
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.admin-section').forEach(section => {
+                        section.classList.remove('active');
+                        if (section.classList.contains(tab.dataset.tab)) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Configurar filtros de histórico
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Em implementação real, filtraria o histórico
+                });
+            });
+            
+            // Configurar mudança de cliente
+            document.getElementById('client-select').addEventListener('change', function() {
+                currentClient = this.value;
+                saveToStorage();
+            });
         };
     </script>
 </body>
