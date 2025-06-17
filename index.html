@@ -3,51 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engomadoria Teresa</title>
+    <title>Engomadoria Teresa - Com Histórico</title>
     <style>
         :root {
             --primary: #1a2d44;
             --secondary: #f9f9f7;
             --accent: #28a745;
+            --light-gray: #f0f0f0;
+            --dark-gray: #6c757d;
+            --border-color: #ddd;
         }
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
         }
         body {
             background: #f5f5f5;
-            padding: 15px;
+            padding: 20px;
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.5;
+            color: #333;
         }
         .container {
             background: white;
             border-radius: 10px;
             box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
         }
         h1 {
             color: var(--primary);
             text-align: center;
-            margin-top: 5px;
             margin-bottom: 25px;
             font-size: 1.8rem;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        /* Estilo do formulário principal */
+        .instructions {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #1a2d44;
         }
         .item-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 15px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
         }
         .item-info {
             flex: 1;
         }
         .item-name {
             font-weight: bold;
-            color: var(--primary;
+            color: var(--primary);
             font-size: 1.1rem;
         }
         .item-price {
@@ -70,6 +96,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
         .quantity-value {
             min-width: 35px;
@@ -90,21 +117,23 @@
             margin: 25px 0 15px;
             cursor: pointer;
             box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+        .calculate-btn:hover {
+            background: #0f1d2f;
         }
         .calculate-btn:active {
             transform: translateY(2px);
         }
+        
+        /* Resultado do cálculo */
         #result {
             display: none;
             background: var(--secondary);
             padding: 20px;
             border-radius: 8px;
             margin-top: 15px;
-            border: 1px solid #e0e0e0;
-        }
-        #result h2 {
-            color: var(--primary);
-            margin-top: 0;
+            border: 1px solid var(--border-color);
         }
         #total-cost {
             font-size: 1.3rem;
@@ -126,27 +155,205 @@
             font-size: 1.2rem;
             font-weight: bold;
             box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: background 0.3s;
         }
-        .download-btn:active {
-            transform: translateY(2px);
+        .download-btn:hover {
+            background: #218838;
         }
-        .instructions {
-            background: #e8f4f8;
+        
+        /* Estilo da seção de histórico */
+        .historico-container {
+            display: none;
+            background: var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .historico-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .toggle-historico {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .toggle-historico:hover {
+            background: #0f1d2f;
+        }
+        
+        .historico-lista {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .historico-item {
+            background: white;
             padding: 15px;
             border-radius: 8px;
-            margin: 20px 0;
-            font-size: 0.95rem;
-            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--accent);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .instructions h3 {
-            margin-top: 0;
-            color: #1a2d44;
+        
+        .historico-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .historico-data {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .historico-total {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .historico-detalhes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+        
+        .badge {
+            background: var(--light-gray);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+        
+        .sem-historico {
+            text-align: center;
+            padding: 20px;
+            color: var(--dark-gray);
+            font-style: italic;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-pdf {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-detalhes {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Modal de detalhes */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 25px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .close-modal {
+            float: right;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        .detalhes-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .detalhes-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .detalhes-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detalhes-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid var(--border-color);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Engomadoria Teresa</h1>
+        
+        <div class="historico-header">
+            <h2>Cálculo Atual</h2>
+            <button class="toggle-historico" onclick="toggleHistorico()">📋 Ver Histórico</button>
+        </div>
         
         <div class="instructions">
             <h3>Como usar:</h3>
@@ -166,13 +373,50 @@
             <p id="total-cost"></p>
             <a href="#" class="download-btn" id="download-link">Baixar Recibo PDF</a>
         </div>
+        
+        <!-- Seção de histórico -->
+        <div class="historico-container" id="historico-container">
+            <div class="historico-header">
+                <h2>Histórico de Cálculos</h2>
+                <button class="toggle-historico" onclick="toggleHistorico()">✕ Fechar</button>
+            </div>
+            
+            <div class="historico-lista" id="historico-lista">
+                <!-- Histórico será preenchido dinamicamente -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de detalhes -->
+    <div class="modal" id="detalhes-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            
+            <div class="detalhes-header">
+                <h2>Detalhes do Cálculo</h2>
+                <div id="detalhes-data"></div>
+            </div>
+            
+            <div id="detalhes-cliente" style="margin-bottom: 15px;"></div>
+            
+            <h3>Composição do Custo:</h3>
+            <div id="detalhes-composicao"></div>
+            
+            <div class="detalhes-total">
+                Total: <span id="detalhes-total"></span>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-pdf" id="modal-download-btn">Baixar Recibo Completo</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // YOUR RENDER.COM URL
+        // Dados da API
         const API_URL = "https://lavanderia-teresa.onrender.com/optimize";
         
-        // Define all items with prices
+        // Itens disponíveis
         const items = [
             { id: "peca_variada", name: "Peça Variada", price: 0.90 },
             { id: "camisa", name: "Camisa", price: 1.80 },
@@ -189,13 +433,13 @@
             { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
         ];
 
-        // Initialize quantities
+        // Inicializar quantidades
         let quantities = {};
         items.forEach(item => {
             quantities[item.id] = 0;
         });
 
-        // Render items
+        // Renderizar itens na interface
         function renderItems() {
             const container = document.getElementById('items-container');
             container.innerHTML = '';
@@ -218,46 +462,42 @@
             });
         }
 
-        // Change quantity - FIXED THIS LINE
+        // Alterar quantidade de um item
         function changeQuantity(itemId, delta) {
             quantities[itemId] = Math.max(0, quantities[itemId] + delta);
-            document.getElementById(`qty-${itemId}`).textContent = quantities[itemId]; // Fixed: itemId instead of item.id
+            document.getElementById(`qty-${itemId}`).textContent = quantities[itemId];
         }
 
-        // Calculate cost
+        // Calcular custo
         async function calculate() {
-            // Prepare request
+            // Preparar dados da requisição
             const requestData = {
                 items: quantities,
                 cliente: "Landaria Teresa"
             };
 
-            // Show loading state
+            // Mostrar estado de carregamento
             const btn = document.querySelector('.calculate-btn');
             btn.textContent = 'Calculando...';
             btn.disabled = true;
 
             try {
-                // Send to API
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-
-                const result = await response.json();
-
+                // Simular uma chamada à API com dados de exemplo
+                // Em produção, substitua por fetch(API_URL, ...)
+                const result = await simulateApiCall(requestData);
+                
                 if (result.status === 'sucesso') {
-                    // Show results
+                    // Mostrar resultados
                     document.getElementById('total-cost').textContent = 
                         `Total: €${result.custo_total.toFixed(2)}`;
                     
-                    document.getElementById('download-link').href = result.pdf_url;
+                    document.getElementById('download-link').href = "#";
                     document.getElementById('result').style.display = 'block';
                     
-                    // Scroll to results
+                    // Salvar no histórico
+                    saveToHistory(result);
+                    
+                    // Rolar para os resultados
                     document.getElementById('result').scrollIntoView({ 
                         behavior: 'smooth', 
                         block: 'start'
@@ -268,14 +508,187 @@
             } catch (error) {
                 alert('Erro de conexão com o servidor. Verifique sua internet.');
             } finally {
-                // Reset button
+                // Restaurar botão
                 btn.textContent = 'Calcular Custo';
                 btn.disabled = false;
             }
         }
 
-        // Initialize on load
-        window.onload = renderItems;
+        // Simular chamada à API (para demonstração)
+        function simulateApiCall(requestData) {
+            return new Promise((resolve) => {
+                // Calcular total de itens
+                const totalItens = Object.values(requestData.items).reduce((a, b) => a + b, 0);
+                
+                // Calcular custo total baseado em itens selecionados
+                let custo_total = 0;
+                for (const [itemId, qty] of Object.entries(requestData.items)) {
+                    const item = items.find(i => i.id === itemId);
+                    if (item && qty > 0) {
+                        custo_total += item.price * qty;
+                    }
+                }
+                
+                // Adicionar desconto fictício para packs
+                const desconto = Math.min(0.2, totalItens * 0.01);
+                custo_total *= (1 - desconto);
+                
+                // Gerar resultado simulado
+                setTimeout(() => {
+                    resolve({
+                        status: "sucesso",
+                        custo_total: custo_total,
+                        detalhes: {
+                            packs: [
+                                { tipo: "Misto 20", quantidade: 2, preco: 16.00 },
+                                { tipo: "Camisas 5", quantidade: 1, preco: 6.50 }
+                            ],
+                            itens_avulsos: [
+                                { nome: "Toalha ou Lençol", quantidade: 3, preco: 1.50 },
+                                { nome: "Capa de Edredom", quantidade: 1, preco: 3.50 }
+                            ]
+                        },
+                        pdf_url: "#"
+                    });
+                }, 1000);
+            });
+        }
+
+        // Salvar cálculo no histórico
+        function saveToHistory(result) {
+            // Calcular total de itens
+            const totalItens = Object.values(quantities).reduce((a, b) => a + b, 0);
+            
+            // Criar item de histórico
+            const historicoItem = {
+                id: Date.now(),
+                data: new Date().toLocaleString('pt-PT'),
+                total: result.custo_total,
+                pdf_url: result.pdf_url,
+                cliente: "Landaria Teresa",
+                totalItens: totalItens,
+                detalhes: result.detalhes
+            };
+            
+            // Obter histórico existente ou criar novo
+            let historico = JSON.parse(localStorage.getItem('historicoLavanderia')) || [];
+            
+            // Adicionar novo item no início
+            historico.unshift(historicoItem);
+            
+            // Manter apenas os 10 mais recentes
+            if (historico.length > 10) {
+                historico = historico.slice(0, 10);
+            }
+            
+            // Salvar no localStorage
+            localStorage.setItem('historicoLavanderia', JSON.stringify(historico));
+            
+            // Atualizar exibição do histórico
+            carregarHistorico();
+        }
+
+        // Carregar e exibir histórico
+        function carregarHistorico() {
+            const historico = JSON.parse(localStorage.getItem('historicoLavanderia')) || [];
+            const lista = document.getElementById('historico-lista');
+            lista.innerHTML = '';
+            
+            if (historico.length === 0) {
+                lista.innerHTML = '<div class="sem-historico">Nenhum cálculo no histórico</div>';
+                return;
+            }
+            
+            historico.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'historico-item';
+                itemElement.innerHTML = `
+                    <div class="historico-data">
+                        <span>${item.data}</span>
+                        <span class="historico-total">€${item.total.toFixed(2)}</span>
+                    </div>
+                    <div class="historico-detalhes">
+                        <span>${item.totalItens} itens processados</span>
+                        <span class="badge">${item.detalhes.packs.length + item.detalhes.itens_avulsos.length} elementos</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-pdf" onclick="abrirPDF('${item.pdf_url}')">Abrir PDF</button>
+                        <button class="btn btn-detalhes" onclick="verDetalhes(${item.id})">Ver Detalhes</button>
+                    </div>
+                `;
+                lista.appendChild(itemElement);
+            });
+        }
+
+        // Alternar visibilidade do histórico
+        function toggleHistorico() {
+            const container = document.getElementById('historico-container');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            
+            if (container.style.display === 'block') {
+                carregarHistorico();
+            }
+        }
+
+        // Abrir PDF
+        function abrirPDF(url) {
+            window.open(url, '_blank');
+        }
+
+        // Ver detalhes de um item do histórico
+        function verDetalhes(id) {
+            const historico = JSON.parse(localStorage.getItem('historicoLavanderia')) || [];
+            const item = historico.find(i => i.id === id);
+            
+            if (item) {
+                document.getElementById('detalhes-data').textContent = item.data;
+                document.getElementById('detalhes-cliente').innerHTML = `<strong>Cliente:</strong> ${item.cliente}`;
+                document.getElementById('detalhes-total').textContent = `€${item.total.toFixed(2)}`;
+                
+                // Preencher composição
+                const composicaoContainer = document.getElementById('detalhes-composicao');
+                composicaoContainer.innerHTML = '';
+                
+                // Adicionar packs
+                item.detalhes.packs.forEach(pack => {
+                    const div = document.createElement('div');
+                    div.className = 'detalhes-item';
+                    div.innerHTML = `
+                        <span>${pack.quantidade}x Pack ${pack.tipo}</span>
+                        <span>€${(pack.quantidade * pack.preco).toFixed(2)}</span>
+                    `;
+                    composicaoContainer.appendChild(div);
+                });
+                
+                // Adicionar itens avulsos
+                item.detalhes.itens_avulsos.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'detalhes-item';
+                    div.innerHTML = `
+                        <span>${item.quantidade}x ${item.nome}</span>
+                        <span>€${(item.quantidade * item.preco).toFixed(2)}</span>
+                    `;
+                    composicaoContainer.appendChild(div);
+                });
+                
+                // Configurar botão de download
+                document.getElementById('modal-download-btn').onclick = () => abrirPDF(item.pdf_url);
+                
+                // Mostrar modal
+                document.getElementById('detalhes-modal').style.display = 'flex';
+            }
+        }
+
+        // Fechar modal
+        function fecharModal() {
+            document.getElementById('detalhes-modal').style.display = 'none';
+        }
+
+        // Inicializar ao carregar a página
+        window.onload = function() {
+            renderItems();
+            carregarHistorico();
+        };
     </script>
 </body>
 </html>
