@@ -149,7 +149,7 @@
             border: 1px solid var(--border-color);
             background: white;
             font-size: 16px;
-            transition: var(--transition);
+            transition: var(--transition;
         }
 
         .client-selector select:focus {
@@ -525,7 +525,7 @@
         }
 
         /* History Section */
-        .historico-container {
+        .history-container {
             display: none;
             background: var(--secondary);
             padding: 25px;
@@ -556,14 +556,14 @@
             color: white;
         }
 
-        .historico-header {
+        .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .toggle-historico {
+        .toggle-history {
             background: var(--primary);
             color: white;
             border: none;
@@ -577,11 +577,11 @@
             gap: 8px;
         }
 
-        .toggle-historico:hover {
+        .toggle-history:hover {
             background: var(--accent);
         }
 
-        .historico-lista {
+        .history-list {
             display: grid;
             gap: 15px;
             max-height: 500px;
@@ -589,23 +589,23 @@
             padding-right: 10px;
         }
 
-        .historico-item {
+        .history-item {
             background: white;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             border-left: 4px solid var(--accent);
-            cursor: pointer;
             transition: var(--transition);
+            position: relative;
         }
 
-        .historico-item:hover {
+        .history-item:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow);
             border-left: 4px solid var(--accent-secondary);
         }
 
-        .historico-data {
+        .history-data {
             font-weight: bold;
             color: var(--primary);
             margin-bottom: 5px;
@@ -614,13 +614,13 @@
             align-items: center;
         }
 
-        .historico-total {
+        .history-total {
             color: var(--accent-secondary);
             font-size: 1.2rem;
             font-weight: bold;
         }
 
-        .historico-detalhes {
+        .history-details {
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
@@ -647,75 +647,37 @@
             background: #f39c12;
         }
 
-        .sem-historico {
+        .no-history {
             text-align: center;
             padding: 20px;
             color: var(--dark-gray);
             font-style: italic;
         }
 
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-            background: white;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            padding: 25px;
-            margin-top: 25px;
+        .item-summary {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            font-size: 0.9rem;
+            color: #666;
         }
 
-        .admin-tabs {
+        .history-actions {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-top: 15px;
         }
 
-        .admin-tab {
-            padding: 10px 20px;
-            background: var(--light-gray);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .admin-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .admin-section {
-            display: none;
-        }
-
-        .admin-section.active {
-            display: block;
-        }
-
-        .items-list, .clients-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .item-row, .client-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .item-actions, .client-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 5px 10px;
+        .history-btn {
+            padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: 500;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .edit-btn {
@@ -726,44 +688,6 @@
         .delete-btn {
             background: var(--warning);
             color: white;
-        }
-
-        .admin-form {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-
-        .save-btn {
-            padding: 10px 20px;
-            background: var(--accent-secondary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: var(--transition);
-        }
-
-        .save-btn:hover {
-            background: #27ae60;
         }
 
         /* Footer */
@@ -835,7 +759,6 @@
         <div class="tabs">
             <div class="tab active" data-tab="order">Pedido Atual</div>
             <div class="tab" data-tab="history">Histórico</div>
-            <div class="tab" data-tab="admin">Administração</div>
         </div>
 
         <div class="sidebar">
@@ -847,9 +770,6 @@
                     <option value="João Pereira">João Pereira</option>
                     <option value="Ana Costa">Ana Costa</option>
                 </select>
-                <button class="new-client-btn" onclick="openNewClientForm()">
-                    <i class="fas fa-plus"></i> Novo Cliente
-                </button>
             </div>
 
             <div class="preset-section">
@@ -890,9 +810,9 @@
         <div class="main-content">
             <!-- Order Tab -->
             <div class="order-tab active-tab">
-                <div class="historico-header">
+                <div class="history-header">
                     <h2 class="section-title"><i class="fas fa-calculator"></i> Cálculo Atual</h2>
-                    <button class="toggle-historico" onclick="toggleHistorico()">
+                    <button class="toggle-history" onclick="toggleHistory()">
                         <i class="fas fa-history"></i> Ver Histórico
                     </button>
                 </div>
@@ -902,14 +822,11 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="action-btn calculate-btn" onclick="calculate()">
+                    <button class="action-btn calculate-btn" onclick="calculateCost()">
                         <i class="fas fa-calculator"></i> Calcular Custo
                     </button>
                     <button class="action-btn reset-btn" onclick="resetQuantities()">
                         <i class="fas fa-redo"></i> Reiniciar
-                    </button>
-                    <button class="action-btn preset-save-btn" onclick="savePreset()">
-                        <i class="fas fa-bookmark"></i> Salvar Favorito
                     </button>
                 </div>
 
@@ -917,31 +834,31 @@
                     <div class="result-header">
                         <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
                         <div class="savings-badge">
-                            <i class="fas fa-piggy-bank"></i> Poupança: €12.50 (15%)
+                            <i class="fas fa-piggy-bank"></i> Poupança: €<span id="savings-amount">12.50</span> (<span id="savings-percent">15</span>%)
                         </div>
                     </div>
                     
                     <div id="total-cost">
-                        Total: €85.50
+                        Total: €<span id="total-amount">85.50</span>
                     </div>
 
                     <h3><i class="fas fa-receipt"></i> Composição do Custo:</h3>
                     <div class="cost-breakdown">
                         <div class="breakdown-card">
                             <div class="breakdown-title">Packs Mistos</div>
-                            <div class="breakdown-value">€42.00</div>
+                            <div class="breakdown-value">€<span id="mixed-packs">42.00</span></div>
                         </div>
                         <div class="breakdown-card">
                             <div class="breakdown-title">Packs Camisas</div>
-                            <div class="breakdown-value">€12.00</div>
+                            <div class="breakdown-value">€<span id="shirt-packs">12.00</span></div>
                         </div>
                         <div class="breakdown-card">
                             <div class="breakdown-title">Itens Avulsos</div>
-                            <div class="breakdown-value">€18.50</div>
+                            <div class="breakdown-value">€<span id="individual-items">18.50</span></div>
                         </div>
                         <div class="breakdown-card">
                             <div class="breakdown-title">Itens Fixos</div>
-                            <div class="breakdown-value">€13.00</div>
+                            <div class="breakdown-value">€<span id="fixed-items">13.00</span></div>
                         </div>
                     </div>
 
@@ -968,194 +885,8 @@
                     <button class="filter-btn" data-filter="week">Esta Semana</button>
                 </div>
                 
-                <div class="historico-lista" id="history-list">
-                    <div class="historico-item">
-                        <div class="historico-data">
-                            <span>18/06/2025 14:30</span>
-                            <span class="historico-total">€78.90</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>Maria Silva</span>
-                            <span class="status-badge">Confirmado</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>24 itens</span>
-                            <span class="badge">4 elementos</span>
-                        </div>
-                    </div>
-                    <div class="historico-item">
-                        <div class="historico-data">
-                            <span>18/06/2025 11:15</span>
-                            <span class="historico-total">€112.50</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>João Pereira</span>
-                            <span class="status-badge">Confirmado</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>32 itens</span>
-                            <span class="badge">6 elementos</span>
-                        </div>
-                    </div>
-                    <div class="historico-item">
-                        <div class="historico-data">
-                            <span>18/06/2025 09:45</span>
-                            <span class="historico-total">€65.30</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>Cliente Geral</span>
-                            <span class="status-badge pending">Pendente</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>18 itens</span>
-                            <span class="badge">3 elementos</span>
-                        </div>
-                    </div>
-                    <div class="historico-item">
-                        <div class="historico-data">
-                            <span>17/06/2025 16:45</span>
-                            <span class="historico-total">€92.80</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>Ana Costa</span>
-                            <span class="status-badge">Confirmado</span>
-                        </div>
-                        <div class="historico-detalhes">
-                            <span>28 itens</span>
-                            <span class="badge">5 elementos</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Tab (hidden by default) -->
-            <div class="admin-panel">
-                <h2 class="section-title"><i class="fas fa-cog"></i> Administração</h2>
-                
-                <div class="admin-tabs">
-                    <button class="admin-tab active" data-tab="items">Itens</button>
-                    <button class="admin-tab" data-tab="clients">Clientes</button>
-                </div>
-                
-                <!-- Items Admin -->
-                <div class="admin-section items active">
-                    <h3 class="section-title"><i class="fas fa-tshirt"></i> Gestão de Itens</h3>
-                    
-                    <div class="items-list">
-                        <div class="item-row">
-                            <div>
-                                <div class="item-name">Peça Variada</div>
-                                <div class="item-price">€0.90</div>
-                            </div>
-                            <div class="item-actions">
-                                <button class="edit-btn" onclick="editItem('peca_variada')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-row">
-                            <div>
-                                <div class="item-name">Camisa</div>
-                                <div class="item-price">€1.80</div>
-                            </div>
-                            <div class="item-actions">
-                                <button class="edit-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-row">
-                            <div>
-                                <div class="item-name">Toalha ou Lençol</div>
-                                <div class="item-price">€1.50</div>
-                            </div>
-                            <div class="item-actions">
-                                <button class="edit-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="admin-form">
-                        <h3 class="section-title"><i class="fas fa-plus-circle"></i> Adicionar Novo Item</h3>
-                        <div class="form-group">
-                            <label for="item-name">Nome do Item</label>
-                            <input type="text" id="item-name" placeholder="Ex: Casaco de Inverno">
-                        </div>
-                        <div class="form-group">
-                            <label for="item-price">Preço (€)</label>
-                            <input type="number" id="item-price" step="0.01" min="0" placeholder="Ex: 12.50">
-                        </div>
-                        <button class="save-btn" onclick="addNewItem()">Guardar Item</button>
-                    </div>
-                </div>
-                
-                <!-- Clients Admin -->
-                <div class="admin-section clients">
-                    <h3 class="section-title"><i class="fas fa-users"></i> Gestão de Clientes</h3>
-                    
-                    <div class="clients-list">
-                        <div class="client-row">
-                            <div class="item-name">Maria Silva</div>
-                            <div class="client-actions">
-                                <button class="edit-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="client-row">
-                            <div class="item-name">João Pereira</div>
-                            <div class="client-actions">
-                                <button class="edit-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="client-row">
-                            <div class="item-name">Ana Costa</div>
-                            <div class="client-actions">
-                                <button class="edit-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="admin-form">
-                        <h3 class="section-title"><i class="fas fa-user-plus"></i> Adicionar Novo Cliente</h3>
-                        <div class="form-group">
-                            <label for="client-name">Nome do Cliente</label>
-                            <input type="text" id="client-name" placeholder="Ex: Carlos Mendes">
-                        </div>
-                        <div class="form-group">
-                            <label for="client-phone">Telefone</label>
-                            <input type="text" id="client-phone" placeholder="Ex: 912 345 678">
-                        </div>
-                        <div class="form-group">
-                            <label for="client-email">Email</label>
-                            <input type="email" id="client-email" placeholder="Ex: cliente@exemplo.com">
-                        </div>
-                        <button class="save-btn" onclick="addNewClient()">Guardar Cliente</button>
-                    </div>
+                <div class="history-list" id="history-list">
+                    <!-- Dynamic history items will be added here -->
                 </div>
             </div>
         </div>
@@ -1183,18 +914,12 @@
             { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
         ];
 
-        const initialClients = [
-            { id: "cl1", name: "Maria Silva", phone: "912 345 678", email: "maria@exemplo.com" },
-            { id: "cl2", name: "João Pereira", phone: "913 456 789", email: "joao@exemplo.com" },
-            { id: "cl3", name: "Ana Costa", phone: "914 567 890", email: "ana@exemplo.com" }
-        ];
-
         // Inicializar quantidades
         let quantities = {};
         let currentClient = "";
         let currentOrder = null;
         let items = [];
-        let clients = [];
+        let orders = [];
 
         // Carregar dados do localStorage
         function loadFromStorage() {
@@ -1202,9 +927,9 @@
             const savedItems = localStorage.getItem('laundryItems');
             items = savedItems ? JSON.parse(savedItems) : [...initialItems];
             
-            // Carregar clientes
-            const savedClients = localStorage.getItem('laundryClients');
-            clients = savedClients ? JSON.parse(savedClients) : [...initialClients];
+            // Carregar histórico de pedidos
+            const savedOrders = localStorage.getItem('orderHistory');
+            orders = savedOrders ? JSON.parse(savedOrders) : [];
             
             // Carregar quantidades atuais
             const savedQuantities = localStorage.getItem('currentQuantities');
@@ -1217,10 +942,6 @@
                 }
             });
             
-            // Carregar histórico de pedidos
-            const savedOrders = localStorage.getItem('orderHistory');
-            const orders = savedOrders ? JSON.parse(savedOrders) : [];
-            
             // Carregar cliente selecionado
             const savedClient = localStorage.getItem('currentClient');
             if (savedClient) {
@@ -1228,29 +949,11 @@
                 currentClient = savedClient;
             }
             
-            // Atualizar lista de clientes no dropdown
-            updateClientDropdown();
-        }
-
-        // Atualizar dropdown de clientes
-        function updateClientDropdown() {
-            const select = document.getElementById('client-select');
-            // Salvar o valor selecionado atual
-            const currentValue = select.value;
+            // Renderizar itens
+            renderItems();
             
-            // Limpar opções, mantendo a primeira
-            select.innerHTML = '<option value="">Cliente Geral</option>';
-            
-            // Adicionar clientes
-            clients.forEach(client => {
-                const option = document.createElement('option');
-                option.value = client.name;
-                option.textContent = client.name;
-                select.appendChild(option);
-            });
-            
-            // Restaurar a seleção anterior
-            select.value = currentValue;
+            // Renderizar histórico
+            renderHistory();
         }
 
         // Renderizar itens na interface
@@ -1323,9 +1026,11 @@
         }
         
         // Alternar histórico
-        function toggleHistorico() {
-            const container = document.getElementById('historico-container');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        function toggleHistory() {
+            const container = document.querySelector('.history-container');
+            if (container) {
+                container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            }
         }
         
         // Carregar preset
@@ -1363,17 +1068,8 @@
             saveToStorage();
         }
         
-        // Salvar preset
-        function savePreset() {
-            const presetName = prompt("Nome do favorito:");
-            if (presetName) {
-                // Em implementação real, salvaria no localStorage
-                alert(`Favorito "${presetName}" salvo com sucesso!`);
-            }
-        }
-        
         // Calcular custo
-        function calculate() {
+        function calculateCost() {
             const btn = document.querySelector('.calculate-btn');
             btn.classList.add('calculating');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculando...';
@@ -1383,20 +1079,31 @@
                 btn.classList.remove('calculating');
                 btn.innerHTML = '<i class="fas fa-calculator"></i> Calcular Custo';
                 
+                // Calcular custo real com base nos itens selecionados
+                const regularCost = calculateRegularCost();
+                const optimizedCost = calculateOptimizedCost(regularCost);
+                const savings = regularCost - optimizedCost.total;
+                const savingsPercent = Math.round((savings / regularCost) * 100);
+                
+                // Atualizar a interface com os resultados
+                document.getElementById('total-amount').textContent = optimizedCost.total.toFixed(2);
+                document.getElementById('savings-amount').textContent = savings.toFixed(2);
+                document.getElementById('savings-percent').textContent = savingsPercent;
+                document.getElementById('mixed-packs').textContent = optimizedCost.mixedPacks.toFixed(2);
+                document.getElementById('shirt-packs').textContent = optimizedCost.shirtPacks.toFixed(2);
+                document.getElementById('individual-items').textContent = optimizedCost.individualItems.toFixed(2);
+                document.getElementById('fixed-items').textContent = optimizedCost.fixedItems.toFixed(2);
+                
                 // Criar objeto de pedido
                 currentOrder = {
                     id: Date.now(),
                     date: new Date().toLocaleString('pt-PT'),
                     client: document.getElementById('client-select').value || "Cliente Geral",
                     quantities: {...quantities},
-                    total: 85.50,
+                    total: optimizedCost.total,
                     status: 'pending',
-                    details: {
-                        packs_mistos: 42.00,
-                        packs_camisas: 12.00,
-                        itens_avulsos: 18.50,
-                        itens_fixos: 13.00
-                    }
+                    savings: savings,
+                    details: optimizedCost
                 };
                 
                 // Mostrar resultados
@@ -1410,12 +1117,57 @@
             }, 1500);
         }
         
+        // Calcular custo regular (sem otimização)
+        function calculateRegularCost() {
+            let total = 0;
+            for (const [itemId, qty] of Object.entries(quantities)) {
+                const item = items.find(i => i.id === itemId);
+                if (item) {
+                    total += qty * item.price;
+                }
+            }
+            return total;
+        }
+        
+        // Simular custo otimizado
+        function calculateOptimizedCost(regularCost) {
+            // Esta é uma simulação - em uma aplicação real, isso seria calculado pelo backend
+            const mixedPacks = Math.min(quantities.peca_variada, 10) * 15.00;
+            const shirtPacks = Math.min(quantities.camisa, 5) * 6.50;
+            
+            // Calcular itens avulsos
+            const remainingVaried = Math.max(0, quantities.peca_variada - 10);
+            const remainingShirts = Math.max(0, quantities.camisa - 5);
+            const individualItems = (remainingVaried * 0.90) + (remainingShirts * 1.80);
+            
+            // Calcular itens fixos
+            let fixedItems = 0;
+            for (const [itemId, qty] of Object.entries(quantities)) {
+                if (itemId !== "peca_variada" && itemId !== "camisa" && qty > 0) {
+                    const item = items.find(i => i.id === itemId);
+                    fixedItems += qty * item.price;
+                }
+            }
+            
+            // Calcular total otimizado
+            const total = mixedPacks + shirtPacks + individualItems + fixedItems;
+            
+            return {
+                mixedPacks: mixedPacks,
+                shirtPacks: shirtPacks,
+                individualItems: individualItems,
+                fixedItems: fixedItems,
+                total: total
+            };
+        }
+        
         // Confirmar pedido
         function confirmOrder() {
             if (!currentOrder) return;
             
             // Mudar status para confirmado
             currentOrder.status = 'confirmed';
+            currentOrder.confirmedDate = new Date().toLocaleString('pt-PT');
             
             // Salvar no histórico
             saveOrderToHistory(currentOrder);
@@ -1439,22 +1191,108 @@
         
         // Salvar pedido no histórico
         function saveOrderToHistory(order) {
-            // Obter histórico existente
-            let history = JSON.parse(localStorage.getItem('orderHistory')) || [];
-            
             // Adicionar novo pedido
-            history.unshift(order);
+            orders.unshift(order);
             
             // Guardar no localStorage
-            localStorage.setItem('orderHistory', JSON.stringify(history));
+            localStorage.setItem('orderHistory', JSON.stringify(orders));
             
             // Atualizar exibição do histórico
-            updateHistoryDisplay();
+            renderHistory();
         }
         
-        // Atualizar exibição do histórico
-        function updateHistoryDisplay() {
-            // Em implementação real, carregaria os pedidos do localStorage
+        // Renderizar histórico
+        function renderHistory() {
+            const container = document.getElementById('history-list');
+            container.innerHTML = '';
+            
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="no-history">Nenhum pedido no histórico</div>';
+                return;
+            }
+            
+            orders.forEach(order => {
+                const orderElement = document.createElement('div');
+                orderElement.className = 'history-item';
+                
+                // Calcular número de itens
+                const itemCount = Object.values(order.quantities).reduce((sum, qty) => sum + qty, 0);
+                
+                // Calcular resumo dos itens
+                const itemSummary = [];
+                for (const [itemId, qty] of Object.entries(order.quantities)) {
+                    if (qty > 0) {
+                        const item = items.find(i => i.id === itemId);
+                        if (item) {
+                            itemSummary.push(`${qty}x ${item.name}`);
+                        }
+                    }
+                }
+                
+                orderElement.innerHTML = `
+                    <div class="history-data">
+                        <span>${order.confirmedDate || order.date}</span>
+                        <span class="history-total">€${order.total.toFixed(2)}</span>
+                    </div>
+                    <div class="history-details">
+                        <span>${order.client}</span>
+                        <span class="status-badge ${order.status === 'pending' ? 'pending' : ''}">
+                            ${order.status === 'confirmed' ? 'Confirmado' : 'Pendente'}
+                        </span>
+                    </div>
+                    <div class="history-details">
+                        <span>${itemCount} itens</span>
+                        <span class="badge">${itemSummary.length} elementos</span>
+                    </div>
+                    <div class="item-summary">
+                        ${itemSummary.slice(0, 3).join(', ')}${itemSummary.length > 3 ? '...' : ''}
+                    </div>
+                    <div class="history-actions">
+                        <button class="history-btn edit-btn" onclick="editOrder('${order.id}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="history-btn delete-btn" onclick="deleteOrder('${order.id}')">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                `;
+                container.appendChild(orderElement);
+            });
+        }
+        
+        // Editar pedido
+        function editOrder(orderId) {
+            const order = orders.find(o => o.id == orderId);
+            if (!order) return;
+            
+            // Carregar pedido na interface
+            quantities = {...order.quantities};
+            document.getElementById('client-select').value = order.client;
+            
+            // Renderizar itens com as quantidades do pedido
+            renderItems();
+            
+            // Calcular automaticamente o custo
+            calculateCost();
+            
+            // Remover o pedido do histórico
+            orders = orders.filter(o => o.id !== order.id);
+            localStorage.setItem('orderHistory', JSON.stringify(orders));
+            
+            // Atualizar histórico
+            renderHistory();
+            
+            // Rolar para o topo
+            window.scrollTo(0, 0);
+        }
+        
+        // Excluir pedido
+        function deleteOrder(orderId) {
+            if (!confirm('Tem certeza que deseja excluir este pedido?')) return;
+            
+            orders = orders.filter(order => order.id != orderId);
+            localStorage.setItem('orderHistory', JSON.stringify(orders));
+            renderHistory();
         }
         
         // Mudar de aba
@@ -1470,244 +1308,23 @@
             // Mostrar conteúdo correto
             document.querySelector('.order-tab').classList.remove('active-tab');
             document.querySelector('.history-tab').style.display = 'none';
-            document.querySelector('.admin-panel').style.display = 'none';
             
             if (tabName === 'order') {
                 document.querySelector('.order-tab').classList.add('active-tab');
             } else if (tabName === 'history') {
                 document.querySelector('.history-tab').style.display = 'block';
-                updateHistoryDisplay();
-            } else if (tabName === 'admin') {
-                document.querySelector('.admin-panel').style.display = 'block';
-                renderAdminItems();
-                renderAdminClients();
+                renderHistory();
             }
-        }
-        
-        // Abrir formulário de novo cliente
-        function openNewClientForm() {
-            // Mudar para aba de administração
-            switchTab('admin');
-            
-            // Ativar tab de clientes
-            document.querySelector('.admin-tab[data-tab="clients"]').click();
-            
-            // Rolar para o formulário
-            document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Renderizar itens na administração
-        function renderAdminItems() {
-            const container = document.querySelector('.items-list');
-            container.innerHTML = '';
-            
-            items.forEach(item => {
-                const itemRow = document.createElement('div');
-                itemRow.className = 'item-row';
-                itemRow.innerHTML = `
-                    <div>
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">€${item.price.toFixed(2)}</div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="edit-btn" onclick="editItem('${item.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-btn" onclick="deleteItem('${item.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(itemRow);
-            });
-        }
-        
-        // Renderizar clientes na administração
-        function renderAdminClients() {
-            const container = document.querySelector('.clients-list');
-            container.innerHTML = '';
-            
-            clients.forEach(client => {
-                const clientRow = document.createElement('div');
-                clientRow.className = 'client-row';
-                clientRow.innerHTML = `
-                    <div class="item-name">${client.name}</div>
-                    <div class="client-actions">
-                        <button class="edit-btn" onclick="editClient('${client.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-btn" onclick="deleteClient('${client.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(clientRow);
-            });
-        }
-        
-        // Adicionar novo item
-        function addNewItem() {
-            const name = document.getElementById('item-name').value;
-            const price = parseFloat(document.getElementById('item-price').value);
-            
-            if (!name || isNaN(price)) {
-                alert('Por favor, preencha todos os campos corretamente');
-                return;
-            }
-            
-            const newItem = {
-                id: 'item_' + Date.now(),
-                name: name,
-                price: price
-            };
-            
-            items.push(newItem);
-            localStorage.setItem('laundryItems', JSON.stringify(items));
-            
-            // Resetar formulário
-            document.getElementById('item-name').value = '';
-            document.getElementById('item-price').value = '';
-            
-            // Atualizar lista
-            renderAdminItems();
-            
-            // Atualizar interface de pedidos
-            quantities[newItem.id] = 0;
-            renderItems();
-            
-            alert('Item adicionado com sucesso!');
-        }
-        
-        // Adicionar novo cliente
-        function addNewClient() {
-            const name = document.getElementById('client-name').value;
-            const phone = document.getElementById('client-phone').value;
-            const email = document.getElementById('client-email').value;
-            
-            if (!name) {
-                alert('Por favor, preencha pelo menos o nome do cliente');
-                return;
-            }
-            
-            const newClient = {
-                id: 'cl_' + Date.now(),
-                name: name,
-                phone: phone,
-                email: email
-            };
-            
-            clients.push(newClient);
-            localStorage.setItem('laundryClients', JSON.stringify(clients));
-            
-            // Resetar formulário
-            document.getElementById('client-name').value = '';
-            document.getElementById('client-phone').value = '';
-            document.getElementById('client-email').value = '';
-            
-            // Atualizar lista
-            renderAdminClients();
-            updateClientDropdown();
-            
-            alert('Cliente adicionado com sucesso!');
-        }
-        
-        // Editar item
-        function editItem(itemId) {
-            const item = items.find(i => i.id === itemId);
-            if (!item) return;
-            
-            const newName = prompt("Novo nome do item:", item.name);
-            if (newName === null) return;
-            
-            const newPrice = parseFloat(prompt("Novo preço do item:", item.price));
-            if (isNaN(newPrice)) return;
-            
-            item.name = newName;
-            item.price = newPrice;
-            
-            localStorage.setItem('laundryItems', JSON.stringify(items));
-            renderAdminItems();
-            renderItems();
-            
-            alert('Item atualizado com sucesso!');
-        }
-        
-        // Excluir item
-        function deleteItem(itemId) {
-            if (!confirm('Tem certeza que deseja excluir este item?')) return;
-            
-            items = items.filter(item => item.id !== itemId);
-            localStorage.setItem('laundryItems', JSON.stringify(items));
-            
-            // Remover das quantidades
-            delete quantities[itemId];
-            saveToStorage();
-            
-            renderAdminItems();
-            renderItems();
-            
-            alert('Item excluído com sucesso!');
-        }
-        
-        // Editar cliente
-        function editClient(clientId) {
-            const client = clients.find(c => c.id === clientId);
-            if (!client) return;
-            
-            const newName = prompt("Novo nome do cliente:", client.name);
-            if (newName === null) return;
-            
-            const newPhone = prompt("Novo telefone do cliente:", client.phone);
-            const newEmail = prompt("Novo email do cliente:", client.email);
-            
-            client.name = newName;
-            client.phone = newPhone;
-            client.email = newEmail;
-            
-            localStorage.setItem('laundryClients', JSON.stringify(clients));
-            renderAdminClients();
-            updateClientDropdown();
-            
-            alert('Cliente atualizado com sucesso!');
-        }
-        
-        // Excluir cliente
-        function deleteClient(clientId) {
-            if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
-            
-            clients = clients.filter(client => client.id !== clientId);
-            localStorage.setItem('laundryClients', JSON.stringify(clients));
-            
-            renderAdminClients();
-            updateClientDropdown();
-            
-            alert('Cliente excluído com sucesso!');
         }
 
         // Inicializar ao carregar a página
         window.onload = function() {
             loadFromStorage();
-            renderItems();
             
             // Configurar tabs
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', () => {
                     switchTab(tab.dataset.tab);
-                });
-            });
-            
-            // Configurar tabs de administração
-            document.querySelectorAll('.admin-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    document.querySelectorAll('.admin-section').forEach(section => {
-                        section.classList.remove('active');
-                        if (section.classList.contains(tab.dataset.tab)) {
-                            section.classList.add('active');
-                        }
-                    });
                 });
             });
             
@@ -1718,6 +1335,7 @@
                     btn.classList.add('active');
                     
                     // Em implementação real, filtraria o histórico
+                    renderHistory();
                 });
             });
             
