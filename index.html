@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engomadoria Teresa - Enhanced System</title>
+    <title>Engomadoria Teresa - Sistema Completo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -17,6 +17,7 @@
             --border-color: #ddd;
             --shadow: 0 4px 12px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
+            --radius: 10px;
         }
 
         * {
@@ -56,7 +57,7 @@
             background: var(--primary);
             color: white;
             padding: 15px 20px;
-            border-radius: 10px 10px 0 0;
+            border-radius: var(--radius) var(--radius) 0 0;
             box-shadow: var(--shadow);
             grid-column: 1 / -1;
         }
@@ -99,7 +100,7 @@
         .tabs {
             display: flex;
             background: white;
-            border-radius: 8px;
+            border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
@@ -128,7 +129,7 @@
         /* Sidebar */
         .sidebar {
             background: white;
-            border-radius: 10px;
+            border-radius: var(--radius);
             box-shadow: var(--shadow);
             padding: 20px;
             display: flex;
@@ -145,11 +146,11 @@
 
         .client-selector select {
             padding: 10px 15px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             border: 1px solid var(--border-color);
             background: white;
             font-size: 16px;
-            transition: var(--transition;
+            transition: var(--transition);
         }
 
         .client-selector select:focus {
@@ -162,7 +163,7 @@
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             padding: 10px;
             cursor: pointer;
             transition: var(--transition);
@@ -180,7 +181,7 @@
         .preset-section {
             background: var(--light-gray);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: var(--radius);
         }
 
         .preset-grid {
@@ -193,7 +194,7 @@
         .preset-card {
             background: white;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: var(--radius);
             padding: 10px;
             text-align: center;
             cursor: pointer;
@@ -209,7 +210,7 @@
         .instructions {
             background: #e8f4f8;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 0.95rem;
             color: #2c3e50;
             border-left: 4px solid var(--accent);
@@ -226,7 +227,7 @@
         /* Main Content */
         .main-content {
             background: white;
-            border-radius: 10px;
+            border-radius: var(--radius);
             box-shadow: var(--shadow);
             padding: 25px;
             margin-bottom: 20px;
@@ -249,7 +250,7 @@
         /* Items Container */
         #items-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
@@ -257,7 +258,7 @@
         .item-card {
             background: white;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border: 1px solid var(--border-color);
             transition: var(--transition);
@@ -324,7 +325,7 @@
             padding: 8px;
             text-align: center;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-weight: bold;
             font-size: 1.1rem;
         }
@@ -348,7 +349,7 @@
             min-width: 150px;
             padding: 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
@@ -402,7 +403,7 @@
             display: none;
             background: var(--secondary);
             padding: 25px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             margin-top: 25px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
@@ -425,7 +426,7 @@
             text-align: center;
             padding: 15px;
             background: white;
-            border-radius: 8px;
+            border-radius: var(--radius);
             box-shadow: var(--shadow);
         }
 
@@ -449,7 +450,7 @@
         .breakdown-card {
             background: white;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             box-shadow: var(--shadow);
             border-left: 4px solid var(--accent);
             transition: var(--transition);
@@ -484,7 +485,7 @@
             background: var(--accent-secondary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
@@ -507,7 +508,7 @@
             background: var(--warning);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
@@ -525,11 +526,11 @@
         }
 
         /* History Section */
-        .history-container {
+        .historico-container {
             display: none;
             background: var(--secondary);
             padding: 25px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             margin-top: 25px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
@@ -556,19 +557,19 @@
             color: white;
         }
 
-        .history-header {
+        .historico-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .toggle-history {
+        .toggle-historico {
             background: var(--primary);
             color: white;
             border: none;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: var(--radius);
             cursor: pointer;
             font-weight: bold;
             transition: var(--transition);
@@ -577,11 +578,11 @@
             gap: 8px;
         }
 
-        .toggle-history:hover {
+        .toggle-historico:hover {
             background: var(--accent);
         }
 
-        .history-list {
+        .historico-lista {
             display: grid;
             gap: 15px;
             max-height: 500px;
@@ -589,23 +590,23 @@
             padding-right: 10px;
         }
 
-        .history-item {
+        .historico-item {
             background: white;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             border-left: 4px solid var(--accent);
+            cursor: pointer;
             transition: var(--transition);
-            position: relative;
         }
 
-        .history-item:hover {
+        .historico-item:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow);
             border-left: 4px solid var(--accent-secondary);
         }
 
-        .history-data {
+        .historico-data {
             font-weight: bold;
             color: var(--primary);
             margin-bottom: 5px;
@@ -614,13 +615,13 @@
             align-items: center;
         }
 
-        .history-total {
+        .historico-total {
             color: var(--accent-secondary);
             font-size: 1.2rem;
             font-weight: bold;
         }
 
-        .history-details {
+        .historico-detalhes {
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
@@ -647,37 +648,75 @@
             background: #f39c12;
         }
 
-        .no-history {
+        .sem-historico {
             text-align: center;
             padding: 20px;
             color: var(--dark-gray);
             font-style: italic;
         }
 
-        .item-summary {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #eee;
-            font-size: 0.9rem;
-            color: #666;
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-top: 25px;
         }
 
-        .history-actions {
+        .admin-tabs {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-bottom: 20px;
         }
 
-        .history-btn {
-            padding: 8px 15px;
+        .admin-tab {
+            padding: 10px 20px;
+            background: var(--light-gray);
             border: none;
-            border-radius: 5px;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-weight: 500;
             transition: var(--transition);
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .items-list, .clients-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .item-row, .client-row {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 5px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .item-actions, .client-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
         }
 
         .edit-btn {
@@ -688,6 +727,44 @@
         .delete-btn {
             background: var(--warning);
             color: white;
+        }
+
+        .admin-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+        }
+
+        .save-btn {
+            padding: 10px 20px;
+            background: var(--accent-secondary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .save-btn:hover {
+            background: #27ae60;
         }
 
         /* Footer */
@@ -740,6 +817,23 @@
                 flex-direction: column;
             }
         }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--accent);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -759,6 +853,7 @@
         <div class="tabs">
             <div class="tab active" data-tab="order">Pedido Atual</div>
             <div class="tab" data-tab="history">Histórico</div>
+            <div class="tab" data-tab="admin">Administração</div>
         </div>
 
         <div class="sidebar">
@@ -766,10 +861,10 @@
                 <h3 class="section-title"><i class="fas fa-user"></i> Cliente</h3>
                 <select id="client-select">
                     <option value="">Cliente Geral</option>
-                    <option value="Maria Silva">Maria Silva</option>
-                    <option value="João Pereira">João Pereira</option>
-                    <option value="Ana Costa">Ana Costa</option>
                 </select>
+                <button class="new-client-btn" onclick="openNewClientForm()">
+                    <i class="fas fa-plus"></i> Novo Cliente
+                </button>
             </div>
 
             <div class="preset-section">
@@ -810,9 +905,9 @@
         <div class="main-content">
             <!-- Order Tab -->
             <div class="order-tab active-tab">
-                <div class="history-header">
+                <div class="historico-header">
                     <h2 class="section-title"><i class="fas fa-calculator"></i> Cálculo Atual</h2>
-                    <button class="toggle-history" onclick="toggleHistory()">
+                    <button class="toggle-historico" onclick="toggleHistorico()">
                         <i class="fas fa-history"></i> Ver Histórico
                     </button>
                 </div>
@@ -822,44 +917,34 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="action-btn calculate-btn" onclick="calculateCost()">
+                    <button class="action-btn calculate-btn" onclick="calculate()">
                         <i class="fas fa-calculator"></i> Calcular Custo
                     </button>
                     <button class="action-btn reset-btn" onclick="resetQuantities()">
                         <i class="fas fa-redo"></i> Reiniciar
                     </button>
+                    <button class="action-btn preset-save-btn" onclick="savePreset()">
+                        <i class="fas fa-bookmark"></i> Salvar Favorito
+                    </button>
                 </div>
+
+                <div class="spinner" id="loading-spinner"></div>
 
                 <div id="result" class="slide-in">
                     <div class="result-header">
                         <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
-                        <div class="savings-badge">
-                            <i class="fas fa-piggy-bank"></i> Poupança: €<span id="savings-amount">12.50</span> (<span id="savings-percent">15</span>%)
+                        <div class="savings-badge" id="savings-display">
+                            <i class="fas fa-piggy-bank"></i> Poupança: €0.00 (0%)
                         </div>
                     </div>
                     
                     <div id="total-cost">
-                        Total: €<span id="total-amount">85.50</span>
+                        Total: €0.00
                     </div>
 
                     <h3><i class="fas fa-receipt"></i> Composição do Custo:</h3>
-                    <div class="cost-breakdown">
-                        <div class="breakdown-card">
-                            <div class="breakdown-title">Packs Mistos</div>
-                            <div class="breakdown-value">€<span id="mixed-packs">42.00</span></div>
-                        </div>
-                        <div class="breakdown-card">
-                            <div class="breakdown-title">Packs Camisas</div>
-                            <div class="breakdown-value">€<span id="shirt-packs">12.00</span></div>
-                        </div>
-                        <div class="breakdown-card">
-                            <div class="breakdown-title">Itens Avulsos</div>
-                            <div class="breakdown-value">€<span id="individual-items">18.50</span></div>
-                        </div>
-                        <div class="breakdown-card">
-                            <div class="breakdown-title">Itens Fixos</div>
-                            <div class="breakdown-value">€<span id="fixed-items">13.00</span></div>
-                        </div>
+                    <div class="cost-breakdown" id="cost-breakdown">
+                        <!-- Cost breakdown will be added here -->
                     </div>
 
                     <div class="confirmation-btns">
@@ -885,8 +970,66 @@
                     <button class="filter-btn" data-filter="week">Esta Semana</button>
                 </div>
                 
-                <div class="history-list" id="history-list">
-                    <!-- Dynamic history items will be added here -->
+                <div class="historico-lista" id="history-list">
+                    <!-- History items will be added here -->
+                </div>
+            </div>
+
+            <!-- Admin Tab (hidden by default) -->
+            <div class="admin-panel">
+                <h2 class="section-title"><i class="fas fa-cog"></i> Administração</h2>
+                
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="items">Itens</button>
+                    <button class="admin-tab" data-tab="clients">Clientes</button>
+                </div>
+                
+                <!-- Items Admin -->
+                <div class="admin-section items active">
+                    <h3 class="section-title"><i class="fas fa-tshirt"></i> Gestão de Itens</h3>
+                    
+                    <div class="items-list" id="admin-items-list">
+                        <!-- Admin items will be added here -->
+                    </div>
+                    
+                    <div class="admin-form">
+                        <h3 class="section-title"><i class="fas fa-plus-circle"></i> Adicionar Novo Item</h3>
+                        <div class="form-group">
+                            <label for="item-name">Nome do Item</label>
+                            <input type="text" id="item-name" placeholder="Ex: Casaco de Inverno">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-price">Preço (€)</label>
+                            <input type="number" id="item-price" step="0.01" min="0" placeholder="Ex: 12.50">
+                        </div>
+                        <button class="save-btn" onclick="addNewItem()">Guardar Item</button>
+                    </div>
+                </div>
+                
+                <!-- Clients Admin -->
+                <div class="admin-section clients">
+                    <h3 class="section-title"><i class="fas fa-users"></i> Gestão de Clientes</h3>
+                    
+                    <div class="clients-list" id="admin-clients-list">
+                        <!-- Admin clients will be added here -->
+                    </div>
+                    
+                    <div class="admin-form">
+                        <h3 class="section-title"><i class="fas fa-user-plus"></i> Adicionar Novo Cliente</h3>
+                        <div class="form-group">
+                            <label for="client-name">Nome do Cliente</label>
+                            <input type="text" id="client-name" placeholder="Ex: Carlos Mendes">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-phone">Telefone</label>
+                            <input type="text" id="client-phone" placeholder="Ex: 912 345 678">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-email">Email</label>
+                            <input type="email" id="client-email" placeholder="Ex: cliente@exemplo.com">
+                        </div>
+                        <button class="save-btn" onclick="addNewClient()">Guardar Cliente</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -897,7 +1040,10 @@
     </div>
 
     <script>
-        // Dados iniciais
+        // API endpoint
+        const API_URL = "https://lavanderia-teresa.onrender.com/optimize";
+        
+        // Initial items data
         const initialItems = [
             { id: "peca_variada", name: "Peça Variada", price: 0.90 },
             { id: "camisa", name: "Camisa", price: 1.80 },
@@ -914,49 +1060,110 @@
             { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
         ];
 
-        // Inicializar quantidades
+        // Initial clients data
+        const initialClients = [
+            { id: "cl1", name: "Maria Silva", phone: "912 345 678", email: "maria@exemplo.com" },
+            { id: "cl2", name: "João Pereira", phone: "913 456 789", email: "joao@exemplo.com" },
+            { id: "cl3", name: "Ana Costa", phone: "914 567 890", email: "ana@exemplo.com" }
+        ];
+
+        // App state
         let quantities = {};
         let currentClient = "";
         let currentOrder = null;
         let items = [];
+        let clients = [];
         let orders = [];
 
-        // Carregar dados do localStorage
+        // Initialize the app
+        function initApp() {
+            loadFromStorage();
+            renderItems();
+            updateClientDropdown();
+            renderAdminItems();
+            renderAdminClients();
+            renderHistory();
+            
+            // Setup tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+            
+            // Setup admin tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.admin-section').forEach(section => {
+                        section.classList.remove('active');
+                        if (section.classList.contains(tab.dataset.tab)) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Setup history filters
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderHistory(btn.dataset.filter);
+                });
+            });
+            
+            // Setup client selection
+            document.getElementById('client-select').addEventListener('change', function() {
+                currentClient = this.value;
+                saveToStorage();
+            });
+        }
+
+        // Load data from localStorage
         function loadFromStorage() {
-            // Carregar itens
+            // Load items
             const savedItems = localStorage.getItem('laundryItems');
             items = savedItems ? JSON.parse(savedItems) : [...initialItems];
             
-            // Carregar histórico de pedidos
-            const savedOrders = localStorage.getItem('orderHistory');
-            orders = savedOrders ? JSON.parse(savedOrders) : [];
+            // Load clients
+            const savedClients = localStorage.getItem('laundryClients');
+            clients = savedClients ? JSON.parse(savedClients) : [...initialClients];
             
-            // Carregar quantidades atuais
+            // Load quantities
             const savedQuantities = localStorage.getItem('currentQuantities');
             quantities = savedQuantities ? JSON.parse(savedQuantities) : {};
             
-            // Inicializar quantidades se necessário
+            // Initialize quantities if needed
             items.forEach(item => {
                 if (quantities[item.id] === undefined) {
                     quantities[item.id] = 0;
                 }
             });
             
-            // Carregar cliente selecionado
+            // Load orders
+            const savedOrders = localStorage.getItem('orderHistory');
+            orders = savedOrders ? JSON.parse(savedOrders) : [];
+            
+            // Load selected client
             const savedClient = localStorage.getItem('currentClient');
             if (savedClient) {
-                document.getElementById('client-select').value = savedClient;
                 currentClient = savedClient;
             }
-            
-            // Renderizar itens
-            renderItems();
-            
-            // Renderizar histórico
-            renderHistory();
         }
 
-        // Renderizar itens na interface
+        // Save data to localStorage
+        function saveToStorage() {
+            localStorage.setItem('laundryItems', JSON.stringify(items));
+            localStorage.setItem('laundryClients', JSON.stringify(clients));
+            localStorage.setItem('currentQuantities', JSON.stringify(quantities));
+            localStorage.setItem('orderHistory', JSON.stringify(orders));
+            localStorage.setItem('currentClient', currentClient);
+        }
+
+        // Render items in the order section
         function renderItems() {
             const container = document.getElementById('items-container');
             container.innerHTML = '';
@@ -981,38 +1188,47 @@
             });
         }
 
-        // Alterar quantidade de um item
+        // Update client dropdown
+        function updateClientDropdown() {
+            const select = document.getElementById('client-select');
+            const currentValue = select.value;
+            
+            select.innerHTML = '<option value="">Cliente Geral</option>';
+            
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.name;
+                option.textContent = client.name;
+                select.appendChild(option);
+            });
+            
+            select.value = currentValue || currentClient;
+        }
+
+        // Change item quantity
         function changeQuantity(itemId, delta) {
             quantities[itemId] = Math.max(0, quantities[itemId] + delta);
             document.getElementById(`input-${itemId}`).value = quantities[itemId];
             saveToStorage();
         }
         
-        // Definir quantidade diretamente
+        // Set item quantity directly
         function setQuantity(itemId, value) {
             quantities[itemId] = Math.max(0, parseInt(value) || 0);
             saveToStorage();
         }
         
-        // Salvar no localStorage
-        function saveToStorage() {
-            localStorage.setItem('currentQuantities', JSON.stringify(quantities));
-            localStorage.setItem('currentClient', document.getElementById('client-select').value);
-        }
-        
-        // Reiniciar quantidades
+        // Reset all quantities
         function resetQuantities() {
             items.forEach(item => {
                 quantities[item.id] = 0;
             });
             renderItems();
             saveToStorage();
-            
-            // Esconder resultados
             document.getElementById('result').style.display = 'none';
         }
         
-        // Alternar modo escuro
+        // Toggle dark mode
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const icon = document.querySelector('.theme-toggle i');
@@ -1025,15 +1241,13 @@
             }
         }
         
-        // Alternar histórico
-        function toggleHistory() {
-            const container = document.querySelector('.history-container');
-            if (container) {
-                container.style.display = container.style.display === 'none' ? 'block' : 'none';
-            }
+        // Toggle history visibility
+        function toggleHistorico() {
+            const container = document.getElementById('historico-container');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
         }
         
-        // Carregar preset
+        // Load a preset configuration
         function loadPreset(type) {
             resetQuantities();
             
@@ -1068,236 +1282,143 @@
             saveToStorage();
         }
         
-        // Calcular custo
-        function calculateCost() {
-            const btn = document.querySelector('.calculate-btn');
-            btn.classList.add('calculating');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculando...';
-            
-            // Simular cálculo demorado
-            setTimeout(() => {
-                btn.classList.remove('calculating');
-                btn.innerHTML = '<i class="fas fa-calculator"></i> Calcular Custo';
-                
-                // Calcular custo real com base nos itens selecionados
-                const regularCost = calculateRegularCost();
-                const optimizedCost = calculateOptimizedCost(regularCost);
-                const savings = regularCost - optimizedCost.total;
-                const savingsPercent = Math.round((savings / regularCost) * 100);
-                
-                // Atualizar a interface com os resultados
-                document.getElementById('total-amount').textContent = optimizedCost.total.toFixed(2);
-                document.getElementById('savings-amount').textContent = savings.toFixed(2);
-                document.getElementById('savings-percent').textContent = savingsPercent;
-                document.getElementById('mixed-packs').textContent = optimizedCost.mixedPacks.toFixed(2);
-                document.getElementById('shirt-packs').textContent = optimizedCost.shirtPacks.toFixed(2);
-                document.getElementById('individual-items').textContent = optimizedCost.individualItems.toFixed(2);
-                document.getElementById('fixed-items').textContent = optimizedCost.fixedItems.toFixed(2);
-                
-                // Criar objeto de pedido
-                currentOrder = {
-                    id: Date.now(),
-                    date: new Date().toLocaleString('pt-PT'),
-                    client: document.getElementById('client-select').value || "Cliente Geral",
-                    quantities: {...quantities},
-                    total: optimizedCost.total,
-                    status: 'pending',
-                    savings: savings,
-                    details: optimizedCost
-                };
-                
-                // Mostrar resultados
-                document.getElementById('result').style.display = 'block';
-                
-                // Rolar para resultados
-                document.getElementById('result').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start'
-                });
-            }, 1500);
+        // Save current configuration as a preset
+        function savePreset() {
+            const presetName = prompt("Nome do favorito:");
+            if (presetName) {
+                // In a real app, this would save to localStorage
+                alert(`Favorito "${presetName}" salvo com sucesso!`);
+            }
         }
         
-        // Calcular custo regular (sem otimização)
-        function calculateRegularCost() {
-            let total = 0;
+        // Calculate costs using the API
+        async function calculate() {
+            const spinner = document.getElementById('loading-spinner');
+            const btn = document.querySelector('.calculate-btn');
+            
+            // Show loading state
+            spinner.style.display = 'block';
+            btn.disabled = true;
+            
+            // Prepare request data
+            const requestData = {
+                items: {...quantities},
+                cliente: currentClient || "Cliente Geral"
+            };
+            
+            try {
+                // Call the API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'sucesso') {
+                    // Create order object
+                    currentOrder = {
+                        id: Date.now(),
+                        date: new Date().toLocaleString('pt-PT'),
+                        client: currentClient || "Cliente Geral",
+                        quantities: {...quantities},
+                        total: result.custo_total,
+                        status: 'pending',
+                        details: result.detalhes,
+                        pdf_url: result.pdf_url
+                    };
+                    
+                    // Display results
+                    displayResults(result);
+                } else {
+                    alert(`Erro: ${result.mensagem}`);
+                }
+            } catch (error) {
+                console.error('API Error:', error);
+                alert('Erro de conexão com o servidor. Tente novamente.');
+            } finally {
+                // Hide loading state
+                spinner.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+        
+        // Display calculation results
+        function displayResults(result) {
+            // Calculate regular cost for savings comparison
+            let regularCost = 0;
             for (const [itemId, qty] of Object.entries(quantities)) {
                 const item = items.find(i => i.id === itemId);
                 if (item) {
-                    total += qty * item.price;
-                }
-            }
-            return total;
-        }
-        
-        // Simular custo otimizado
-        function calculateOptimizedCost(regularCost) {
-            // Esta é uma simulação - em uma aplicação real, isso seria calculado pelo backend
-            const mixedPacks = Math.min(quantities.peca_variada, 10) * 15.00;
-            const shirtPacks = Math.min(quantities.camisa, 5) * 6.50;
-            
-            // Calcular itens avulsos
-            const remainingVaried = Math.max(0, quantities.peca_variada - 10);
-            const remainingShirts = Math.max(0, quantities.camisa - 5);
-            const individualItems = (remainingVaried * 0.90) + (remainingShirts * 1.80);
-            
-            // Calcular itens fixos
-            let fixedItems = 0;
-            for (const [itemId, qty] of Object.entries(quantities)) {
-                if (itemId !== "peca_variada" && itemId !== "camisa" && qty > 0) {
-                    const item = items.find(i => i.id === itemId);
-                    fixedItems += qty * item.price;
+                    regularCost += item.price * qty;
                 }
             }
             
-            // Calcular total otimizado
-            const total = mixedPacks + shirtPacks + individualItems + fixedItems;
+            const savings = regularCost - result.custo_total;
+            const savingsPercent = regularCost > 0 ? (savings / regularCost * 100).toFixed(1) : 0;
             
-            return {
-                mixedPacks: mixedPacks,
-                shirtPacks: shirtPacks,
-                individualItems: individualItems,
-                fixedItems: fixedItems,
-                total: total
-            };
+            // Update UI
+            document.getElementById('total-cost').textContent = `Total: €${result.custo_total.toFixed(2)}`;
+            document.getElementById('savings-display').innerHTML = 
+                `<i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)`;
+            
+            // Render cost breakdown
+            const breakdownContainer = document.getElementById('cost-breakdown');
+            breakdownContainer.innerHTML = '';
+            
+            // Add breakdown cards
+            const breakdownData = [
+                { title: "Packs Mistos", value: result.detalhes.detalhe_custos.packs_mistos },
+                { title: "Packs Camisas", value: result.detalhes.detalhe_custos.packs_camisas },
+                { title: "Itens Avulsos", value: result.detalhes.detalhe_custos.itens_avulsos },
+                { title: "Itens Fixos", value: result.detalhes.detalhe_custos.custos_fixos }
+            ];
+            
+            breakdownData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'breakdown-card';
+                card.innerHTML = `
+                    <div class="breakdown-title">${item.title}</div>
+                    <div class="breakdown-value">€${item.value.toFixed(2)}</div>
+                `;
+                breakdownContainer.appendChild(card);
+            });
+            
+            // Show results
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
-        // Confirmar pedido
+        // Confirm the current order
         function confirmOrder() {
             if (!currentOrder) return;
             
-            // Mudar status para confirmado
+            // Update status
             currentOrder.status = 'confirmed';
-            currentOrder.confirmedDate = new Date().toLocaleString('pt-PT');
             
-            // Salvar no histórico
-            saveOrderToHistory(currentOrder);
+            // Add to orders
+            orders.unshift(currentOrder);
             
-            // Resetar interface
+            // Save and update UI
+            saveToStorage();
             resetQuantities();
             document.getElementById('result').style.display = 'none';
-            
-            // Mostrar confirmação
             alert(`Pedido #${currentOrder.id} confirmado com sucesso! Total: €${currentOrder.total.toFixed(2)}`);
-            
-            // Mudar para o histórico
             switchTab('history');
         }
         
-        // Cancelar pedido
+        // Cancel the current order
         function cancelOrder() {
             document.getElementById('result').style.display = 'none';
             currentOrder = null;
         }
         
-        // Salvar pedido no histórico
-        function saveOrderToHistory(order) {
-            // Adicionar novo pedido
-            orders.unshift(order);
-            
-            // Guardar no localStorage
-            localStorage.setItem('orderHistory', JSON.stringify(orders));
-            
-            // Atualizar exibição do histórico
-            renderHistory();
-        }
-        
-        // Renderizar histórico
-        function renderHistory() {
-            const container = document.getElementById('history-list');
-            container.innerHTML = '';
-            
-            if (orders.length === 0) {
-                container.innerHTML = '<div class="no-history">Nenhum pedido no histórico</div>';
-                return;
-            }
-            
-            orders.forEach(order => {
-                const orderElement = document.createElement('div');
-                orderElement.className = 'history-item';
-                
-                // Calcular número de itens
-                const itemCount = Object.values(order.quantities).reduce((sum, qty) => sum + qty, 0);
-                
-                // Calcular resumo dos itens
-                const itemSummary = [];
-                for (const [itemId, qty] of Object.entries(order.quantities)) {
-                    if (qty > 0) {
-                        const item = items.find(i => i.id === itemId);
-                        if (item) {
-                            itemSummary.push(`${qty}x ${item.name}`);
-                        }
-                    }
-                }
-                
-                orderElement.innerHTML = `
-                    <div class="history-data">
-                        <span>${order.confirmedDate || order.date}</span>
-                        <span class="history-total">€${order.total.toFixed(2)}</span>
-                    </div>
-                    <div class="history-details">
-                        <span>${order.client}</span>
-                        <span class="status-badge ${order.status === 'pending' ? 'pending' : ''}">
-                            ${order.status === 'confirmed' ? 'Confirmado' : 'Pendente'}
-                        </span>
-                    </div>
-                    <div class="history-details">
-                        <span>${itemCount} itens</span>
-                        <span class="badge">${itemSummary.length} elementos</span>
-                    </div>
-                    <div class="item-summary">
-                        ${itemSummary.slice(0, 3).join(', ')}${itemSummary.length > 3 ? '...' : ''}
-                    </div>
-                    <div class="history-actions">
-                        <button class="history-btn edit-btn" onclick="editOrder('${order.id}')">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
-                        <button class="history-btn delete-btn" onclick="deleteOrder('${order.id}')">
-                            <i class="fas fa-trash"></i> Excluir
-                        </button>
-                    </div>
-                `;
-                container.appendChild(orderElement);
-            });
-        }
-        
-        // Editar pedido
-        function editOrder(orderId) {
-            const order = orders.find(o => o.id == orderId);
-            if (!order) return;
-            
-            // Carregar pedido na interface
-            quantities = {...order.quantities};
-            document.getElementById('client-select').value = order.client;
-            
-            // Renderizar itens com as quantidades do pedido
-            renderItems();
-            
-            // Calcular automaticamente o custo
-            calculateCost();
-            
-            // Remover o pedido do histórico
-            orders = orders.filter(o => o.id !== order.id);
-            localStorage.setItem('orderHistory', JSON.stringify(orders));
-            
-            // Atualizar histórico
-            renderHistory();
-            
-            // Rolar para o topo
-            window.scrollTo(0, 0);
-        }
-        
-        // Excluir pedido
-        function deleteOrder(orderId) {
-            if (!confirm('Tem certeza que deseja excluir este pedido?')) return;
-            
-            orders = orders.filter(order => order.id != orderId);
-            localStorage.setItem('orderHistory', JSON.stringify(orders));
-            renderHistory();
-        }
-        
-        // Mudar de aba
+        // Switch between tabs
         function switchTab(tabName) {
-            // Atualizar tabs
+            // Update tabs
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
                 if (tab.dataset.tab === tabName) {
@@ -1305,46 +1426,257 @@
                 }
             });
             
-            // Mostrar conteúdo correto
+            // Show/hide content
             document.querySelector('.order-tab').classList.remove('active-tab');
             document.querySelector('.history-tab').style.display = 'none';
+            document.querySelector('.admin-panel').style.display = 'none';
             
             if (tabName === 'order') {
                 document.querySelector('.order-tab').classList.add('active-tab');
             } else if (tabName === 'history') {
                 document.querySelector('.history-tab').style.display = 'block';
                 renderHistory();
+            } else if (tabName === 'admin') {
+                document.querySelector('.admin-panel').style.display = 'block';
+                renderAdminItems();
+                renderAdminClients();
             }
         }
+        
+        // Open new client form
+        function openNewClientForm() {
+            switchTab('admin');
+            document.querySelector('.admin-tab[data-tab="clients"]').click();
+            document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Render items in admin panel
+        function renderAdminItems() {
+            const container = document.getElementById('admin-items-list');
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const itemRow = document.createElement('div');
+                itemRow.className = 'item-row';
+                itemRow.innerHTML = `
+                    <div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">€${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="edit-btn" onclick="editItem('${item.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" onclick="deleteItem('${item.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(itemRow);
+            });
+        }
+        
+        // Render clients in admin panel
+        function renderAdminClients() {
+            const container = document.getElementById('admin-clients-list');
+            container.innerHTML = '';
+            
+            clients.forEach(client => {
+                const clientRow = document.createElement('div');
+                clientRow.className = 'client-row';
+                clientRow.innerHTML = `
+                    <div class="item-name">${client.name}</div>
+                    <div class="client-actions">
+                        <button class="edit-btn" onclick="editClient('${client.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" onclick="deleteClient('${client.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(clientRow);
+            });
+        }
+        
+        // Render order history
+        function renderHistory(filter = 'all') {
+            const container = document.getElementById('history-list');
+            container.innerHTML = '';
+            
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="sem-historico">Nenhum pedido registrado</div>';
+                return;
+            }
+            
+            // Apply filter
+            let filteredOrders = orders;
+            if (filter === 'confirmed') {
+                filteredOrders = orders.filter(order => order.status === 'confirmed');
+            } else if (filter === 'pending') {
+                filteredOrders = orders.filter(order => order.status === 'pending');
+            } else if (filter === 'today') {
+                const today = new Date().toLocaleDateString('pt-PT');
+                filteredOrders = orders.filter(order => {
+                    const orderDate = new Date(order.date.split(',')[0]).toLocaleDateString('pt-PT');
+                    return orderDate === today;
+                });
+            } else if (filter === 'week') {
+                const oneWeekAgo = new Date();
+                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                filteredOrders = orders.filter(order => new Date(order.date) > oneWeekAgo);
+            }
+            
+            // Render orders
+            filteredOrders.forEach(order => {
+                const orderElement = document.createElement('div');
+                orderElement.className = 'historico-item';
+                orderElement.innerHTML = `
+                    <div class="historico-data">
+                        <span>${order.date}</span>
+                        <span class="historico-total">€${order.total.toFixed(2)}</span>
+                    </div>
+                    <div class="historico-detalhes">
+                        <span>${order.client}</span>
+                        <span class="status-badge ${order.status === 'pending' ? 'pending' : ''}">
+                            ${order.status === 'confirmed' ? 'Confirmado' : 'Pendente'}
+                        </span>
+                    </div>
+                    <div class="historico-detalhes">
+                        <span>${Object.values(order.quantities).reduce((a, b) => a + b, 0)} itens</span>
+                        <span class="badge">Ver detalhes</span>
+                    </div>
+                `;
+                container.appendChild(orderElement);
+            });
+        }
+        
+        // Add new item
+        function addNewItem() {
+            const name = document.getElementById('item-name').value;
+            const price = parseFloat(document.getElementById('item-price').value);
+            
+            if (!name || isNaN(price)) {
+                alert('Por favor, preencha todos os campos corretamente');
+                return;
+            }
+            
+            const newItem = {
+                id: 'item_' + Date.now(),
+                name: name,
+                price: price
+            };
+            
+            items.push(newItem);
+            quantities[newItem.id] = 0;
+            saveToStorage();
+            
+            // Update UI
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-price').value = '';
+            renderAdminItems();
+            renderItems();
+            alert('Item adicionado com sucesso!');
+        }
+        
+        // Add new client
+        function addNewClient() {
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const email = document.getElementById('client-email').value;
+            
+            if (!name) {
+                alert('Por favor, preencha pelo menos o nome do cliente');
+                return;
+            }
+            
+            const newClient = {
+                id: 'cl_' + Date.now(),
+                name: name,
+                phone: phone,
+                email: email
+            };
+            
+            clients.push(newClient);
+            saveToStorage();
+            
+            // Update UI
+            document.getElementById('client-name').value = '';
+            document.getElementById('client-phone').value = '';
+            document.getElementById('client-email').value = '';
+            renderAdminClients();
+            updateClientDropdown();
+            alert('Cliente adicionado com sucesso!');
+        }
+        
+        // Edit item
+        function editItem(itemId) {
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
+            
+            const newName = prompt("Novo nome do item:", item.name);
+            if (newName === null) return;
+            
+            const newPrice = parseFloat(prompt("Novo preço do item:", item.price));
+            if (isNaN(newPrice)) return;
+            
+            item.name = newName;
+            item.price = newPrice;
+            saveToStorage();
+            
+            renderAdminItems();
+            renderItems();
+            alert('Item atualizado com sucesso!');
+        }
+        
+        // Delete item
+        function deleteItem(itemId) {
+            if (!confirm('Tem certeza que deseja excluir este item?')) return;
+            
+            items = items.filter(item => item.id !== itemId);
+            delete quantities[itemId];
+            saveToStorage();
+            
+            renderAdminItems();
+            renderItems();
+            alert('Item excluído com sucesso!');
+        }
+        
+        // Edit client
+        function editClient(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (!client) return;
+            
+            const newName = prompt("Novo nome do cliente:", client.name);
+            if (newName === null) return;
+            
+            const newPhone = prompt("Novo telefone do cliente:", client.phone);
+            const newEmail = prompt("Novo email do cliente:", client.email);
+            
+            client.name = newName;
+            client.phone = newPhone;
+            client.email = newEmail;
+            saveToStorage();
+            
+            renderAdminClients();
+            updateClientDropdown();
+            alert('Cliente atualizado com sucesso!');
+        }
+        
+        // Delete client
+        function deleteClient(clientId) {
+            if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
+            
+            clients = clients.filter(client => client.id !== clientId);
+            saveToStorage();
+            
+            renderAdminClients();
+            updateClientDropdown();
+            alert('Cliente excluído com sucesso!');
+        }
 
-        // Inicializar ao carregar a página
-        window.onload = function() {
-            loadFromStorage();
-            
-            // Configurar tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    switchTab(tab.dataset.tab);
-                });
-            });
-            
-            // Configurar filtros de histórico
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
-                    // Em implementação real, filtraria o histórico
-                    renderHistory();
-                });
-            });
-            
-            // Configurar mudança de cliente
-            document.getElementById('client-select').addEventListener('change', function() {
-                currentClient = this.value;
-                saveToStorage();
-            });
-        };
+        // Initialize the app when page loads
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
