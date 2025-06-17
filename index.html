@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engomadoria Teresa</title>
+    <style>
+        :root {
+            --primary: #1a2d44;
+            --secondary: #f9f9f7;
+        }
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: var(--primary);
+            text-align: center;
+        }
+        .item-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .item-info {
+            flex: 1;
+        }
+        .item-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .item-price {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quantity-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .calculate-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        #result {
+            display: none;
+            background: var(--secondary);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Engomadoria Teresa</h1>
+        
+        <div id="items-container">
+            <!-- Items will be added here dynamically -->
+        </div>
+        
+        <button class="calculate-btn" onclick="calculate()">Calcular Custo</button>
+        
+        <div id="result">
+            <h2>Resultado da Otimização</h2>
+            <p id="total-cost"></p>
+            <a href="#" class="download-btn" id="download-link">Baixar Recibo PDF</a>
+        </div>
+    </div>
+
+    <script>
+        // Replace with your Render.com URL
+        const API_URL = "https://your-app-name.onrender.com/optimize";
+        
+        // Define all items with prices
+        const items = [
+            { id: "peca_variada", name: "Peça Variada", price: 0.90 },
+            { id: "camisa", name: "Camisa", price: 1.80 },
+            { id: "toalha_ou_lencol", name: "Toalha ou Lençol", price: 1.50 },
+            { id: "capa_de_edredon", name: "Capa de Edredom", price: 3.50 },
+            { id: "vestido_simples", name: "Vestido Simples", price: 3.50 },
+            { id: "calca_com_vinco", name: "Calça com Vinco", price: 3.50 },
+            { id: "blazer", name: "Blazer", price: 4.50 },
+            { id: "calca_com_blazer", name: "Calça com Blazer", price: 12.50 },
+            { id: "vestido_cerimonia", name: "Vestido de Cerimônia", price: 12.50 },
+            { id: "blusao_almofadado", name: "Blusão Almofadado", price: 13.00 },
+            { id: "casaco_sobretudo", name: "Casaco Sobretudo", price: 16.90 },
+            { id: "blusao_penas", name: "Blusão de Penas", price: 20.00 },
+            { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
+        ];
+
+        // Initialize quantities
+        let quantities = {};
+        items.forEach(item => {
+            quantities[item.id] = 0;
+        });
+
+        // Render items
+        function renderItems() {
+            const container = document.getElementById('items-container');
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item-card';
+                itemElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">€${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
+                        <span class="quantity-value" id="qty-${item.id}">${quantities[item.id]}</span>
+                        <button class="quantity-btn" onclick="changeQuantity('${item.id}', 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(itemElement);
+            });
+        }
+
+        // Change quantity
+        function changeQuantity(itemId, delta) {
+            quantities[itemId] = Math.max(0, quantities[itemId] + delta);
+            document.getElementById(`qty-${itemId}`).textContent = quantities[itemId];
+        }
+
+        // Calculate cost
+        async function calculate() {
+            // Prepare request
+            const requestData = {
+                items: quantities,
+                cliente: "Landaria Teresa"
+            };
+
+            // Show loading state
+            const btn = document.querySelector('.calculate-btn');
+            btn.textContent = 'Calculando...';
+            btn.disabled = true;
+
+            try {
+                // Send to API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'sucesso') {
+                    // Show results
+                    document.getElementById('total-cost').textContent = 
+                        `Custo Total: €${result.custo_total.toFixed(2)}`;
+                    
+                    document.getElementById('download-link').href = result.pdf_url;
+                    document.getElementById('result').style.display = 'block';
+                    
+                    // Scroll to results
+                    document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert(`Erro: ${result.mensagem}`);
+                }
+            } catch (error) {
+                alert('Erro de conexão com o servidor');
+            } finally {
+                // Reset button
+                btn.textContent = 'Calcular Custo';
+                btn.disabled = false;
+            }
+        }
+
+        // Initialize on load
+        window.onload = renderItems;
+    </script>
+</body>
+</html>
