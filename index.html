@@ -8,6 +8,7 @@
         :root {
             --primary: #1a2d44;
             --secondary: #f9f9f7;
+            --accent: #28a745;
         }
         * {
             box-sizing: border-box;
@@ -15,26 +16,30 @@
         }
         body {
             background: #f5f5f5;
-            padding: 20px;
+            padding: 15px;
             max-width: 800px;
             margin: 0 auto;
+            line-height: 1.5;
         }
         .container {
             background: white;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
             padding: 20px;
             margin-bottom: 20px;
         }
         h1 {
             color: var(--primary);
             text-align: center;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
         }
         .item-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 12px 15px;
             border-bottom: 1px solid #eee;
         }
         .item-info {
@@ -43,69 +48,112 @@
         .item-name {
             font-weight: bold;
             color: var(--primary);
+            font-size: 1.1rem;
         }
         .item-price {
             color: #666;
-            font-size: 0.9em;
+            font-size: 0.95rem;
         }
         .quantity-control {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
         .quantity-btn {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             background: var(--primary);
             color: white;
             border: none;
             border-radius: 50%;
-            font-size: 1.2em;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .quantity-value {
-            min-width: 40px;
+            min-width: 35px;
             text-align: center;
             font-weight: bold;
+            font-size: 1.2rem;
         }
         .calculate-btn {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 25px 0 15px;
             cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        .calculate-btn:active {
+            transform: translateY(2px);
         }
         #result {
             display: none;
             background: var(--secondary);
             padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        #result h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        #total-cost {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 15px 0;
         }
         .download-btn {
             display: block;
             width: 100%;
-            padding: 15px;
-            background: #28a745;
+            padding: 16px;
+            background: var(--accent);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             text-align: center;
             text-decoration: none;
             margin-top: 15px;
-            font-size: 1.1em;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        .download-btn:active {
+            transform: translateY(2px);
+        }
+        .instructions {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #1a2d44;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Engomadoria Teresa</h1>
+        
+        <div class="instructions">
+            <h3>Como usar:</h3>
+            <p>1. Selecione as quantidades usando os botões + e -</p>
+            <p>2. Toque em "Calcular Custo" para otimizar</p>
+            <p>3. Baixe o recibo em PDF quando estiver pronto</p>
+        </div>
         
         <div id="items-container">
             <!-- Items will be added here dynamically -->
@@ -121,8 +169,8 @@
     </div>
 
     <script>
-        // Replace with your Render.com URL
-        const API_URL = "https://your-app-name.onrender.com/optimize";
+        // YOUR RENDER.COM URL
+        const API_URL = "https://lavanderia-teresa.onrender.com/optimize";
         
         // Define all items with prices
         const items = [
@@ -158,7 +206,7 @@
                 itemElement.innerHTML = `
                     <div class="item-info">
                         <div class="item-name">${item.name}</div>
-                        <div class="item-price">€${item.price.toFixed(2)}</div>
+                        <div class="item-price">€${item.price.toFixed(2)} por item</div>
                     </div>
                     <div class="quantity-control">
                         <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
@@ -173,7 +221,7 @@
         // Change quantity
         function changeQuantity(itemId, delta) {
             quantities[itemId] = Math.max(0, quantities[itemId] + delta);
-            document.getElementById(`qty-${itemId}`).textContent = quantities[itemId];
+            document.getElementById(`qty-${item.id}`).textContent = quantities[itemId];
         }
 
         // Calculate cost
@@ -204,18 +252,21 @@
                 if (result.status === 'sucesso') {
                     // Show results
                     document.getElementById('total-cost').textContent = 
-                        `Custo Total: €${result.custo_total.toFixed(2)}`;
+                        `Total: €${result.custo_total.toFixed(2)}`;
                     
                     document.getElementById('download-link').href = result.pdf_url;
                     document.getElementById('result').style.display = 'block';
                     
                     // Scroll to results
-                    document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('result').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start'
+                    });
                 } else {
                     alert(`Erro: ${result.mensagem}`);
                 }
             } catch (error) {
-                alert('Erro de conexão com o servidor');
+                alert('Erro de conexão com o servidor. Verifique sua internet.');
             } finally {
                 // Reset button
                 btn.textContent = 'Calcular Custo';

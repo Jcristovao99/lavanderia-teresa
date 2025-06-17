@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 
 app = Flask(__name__)
-CORS(app, origins=["https://chat.openai.com"])
+CORS(app)  # Allow all domains
 
 # Configurações de caminho
 BASE_DIR = Path(__file__).parent.resolve()
@@ -272,6 +272,12 @@ def generate_receipt_pdf(resultado, cliente_nome=""):
             total_text = f"€{resultado['custo_total']:.2f}".replace('.', ',')
             c.drawRightString(width_mm*mm - 15*mm, total_y + 5*mm, total_text)
             
+            # 12. Adicionar rodapé
+            c.setFillColor(COLORS["text_dark"])
+            c.setFont("Helvetica", 8)
+            c.drawCentredString(width_mm*mm/2, 10*mm, 
+                f"Recibo gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')} | Engomadoria Teresa")
+            
             c.save()
             return filename
             
@@ -361,7 +367,7 @@ def optimize():
             }
         
         # Adicionar URL para download do PDF (GET)
-        base_url = os.environ.get('BASE_URL', 'https://lavanderia-optimizer.onrender.com')
+        base_url = "https://lavanderia-teresa.onrender.com"  # YOUR RENDER URL
         response['pdf_url'] = f"{base_url}/download_pdf/{receipt_id}"
         
         app.logger.info("Otimização concluída com sucesso")
