@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engomadoria Teresa - Com Histórico</title>
+    <title>Engomadoria Teresa - Funcional</title>
     <style>
         :root {
             --primary: #1a2d44;
@@ -482,20 +482,27 @@
             btn.disabled = true;
 
             try {
-                // Simular uma chamada à API com dados de exemplo
-                // Em produção, substitua por fetch(API_URL, ...)
-                const result = await simulateApiCall(requestData);
+                // Chamada real à API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
                 
                 if (result.status === 'sucesso') {
                     // Mostrar resultados
                     document.getElementById('total-cost').textContent = 
                         `Total: €${result.custo_total.toFixed(2)}`;
                     
-                    document.getElementById('download-link').href = "#";
+                    document.getElementById('download-link').href = result.pdf_url;
                     document.getElementById('result').style.display = 'block';
                     
                     // Salvar no histórico
-                    saveToHistory(result);
+                    saveToHistory(result, requestData.cliente);
                     
                     // Rolar para os resultados
                     document.getElementById('result').scrollIntoView({ 
@@ -514,50 +521,17 @@
             }
         }
 
-        // Simular chamada à API (para demonstração)
-        function simulateApiCall(requestData) {
-            return new Promise((resolve) => {
-                // Calcular total de itens
-                const totalItens = Object.values(requestData.items).reduce((a, b) => a + b, 0);
-                
-                // Calcular custo total baseado em itens selecionados
-                let custo_total = 0;
-                for (const [itemId, qty] of Object.entries(requestData.items)) {
-                    const item = items.find(i => i.id === itemId);
-                    if (item && qty > 0) {
-                        custo_total += item.price * qty;
-                    }
-                }
-                
-                // Adicionar desconto fictício para packs
-                const desconto = Math.min(0.2, totalItens * 0.01);
-                custo_total *= (1 - desconto);
-                
-                // Gerar resultado simulado
-                setTimeout(() => {
-                    resolve({
-                        status: "sucesso",
-                        custo_total: custo_total,
-                        detalhes: {
-                            packs: [
-                                { tipo: "Misto 20", quantidade: 2, preco: 16.00 },
-                                { tipo: "Camisas 5", quantidade: 1, preco: 6.50 }
-                            ],
-                            itens_avulsos: [
-                                { nome: "Toalha ou Lençol", quantidade: 3, preco: 1.50 },
-                                { nome: "Capa de Edredom", quantidade: 1, preco: 3.50 }
-                            ]
-                        },
-                        pdf_url: "#"
-                    });
-                }, 1000);
-            });
-        }
-
         // Salvar cálculo no histórico
-        function saveToHistory(result) {
+        function saveToHistory(result, cliente) {
             // Calcular total de itens
             const totalItens = Object.values(quantities).reduce((a, b) => a + b, 0);
+            
+            // Contar elementos de custo
+            let elementos = 0;
+            if (result.detalhes.packs_mistos) elementos += Object.keys(result.detalhes.packs_mistos).length;
+            if (result.detalhes.packs_camisas) elementos += Object.keys(result.detalhes.packs_camisas).length;
+            if (result.detalhes.itens_fixos) elementos += Object.keys(result.detalhes.itens_fixos).length;
+            if (result.detalhes.itens_avulsos) elementos += Object.keys(result.detalhes.itens_avulsos).length;
             
             // Criar item de histórico
             const historicoItem = {
@@ -565,8 +539,9 @@
                 data: new Date().toLocaleString('pt-PT'),
                 total: result.custo_total,
                 pdf_url: result.pdf_url,
-                cliente: "Landaria Teresa",
+                cliente: cliente,
                 totalItens: totalItens,
+                elementos: elementos,
                 detalhes: result.detalhes
             };
             
@@ -608,8 +583,8 @@
                         <span class="historico-total">€${item.total.toFixed(2)}</span>
                     </div>
                     <div class="historico-detalhes">
-                        <span>${item.totalItens} itens processados</span>
-                        <span class="badge">${item.detalhes.packs.length + item.detalhes.itens_avulsos.length} elementos</span>
+                        <span>${item.totalItens} itens</span>
+                        <span class="badge">${item.elementos} elementos</span>
                     </div>
                     <div class="action-buttons">
                         <button class="btn btn-pdf" onclick="abrirPDF('${item.pdf_url}')">Abrir PDF</button>
@@ -649,27 +624,70 @@
                 const composicaoContainer = document.getElementById('detalhes-composicao');
                 composicaoContainer.innerHTML = '';
                 
-                // Adicionar packs
-                item.detalhes.packs.forEach(pack => {
-                    const div = document.createElement('div');
-                    div.className = 'detalhes-item';
-                    div.innerHTML = `
-                        <span>${pack.quantidade}x Pack ${pack.tipo}</span>
-                        <span>€${(pack.quantidade * pack.preco).toFixed(2)}</span>
-                    `;
-                    composicaoContainer.appendChild(div);
-                });
+                // Adicionar itens fixos
+                if (item.detalhes.itens_fixos) {
+                    for (const [itemName, qty] of Object.entries(item.detalhes.itens_fixos)) {
+                        if (qty > 0) {
+                            const itemObj = items.find(i => i.id === itemName) || { name: itemName, price: 0 };
+                            const div = document.createElement('div');
+                            div.className = 'detalhes-item';
+                            div.innerHTML = `
+                                <span>${qty}x ${itemObj.name}</span>
+                                <span>€${(qty * itemObj.price).toFixed(2)}</span>
+                            `;
+                            composicaoContainer.appendChild(div);
+                        }
+                    }
+                }
+                
+                // Adicionar packs mistos
+                if (item.detalhes.packs_mistos) {
+                    for (const [packSize, qty] of Object.entries(item.detalhes.packs_mistos)) {
+                        if (qty > 0) {
+                            // Encontrar preço do pack (simplificado)
+                            const packPrice = getPackPrice('misto', packSize);
+                            const div = document.createElement('div');
+                            div.className = 'detalhes-item';
+                            div.innerHTML = `
+                                <span>${qty}x Pack Misto ${packSize}</span>
+                                <span>€${(qty * packPrice).toFixed(2)}</span>
+                            `;
+                            composicaoContainer.appendChild(div);
+                        }
+                    }
+                }
+                
+                // Adicionar packs de camisas
+                if (item.detalhes.packs_camisas) {
+                    for (const [packSize, qty] of Object.entries(item.detalhes.packs_camisas)) {
+                        if (qty > 0) {
+                            const packPrice = getPackPrice('camisas', packSize);
+                            const div = document.createElement('div');
+                            div.className = 'detalhes-item';
+                            div.innerHTML = `
+                                <span>${qty}x Pack Camisas ${packSize}</span>
+                                <span>€${(qty * packPrice).toFixed(2)}</span>
+                            `;
+                            composicaoContainer.appendChild(div);
+                        }
+                    }
+                }
                 
                 // Adicionar itens avulsos
-                item.detalhes.itens_avulsos.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'detalhes-item';
-                    div.innerHTML = `
-                        <span>${item.quantidade}x ${item.nome}</span>
-                        <span>€${(item.quantidade * item.preco).toFixed(2)}</span>
-                    `;
-                    composicaoContainer.appendChild(div);
-                });
+                if (item.detalhes.itens_avulsos) {
+                    for (const [itemName, qty] of Object.entries(item.detalhes.itens_avulsos)) {
+                        if (qty > 0) {
+                            const itemObj = items.find(i => i.id === itemName) || { name: itemName, price: 0 };
+                            const div = document.createElement('div');
+                            div.className = 'detalhes-item';
+                            div.innerHTML = `
+                                <span>${qty}x ${itemObj.name}</span>
+                                <span>€${(qty * itemObj.price).toFixed(2)}</span>
+                            `;
+                            composicaoContainer.appendChild(div);
+                        }
+                    }
+                }
                 
                 // Configurar botão de download
                 document.getElementById('modal-download-btn').onclick = () => abrirPDF(item.pdf_url);
@@ -677,6 +695,24 @@
                 // Mostrar modal
                 document.getElementById('detalhes-modal').style.display = 'flex';
             }
+        }
+        
+        // Obter preço do pack (simplificado para demonstração)
+        function getPackPrice(tipo, tamanho) {
+            // Valores reais devem vir do seu catálogo
+            const precos = {
+                'misto': {
+                    '20': 16.0,
+                    '40': 28.0,
+                    '60': 39.0
+                },
+                'camisas': {
+                    '5': 6.5,
+                    '10': 12.0
+                }
+            };
+            
+            return precos[tipo]?.[tamanho] || 0;
         }
 
         // Fechar modal
@@ -687,7 +723,6 @@
         // Inicializar ao carregar a página
         window.onload = function() {
             renderItems();
-            carregarHistorico();
         };
     </script>
 </body>
