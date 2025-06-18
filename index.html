@@ -49,7 +49,6 @@
             }
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -96,7 +95,6 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Navigation */
         .tabs {
             display: flex;
             background: white;
@@ -126,7 +124,6 @@
             background: var(--light-gray);
         }
 
-        /* Sidebar */
         .sidebar {
             background: white;
             border-radius: var(--radius);
@@ -178,7 +175,6 @@
             background: #2980b9;
         }
 
-        /* Main Content */
         .main-content {
             background: white;
             border-radius: var(--radius);
@@ -201,7 +197,6 @@
             color: var(--accent);
         }
 
-        /* Items Container */
         #items-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -290,7 +285,6 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
-        /* Action Buttons */
         .action-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -352,7 +346,6 @@
             box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
         }
 
-        /* Results Section */
         #result {
             display: none;
             background: var(--secondary);
@@ -479,7 +472,6 @@
             box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
         }
 
-        /* History Section */
         .historico-container {
             display: none;
             background: var(--secondary);
@@ -610,7 +602,6 @@
             font-style: italic;
         }
 
-        /* Admin Panel */
         .admin-panel {
             display: none;
             background: white;
@@ -722,7 +713,6 @@
             background: #27ae60;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
@@ -732,7 +722,6 @@
             grid-column: 1 / -1;
         }
 
-        /* Animations */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -752,7 +741,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile optimization */
         @media (max-width: 767px) {
             .header {
                 flex-direction: column;
@@ -773,7 +761,6 @@
             }
         }
         
-        /* Loading spinner */
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             width: 36px;
@@ -790,7 +777,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Modal de detalhes do pedido */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -900,6 +886,17 @@
             background: #c0392b;
             transform: translateY(-2px);
         }
+        
+        #result {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #result.visible {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -932,8 +929,6 @@
                     <i class="fas fa-plus"></i> Novo Cliente
                 </button>
             </div>
-
-            <!-- Espaço vazio removendo favoritos e instruções -->
             <div class="spacer" style="height: 20px;"></div>
         </div>
 
@@ -1195,6 +1190,8 @@
         // Render items in the order section
         function renderItems() {
             const container = document.getElementById('items-container');
+            if (!container) return;
+            
             container.innerHTML = '';
             
             items.forEach(item => {
@@ -1220,8 +1217,9 @@
         // Update client dropdown
         function updateClientDropdown() {
             const select = document.getElementById('client-select');
-            const currentValue = select.value;
+            if (!select) return;
             
+            const currentValue = select.value;
             select.innerHTML = '<option value="">Cliente Geral</option>';
             
             clients.forEach(client => {
@@ -1237,7 +1235,8 @@
         // Change item quantity
         function changeQuantity(itemId, delta) {
             quantities[itemId] = Math.max(0, quantities[itemId] + delta);
-            document.getElementById(`input-${itemId}`).value = quantities[itemId];
+            const input = document.getElementById(`input-${itemId}`);
+            if (input) input.value = quantities[itemId];
             saveToStorage();
         }
         
@@ -1254,146 +1253,157 @@
             });
             renderItems();
             saveToStorage();
-            document.getElementById('result').style.display = 'none';
+            const resultElement = document.getElementById('result');
+            if (resultElement) {
+                resultElement.style.display = 'none';
+                resultElement.classList.remove('visible');
+            }
         }
         
         // Toggle dark mode
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const icon = document.querySelector('.theme-toggle i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+            if (icon) {
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
             }
         }
         
-        // Toggle history visibility
-        function toggleHistorico() {
-            const container = document.getElementById('historico-container');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        // Calculate costs using the API
+        async function calculate() {
+            const spinner = document.getElementById('loading-spinner');
+            const btn = document.querySelector('.calculate-btn');
+            
+            if (!spinner || !btn) return;
+            
+            // Show loading state
+            spinner.style.display = 'block';
+            btn.disabled = true;
+            
+            // Prepare request data
+            const requestData = {
+                items: {...quantities},
+                cliente: currentClient || "Cliente Geral"
+            };
+            
+            try {
+                // Call the API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.mensagem || `HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                // Create order object
+                currentOrder = {
+                    id: Date.now(),
+                    date: new Date().toLocaleString('pt-PT'),
+                    client: currentClient || "Cliente Geral",
+                    quantities: {...quantities},
+                    total: result.custo_total,
+                    status: 'pending',
+                    details: result.detalhes,
+                    pdf_url: result.pdf_url
+                };
+                
+                // Display results
+                displayResults(result);
+                
+            } catch (error) {
+                console.error('API Error:', error);
+                alert(`Erro: ${error.message || "Falha na comunicação com o servidor"}`);
+            } finally {
+                // Hide loading state
+                spinner.style.display = 'none';
+                btn.disabled = false;
+            }
         }
         
-        // Revised calculate() function
-async function calculate() {
-    const spinner = document.getElementById('loading-spinner');
-    const btn = document.querySelector('.calculate-btn');
-    
-    spinner.style.display = 'block';
-    btn.disabled = true;
-    
-    // Clone current state to avoid race conditions
-    const requestData = {
-        items: {...quantities},
-        cliente: currentClient || "Cliente Geral"
-    };
-    
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(requestData)
-        });
-
-        // Handle HTTP errors
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.mensagem || `HTTP error! status: ${response.status}`);
+        // Display calculation results
+        function displayResults(result) {
+            // 1. Get required DOM elements
+            const totalCostElement = document.getElementById('total-cost');
+            const breakdownContainer = document.getElementById('cost-breakdown');
+            const resultHeader = document.querySelector('.result-header');
+            const resultElement = document.getElementById('result');
+            
+            // 2. Check if all elements exist
+            if (!totalCostElement || !breakdownContainer || !resultHeader || !resultElement) {
+                console.error("Critical elements missing for results display");
+                alert("Erro interno: Elementos da interface não encontrados");
+                return;
+            }
+            
+            // 3. Calculate regular cost for savings comparison
+            let regularCost = 0;
+            for (const [itemId, qty] of Object.entries(quantities)) {
+                const item = items.find(i => i.id === itemId);
+                if (item) {
+                    regularCost += item.price * qty;
+                }
+            }
+            
+            const savings = regularCost - result.custo_total;
+            const savingsPercent = regularCost > 0 ? (savings / regularCost * 100).toFixed(1) : 0;
+            
+            // 4. Update total cost
+            totalCostElement.textContent = `Total: €${result.custo_total.toFixed(2)}`;
+            
+            // 5. Render cost breakdown
+            breakdownContainer.innerHTML = '';
+            
+            const breakdownData = [
+                { title: "Packs Mistos", value: result.detalhes.detalhe_custos.packs_mistos },
+                { title: "Packs Camisas", value: result.detalhes.detalhe_custos.packs_camisas },
+                { title: "Itens Avulsos", value: result.detalhes.detalhe_custos.itens_avulsos },
+                { title: "Itens Fixos", value: result.detalhes.detalhe_custos.custos_fixos }
+            ];
+            
+            breakdownData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'breakdown-card';
+                card.innerHTML = `
+                    <div class="breakdown-title">${item.title}</div>
+                    <div class="breakdown-value">€${item.value.toFixed(2)}</div>
+                `;
+                breakdownContainer.appendChild(card);
+            });
+            
+            // 6. Update result header with savings
+            resultHeader.innerHTML = `
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
+                <div>
+                    <a href="${result.pdf_url}" target="_blank" class="receipt-btn">
+                        <i class="fas fa-file-pdf"></i> Ver Recibo
+                    </a>
+                    <div class="savings-badge">
+                        <i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)
+                    </div>
+                </div>
+            `;
+            
+            // 7. Show results with animation
+            resultElement.style.display = 'block';
+            setTimeout(() => {
+                resultElement.classList.add('visible');
+                resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
-
-        const result = await response.json();
-        
-        // Ensure DOM is ready before rendering
-        setTimeout(() => {
-            displayResults(result);
-        }, 50);
-        
-    } catch (error) {
-        console.error("Full error:", error);
-        alert(`Erro: ${error.message || "Ocorreu um erro inesperado"}`);
-    } finally {
-        spinner.style.display = 'none';
-        btn.disabled = false;
-    }
-}
-
-// Robust displayResults() function
-function displayResults(result) {
-    // 1. Ensure critical elements exist
-    const requiredElements = [
-        '#total-cost',
-        '#cost-breakdown',
-        '.result-header',
-        '#result'
-    ];
-    
-    for (const selector of requiredElements) {
-        if (!document.querySelector(selector)) {
-            console.error(`Missing element: ${selector}`);
-            alert("Erro de configuração da interface! Recarregue a página.");
-            return;
-        }
-    }
-
-    // 2. Calculate savings
-    let regularCost = 0;
-    for (const [itemId, qty] of Object.entries(quantities)) {
-        const item = items.find(i => i.id === itemId);
-        if (item) regularCost += item.price * qty;
-    }
-    
-    const savings = regularCost - result.custo_total;
-    const savingsPercent = regularCost > 0 ? (savings / regularCost * 100).toFixed(1) : 0;
-    
-    // 3. Update total cost
-    document.getElementById('total-cost').textContent = `Total: €${result.custo_total.toFixed(2)}`;
-    
-    // 4. Render cost breakdown
-    const breakdownContainer = document.getElementById('cost-breakdown');
-    breakdownContainer.innerHTML = '';
-    
-    const breakdownData = [
-        { title: "Packs Mistos", value: result.detalhes.detalhe_custos.packs_mistos },
-        { title: "Packs Camisas", value: result.detalhes.detalhe_custos.packs_camisas },
-        { title: "Itens Avulsos", value: result.detalhes.detalhe_custos.itens_avulsos },
-        { title: "Itens Fixos", value: result.detalhes.detalhe_custos.custos_fixos }
-    ];
-    
-    breakdownData.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'breakdown-card';
-        card.innerHTML = `
-            <div class="breakdown-title">${item.title}</div>
-            <div class="breakdown-value">€${item.value.toFixed(2)}</div>
-        `;
-        breakdownContainer.appendChild(card);
-    });
-    
-    // 5. Update result header safely
-    const resultHeader = document.querySelector('.result-header');
-    resultHeader.innerHTML = `
-        <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
-        <div>
-            <a href="${result.pdf_url}" target="_blank" class="receipt-btn">
-                <i class="fas fa-file-pdf"></i> Ver Recibo
-            </a>
-            <div class="savings-badge">
-                <i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)
-            </div>
-        </div>
-    `;
-    
-    // 6. Show results
-    const resultElement = document.getElementById('result');
-    resultElement.style.display = 'block';
-    
-    // Ensure proper rendering before scrolling
-    setTimeout(() => {
-        resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-}
         
         // Confirm the current order
         function confirmOrder() {
@@ -1408,14 +1418,22 @@ function displayResults(result) {
             // Save and update UI
             saveToStorage();
             resetQuantities();
-            document.getElementById('result').style.display = 'none';
+            const resultElement = document.getElementById('result');
+            if (resultElement) {
+                resultElement.style.display = 'none';
+                resultElement.classList.remove('visible');
+            }
             alert(`Pedido #${currentOrder.id} confirmado com sucesso! Total: €${currentOrder.total.toFixed(2)}`);
             switchTab('history');
         }
         
         // Cancel the current order
         function cancelOrder() {
-            document.getElementById('result').style.display = 'none';
+            const resultElement = document.getElementById('result');
+            if (resultElement) {
+                resultElement.style.display = 'none';
+                resultElement.classList.remove('visible');
+            }
             currentOrder = null;
         }
         
@@ -1430,17 +1448,21 @@ function displayResults(result) {
             });
             
             // Show/hide content
-            document.querySelector('.order-tab').classList.remove('active-tab');
-            document.querySelector('.history-tab').style.display = 'none';
-            document.querySelector('.admin-panel').style.display = 'none';
+            const orderTab = document.querySelector('.order-tab');
+            const historyTab = document.querySelector('.history-tab');
+            const adminTab = document.querySelector('.admin-tab');
             
-            if (tabName === 'order') {
-                document.querySelector('.order-tab').classList.add('active-tab');
-            } else if (tabName === 'history') {
-                document.querySelector('.history-tab').style.display = 'block';
+            if (orderTab) orderTab.classList.remove('active-tab');
+            if (historyTab) historyTab.style.display = 'none';
+            if (adminTab) adminTab.style.display = 'none';
+            
+            if (tabName === 'order' && orderTab) {
+                orderTab.classList.add('active-tab');
+            } else if (tabName === 'history' && historyTab) {
+                historyTab.style.display = 'block';
                 renderHistory();
-            } else if (tabName === 'admin') {
-                document.querySelector('.admin-panel').style.display = 'block';
+            } else if (tabName === 'admin' && adminTab) {
+                adminTab.style.display = 'block';
                 renderAdminItems();
                 renderAdminClients();
             }
@@ -1456,6 +1478,8 @@ function displayResults(result) {
         // Render items in admin panel
         function renderAdminItems() {
             const container = document.getElementById('admin-items-list');
+            if (!container) return;
+            
             container.innerHTML = '';
             
             items.forEach(item => {
@@ -1482,6 +1506,8 @@ function displayResults(result) {
         // Render clients in admin panel
         function renderAdminClients() {
             const container = document.getElementById('admin-clients-list');
+            if (!container) return;
+            
             container.innerHTML = '';
             
             clients.forEach(client => {
@@ -1505,6 +1531,8 @@ function displayResults(result) {
         // Render order history
         function renderHistory(filter = 'all') {
             const container = document.getElementById('history-list');
+            if (!container) return;
+            
             container.innerHTML = '';
             
             if (orders.length === 0) {
