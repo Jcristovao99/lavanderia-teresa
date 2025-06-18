@@ -61,81 +61,30 @@ cache_cleaner = threading.Thread(target=clean_cache, daemon=True)
 cache_cleaner.start()
 
 # ========================================================================== #
-#  NOVAS FUNÇÕES PARA PDF DINÂMICO
-# ========================================================================== #
-def calculate_total_items(breakdown):
-    """Calcula o número total de itens para altura dinâmica"""
-    count = 0
-    # Itens fixos
-    count += len(breakdown['itens_fixos'])
-    # Packs mistos
-    count += len([qty for qty in breakdown['packs_mistos'].values() if qty > 0])
-    # Packs de camisas
-    count += len([qty for qty in breakdown['packs_camisas'].values() if qty > 0])
-    # Itens avulsos
-    count += len([qty for qty in breakdown['itens_avulsos'].values() if qty > 0])
-    return count
-
-def calculate_dynamic_height(item_count, has_client):
-    """Calcula a altura do PDF baseada no número de itens"""
-    # Valores em milímetros
-    LOGO_HEIGHT = 50
-    CLIENT_HEIGHT = 10 if has_client else 0
-    TOP_MARGIN = 10
-    TABLE_HEADER_HEIGHT = 10
-    ITEM_ROW_HEIGHT = 8
-    TOTAL_SECTION_HEIGHT = 15
-    BOTTOM_MARGIN = 15
-    
-    return (
-        LOGO_HEIGHT +
-        TOP_MARGIN +
-        CLIENT_HEIGHT +
-        TABLE_HEADER_HEIGHT +
-        (item_count * ITEM_ROW_HEIGHT) +
-        TOTAL_SECTION_HEIGHT +
-        BOTTOM_MARGIN
-    )
-
-# Função auxiliar para criar cores HexColor corretamente
-def hex_to_color(hex_code):
-    """Converte código hexadecimal para objeto Color do ReportLab"""
-    hex_code = hex_code.lstrip('#')
-    r = int(hex_code[0:2], 16) / 255.0
-    g = int(hex_code[2:4], 16) / 255.0
-    b = int(hex_code[4:6], 16) / 255.0
-    return colors.Color(r, g, b)
-
-# ========================================================================== #
 #  GERADOR DE PDF PROFISSIONAL (ATUALIZADO)
 # ========================================================================== #
 def generate_receipt_pdf(resultado, cliente_nome=""):
     """Gera PDF profissional com design atualizado e altura dinâmica"""
     try:
-        # 1. Calcular dimensões dinâmicas
-        item_count = calculate_total_items(resultado['detalhes'])
-        has_client = bool(cliente_nome)
-        height_mm = calculate_dynamic_height(item_count, has_client)
-        width_mm = 210  # Largura A4
-        
-        # 2. Criar arquivo temporário
+        # 1. Criar arquivo temporário
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
             filename = tmpfile.name
-            # Criar canvas com tamanho dinâmico
-            c = canvas.Canvas(filename, pagesize=(width_mm*mm, height_mm*mm))
+            # Criar canvas com tamanho A4
+            c = canvas.Canvas(filename, pagesize=A4)
+            width, height = A4
             
-            # 3. Definir paleta de cores usando a função de conversão
+            # 2. Definir paleta de cores
             COLORS = {
-                "background": hex_to_color("#f9f9f7"),
-                "text_dark": hex_to_color("#182232"),
-                "table_header": hex_to_color("#1a2d44"),
-                "row_even": hex_to_color("#ffffff"),
-                "row_odd": hex_to_color("#f0f0f0"),
-                "total_bg": hex_to_color("#1a2d44"),
-                "text_light": hex_to_color("#ffffff")
+                "background": colors.Color(249/255, 249/255, 247/255),  # #f9f9f7
+                "text_dark": colors.Color(24/255, 34/255, 50/255),     # #182232
+                "table_header": colors.Color(26/255, 45/255, 68/255),   # #1a2d44
+                "row_even": colors.white,
+                "row_odd": colors.Color(240/255, 240/255, 240/255),    # #f0f0f0
+                "total_bg": colors.Color(26/255, 45/255, 68/255),      # #1a2d44
+                "text_light": colors.white
             }
             
-            # 4. Estilos personalizados
+            # 3. Estilos personalizados
             styles = getSampleStyleSheet()
             item_style = ParagraphStyle(
                 'Item',
@@ -154,39 +103,40 @@ def generate_receipt_pdf(resultado, cliente_nome=""):
                 textColor=COLORS["text_light"]
             )
             
-            # 5. Fundo
+            # 4. Fundo
             c.setFillColor(COLORS["background"])
-            c.rect(0, 0, width_mm*mm, height_mm*mm, fill=1, stroke=0)
+            c.rect(0, 0, width, height, fill=1, stroke=0)
             
-            # 6. Logo no topo (largura total)
-            logo_height = 50*mm
+            # 5. Logo no topo (largura total)
+            logo_height = 50
+            logo_y = height - logo_height - 20
             if LOGO_PATH and LOGO_PATH.exists():
                 c.drawImage(
                     str(LOGO_PATH),
-                    x=0,
-                    y=height_mm*mm - logo_height,  # Topo da página
-                    width=width_mm*mm,
+                    x=20,
+                    y=logo_y,
+                    width=width - 40,
                     height=logo_height,
-                    preserveAspectRatio=False,
+                    preserveAspectRatio=True,
                     mask='auto'
                 )
             else:
                 # Fallback caso o logo não exista
                 c.setFillColor(COLORS["table_header"])
-                c.rect(0, height_mm*mm - logo_height, width_mm*mm, logo_height, fill=1, stroke=0)
+                c.rect(20, logo_y, width - 40, logo_height, fill=1, stroke=0)
                 c.setFillColor(COLORS["text_light"])
                 c.setFont("Helvetica-Bold", 16)
-                c.drawCentredString(width_mm*mm/2, height_mm*mm - logo_height/2, "ENGOMADORIA TERESA")
+                c.drawCentredString(width/2, logo_y + logo_height/2, "ENGOMADORIA TERESA")
             
-            # 7. Nome do cliente (se fornecido)
-            y_pos = height_mm*mm - logo_height - 10*mm
+            # 6. Nome do cliente (se fornecido)
+            y_pos = logo_y - 30
             if cliente_nome:
                 c.setFillColor(COLORS["text_dark"])
                 c.setFont("Helvetica-Bold", 12)
-                c.drawString(15*mm, y_pos, f"Cliente: {cliente_nome}")
-                y_pos -= 15*mm  # Espaço adicional após cliente
+                c.drawString(30, y_pos, f"Cliente: {cliente_nome}")
+                y_pos -= 20
             
-            # 8. Tabela de itens
+            # 7. Tabela de itens
             data = [['Descrição', 'Quantidade', 'Preço Unitário', 'Subtotal']]
             
             # Adicionar itens fixos
@@ -235,10 +185,10 @@ def generate_receipt_pdf(resultado, cliente_nome=""):
                         f"€{(qty*preco):.2f}".replace('.', ',')
                     ])
             
-            # 9. Criar tabela com estilo
+            # 8. Criar tabela com estilo
             table = Table(
                 data, 
-                colWidths=[80*mm, 30*mm, 50*mm, 50*mm],
+                colWidths=[width*0.4, width*0.15, width*0.2, width*0.25],
                 repeatRows=1
             )
             
@@ -256,27 +206,32 @@ def generate_receipt_pdf(resultado, cliente_nome=""):
             
             table.setStyle(table_style)
             
-            # 10. Desenhar tabela
-            table.wrapOn(c, width_mm*mm - 20*mm, height_mm*mm)
-            table.drawOn(c, 10*mm, y_pos - table._height - 10*mm)
+            # 9. Desenhar tabela
+            table.wrapOn(c, width - 40, height)
+            table.drawOn(c, 20, y_pos - table._height - 30)
             
-            # 11. Seção de total
-            total_y = y_pos - table._height - 30*mm
+            # 10. Seção de total
+            total_y = y_pos - table._height - 60
             c.setFillColor(COLORS["total_bg"])
-            c.rect(10*mm, total_y, width_mm*mm - 20*mm, 15*mm, fill=1, stroke=0)
+            c.rect(20, total_y, width - 40, 30, fill=1, stroke=0)
             
             c.setFillColor(COLORS["text_light"])
             c.setFont("Helvetica-Bold", 12)
-            c.drawString(15*mm, total_y + 5*mm, "TOTAL")
+            c.drawString(30, total_y + 10, "TOTAL")
             
             total_text = f"€{resultado['custo_total']:.2f}".replace('.', ',')
-            c.drawRightString(width_mm*mm - 15*mm, total_y + 5*mm, total_text)
+            c.drawRightString(width - 30, total_y + 10, total_text)
             
-            # 12. Adicionar rodapé
+            # 11. Adicionar rodapé com data e nome do cliente
             c.setFillColor(COLORS["text_dark"])
             c.setFont("Helvetica", 8)
-            c.drawCentredString(width_mm*mm/2, 10*mm, 
-                f"Recibo gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')} | Engomadoria Teresa")
+            
+            footer_text = f"Recibo gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')}"
+            if cliente_nome:
+                footer_text += f" | Cliente: {cliente_nome}"
+            footer_text += " | Engomadoria Teresa"
+            
+            c.drawCentredString(width/2, 20, footer_text)
             
             c.save()
             return filename
