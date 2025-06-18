@@ -178,52 +178,6 @@
             background: #2980b9;
         }
 
-        .preset-section {
-            background: var(--light-gray);
-            padding: 15px;
-            border-radius: var(--radius);
-        }
-
-        .preset-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .preset-card {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .preset-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-            box-shadow: var(--shadow);
-        }
-
-        .instructions {
-            background: #e8f4f8;
-            padding: 15px;
-            border-radius: var(--radius);
-            font-size: 0.95rem;
-            color: #2c3e50;
-            border-left: 4px solid var(--accent);
-        }
-
-        .instructions h3 {
-            margin-top: 0;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         /* Main Content */
         .main-content {
             background: white;
@@ -634,6 +588,7 @@
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         .status-badge {
@@ -834,6 +789,117 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Modal de detalhes do pedido */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .order-details-modal {
+            background: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            animation: slideIn 0.3s forwards;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+
+        .order-items-list {
+            list-style: none;
+            margin: 15px 0;
+            padding: 0;
+        }
+
+        .order-items-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .cost-summary {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download-pdf-btn {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .download-pdf-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .delete-order-btn {
+            background: var(--warning);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: 10px;
+        }
+
+        .delete-order-btn:hover {
+            background: #c0392b;
+        }
+
+        .receipt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--warning);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-right: 10px;
+            transition: var(--transition);
+        }
+
+        .receipt-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -867,44 +933,13 @@
                 </button>
             </div>
 
-            <div class="preset-section">
-                <h3 class="section-title"><i class="fas fa-bookmark"></i> Favoritos</h3>
-                <div class="preset-grid">
-                    <div class="preset-card" onclick="loadPreset('small')">
-                        <i class="fas fa-tshirt"></i>
-                        <div>Pequeno</div>
-                    </div>
-                    <div class="preset-card" onclick="loadPreset('medium')">
-                        <i class="fas fa-tshirt"></i>
-                        <i class="fas fa-tshirt"></i>
-                        <div>Médio</div>
-                    </div>
-                    <div class="preset-card" onclick="loadPreset('large')">
-                        <i class="fas fa-tshirt"></i>
-                        <i class="fas fa-tshirt"></i>
-                        <i class="fas fa-tshirt"></i>
-                        <div>Grande</div>
-                    </div>
-                    <div class="preset-card" onclick="loadPreset('business')">
-                        <i class="fas fa-suitcase"></i>
-                        <div>Negócios</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="instructions">
-                <h3><i class="fas fa-info-circle"></i> Como usar:</h3>
-                <p>1. Selecione as quantidades usando os botões ou digitando</p>
-                <p>2. Escolha um cliente se necessário</p>
-                <p>3. Toque em "Calcular Custo" para otimizar</p>
-                <p>4. Revise o custo e detalhes</p>
-                <p>5. Confirme o pedido quando estiver pronto</p>
-            </div>
+            <!-- Espaço vazio removendo favoritos e instruções -->
+            <div class="spacer" style="height: 20px;"></div>
         </div>
 
         <div class="main-content">
             <!-- Order Tab -->
-            <div class="order-tab active-tab">
+            <div class="tab-content order-tab active-tab">
                 <div class="historico-header">
                     <h2 class="section-title"><i class="fas fa-calculator"></i> Cálculo Atual</h2>
                     <button class="toggle-historico" onclick="toggleHistorico()">
@@ -923,9 +958,6 @@
                     <button class="action-btn reset-btn" onclick="resetQuantities()">
                         <i class="fas fa-redo"></i> Reiniciar
                     </button>
-                    <button class="action-btn preset-save-btn" onclick="savePreset()">
-                        <i class="fas fa-bookmark"></i> Salvar Favorito
-                    </button>
                 </div>
 
                 <div class="spinner" id="loading-spinner"></div>
@@ -933,9 +965,6 @@
                 <div id="result" class="slide-in">
                     <div class="result-header">
                         <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
-                        <div class="savings-badge" id="savings-display">
-                            <i class="fas fa-piggy-bank"></i> Poupança: €0.00 (0%)
-                        </div>
                     </div>
                     
                     <div id="total-cost">
@@ -959,7 +988,7 @@
             </div>
 
             <!-- History Tab (hidden by default) -->
-            <div class="history-tab">
+            <div class="tab-content history-tab" style="display: none;">
                 <h2 class="section-title"><i class="fas fa-history"></i> Histórico de Pedidos</h2>
                 
                 <div class="history-filters">
@@ -976,7 +1005,7 @@
             </div>
 
             <!-- Admin Tab (hidden by default) -->
-            <div class="admin-panel">
+            <div class="tab-content admin-tab" style="display: none;">
                 <h2 class="section-title"><i class="fas fa-cog"></i> Administração</h2>
                 
                 <div class="admin-tabs">
@@ -1179,7 +1208,7 @@
                     <div class="quantity-control">
                         <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
                         <input type="number" min="0" class="quantity-input" 
-                               id="input-${item.id}" value="${quantities[item.id]}"
+                               id="input-${item.id}" value="${quantities[item.id]}" 
                                onchange="setQuantity('${item.id}', this.value)">
                         <button class="quantity-btn" onclick="changeQuantity('${item.id}', 1)">+</button>
                     </div>
@@ -1245,50 +1274,6 @@
         function toggleHistorico() {
             const container = document.getElementById('historico-container');
             container.style.display = container.style.display === 'none' ? 'block' : 'none';
-        }
-        
-        // Load a preset configuration
-        function loadPreset(type) {
-            resetQuantities();
-            
-            switch(type) {
-                case 'small':
-                    quantities.peca_variada = 5;
-                    quantities.camisa = 3;
-                    quantities.toalha_ou_lencol = 2;
-                    break;
-                case 'medium':
-                    quantities.peca_variada = 12;
-                    quantities.camisa = 5;
-                    quantities.capa_de_edredon = 1;
-                    quantities.toalha_ou_lencol = 4;
-                    break;
-                case 'large':
-                    quantities.peca_variada = 25;
-                    quantities.camisa = 8;
-                    quantities.capa_de_edredon = 2;
-                    quantities.toalha_ou_lencol = 6;
-                    quantities.vestido_simples = 2;
-                    break;
-                case 'business':
-                    quantities.camisa = 10;
-                    quantities.calca_com_vinco = 5;
-                    quantities.blazer = 3;
-                    quantities.calca_com_blazer = 2;
-                    break;
-            }
-            
-            renderItems();
-            saveToStorage();
-        }
-        
-        // Save current configuration as a preset
-        function savePreset() {
-            const presetName = prompt("Nome do favorito:");
-            if (presetName) {
-                // In a real app, this would save to localStorage
-                alert(`Favorito "${presetName}" salvo com sucesso!`);
-            }
         }
         
         // Calculate costs using the API
@@ -1386,6 +1371,22 @@
                 `;
                 breakdownContainer.appendChild(card);
             });
+            
+            // Add receipt button
+            const receiptBtn = `<a href="${result.pdf_url}" target="_blank" class="receipt-btn">
+                <i class="fas fa-file-pdf"></i> Ver Recibo
+            </a>`;
+            
+            // Update result header
+            document.querySelector('.result-header').innerHTML = `
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
+                <div>
+                    ${receiptBtn}
+                    <div class="savings-badge" id="savings-display">
+                        <i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)
+                    </div>
+                </div>
+            `;
             
             // Show results
             document.getElementById('result').style.display = 'block';
@@ -1531,6 +1532,7 @@
             filteredOrders.forEach(order => {
                 const orderElement = document.createElement('div');
                 orderElement.className = 'historico-item';
+                orderElement.onclick = () => showOrderDetails(order.id);
                 orderElement.innerHTML = `
                     <div class="historico-data">
                         <span>${order.date}</span>
@@ -1544,11 +1546,110 @@
                     </div>
                     <div class="historico-detalhes">
                         <span>${Object.values(order.quantities).reduce((a, b) => a + b, 0)} itens</span>
-                        <span class="badge">Ver detalhes</span>
+                        <span class="badge" onclick="showOrderDetails('${order.id}')">Ver detalhes</span>
+                        <button class="delete-order-btn" onclick="deleteOrder('${order.id}', event)">Excluir</button>
                     </div>
                 `;
                 container.appendChild(orderElement);
             });
+        }
+        
+        // Show order details modal
+        function showOrderDetails(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Create modal content
+            const modalContent = `
+                <div class="order-details-modal">
+                    <div class="modal-header">
+                        <h3>Detalhes do Pedido #${order.id}</h3>
+                        <button class="close-modal" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Data:</strong> ${order.date}</p>
+                        <p><strong>Cliente:</strong> ${order.client}</p>
+                        <p><strong>Status:</strong> ${order.status === 'confirmed' ? 'Confirmado' : 'Pendente'}</p>
+                        
+                        <h4>Itens:</h4>
+                        <ul class="order-items-list">
+                            ${Object.entries(order.quantities)
+                                .filter(([_, qty]) => qty > 0)
+                                .map(([itemId, qty]) => {
+                                    const item = items.find(i => i.id === itemId);
+                                    return `<li>${item ? item.name : itemId}: ${qty}</li>`;
+                                })
+                                .join('')}
+                        </ul>
+                        
+                        <div class="cost-summary">
+                            <p><strong>Total:</strong> €${order.total.toFixed(2)}</p>
+                            ${order.pdf_url ? `<a href="${order.pdf_url}" target="_blank" class="download-pdf-btn">
+                                <i class="fas fa-file-pdf"></i> Baixar Recibo
+                            </a>` : ''}
+                            <button class="action-btn calculate-btn" onclick="recreateOrder('${order.id}')">
+                                <i class="fas fa-redo"></i> Recriar Pedido
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="action-btn reset-btn" onclick="closeModal()">Fechar</button>
+                    </div>
+                </div>
+            `;
+
+            // Create and show modal
+            const modal = document.createElement('div');
+            modal.id = 'order-details-modal';
+            modal.className = 'modal-overlay';
+            modal.innerHTML = modalContent;
+            document.body.appendChild(modal);
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('order-details-modal');
+            if (modal) modal.remove();
+        }
+
+        // Delete order from history
+        function deleteOrder(orderId, event) {
+            event.stopPropagation(); // Prevent event bubbling
+            
+            if (!confirm('Tem certeza que deseja excluir este pedido do histórico?')) return;
+            
+            orders = orders.filter(order => order.id !== orderId);
+            saveToStorage();
+            renderHistory();
+        }
+
+        // Recreate order from history
+        function recreateOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            // Fill quantities
+            for (const [itemId, qty] of Object.entries(order.quantities)) {
+                if (quantities[itemId] !== undefined) {
+                    quantities[itemId] = qty;
+                }
+            }
+            
+            // Select client
+            if (order.client && order.client !== "Cliente Geral") {
+                const select = document.getElementById('client-select');
+                select.value = order.client;
+                currentClient = order.client;
+            }
+            
+            // Update UI
+            renderItems();
+            saveToStorage();
+            closeModal();
+            switchTab('order');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
         }
         
         // Add new item
