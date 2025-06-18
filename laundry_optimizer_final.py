@@ -1,1783 +1,286 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engomadoria Teresa - Sistema Completo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #f9f9f7;
-            --accent: #3498db;
-            --accent-secondary: #2ecc71;
-            --warning: #e74c3c;
-            --light-gray: #ecf0f1;
-            --dark-gray: #7f8c8d;
-            --border-color: #ddd;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
-            --transition: all 0.3s ease;
-            --radius: 10px;
-        }
-
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            line-height: 1.6;
-            color: #333;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 992px) {
-            .app-container {
-                grid-template-columns: 280px 1fr;
-            }
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            border-radius: var(--radius) var(--radius) 0 0;
-            box-shadow: var(--shadow);
-            grid-column: 1 / -1;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo i {
-            font-size: 24px;
-            color: var(--accent-secondary);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .theme-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Navigation */
-        .tabs {
-            display: flex;
-            background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            grid-column: 1 / -1;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: bold;
-            color: var(--dark-gray);
-        }
-
-        .tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .tab:hover:not(.active) {
-            background: var(--light-gray);
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: fit-content;
-        }
-
-        .client-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .client-selector select {
-            padding: 10px 15px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
-            background: white;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .client-selector select:focus {
-            border-color: var(--accent);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        .new-client-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            padding: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .new-client-btn:hover {
-            background: #2980b9;
-        }
-
-        /* Main Content */
-        .main-content {
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary);
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light-gray);
-        }
-
-        .section-title i {
-            color: var(--accent);
-        }
-
-        /* Items Container */
-        #items-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .item-card {
-            background: white;
-            padding: 15px;
-            border-radius: var(--radius);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            position: relative;
-        }
-
-        .item-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-            border-color: var(--accent);
-        }
-
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .item-name {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-
-        .item-price {
-            color: var(--dark-gray);
-            font-size: 0.95rem;
-            background: var(--light-gray);
-            padding: 3px 8px;
-            border-radius: 12px;
-        }
-
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .quantity-btn {
-            width: 42px;
-            height: 42px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .quantity-btn:hover {
-            background: var(--accent);
-            transform: scale(1.1);
-        }
-
-        .quantity-input {
-            width: 60px;
-            padding: 8px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .quantity-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .action-btn {
-            flex: 1;
-            min-width: 150px;
-            padding: 16px;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-        }
-
-        .action-btn i {
-            font-size: 1.2rem;
-        }
-
-        .calculate-btn {
-            background: linear-gradient(135deg, var(--primary), #1a2d44);
-            color: white;
-        }
-
-        .calculate-btn:hover {
-            background: linear-gradient(135deg, #1a2d44, #0f1d2f);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .reset-btn {
-            background: var(--light-gray);
-            color: var(--dark-gray);
-        }
-
-        .reset-btn:hover {
-            background: #e0e0e0;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .preset-save-btn {
-            background: var(--accent-secondary);
-            color: white;
-        }
-
-        .preset-save-btn:hover {
-            background: #27ae60;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-        }
-
-        /* Results Section */
-        #result {
-            display: none;
-            background: var(--secondary);
-            padding: 25px;
-            border-radius: var(--radius);
-            margin-top: 25px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light-gray);
-        }
-
-        #total-cost {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin: 15px 0;
-            text-align: center;
-            padding: 15px;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .savings-badge {
-            background: var(--accent-secondary);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin: 10px 0;
-        }
-
-        .cost-breakdown {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .breakdown-card {
-            background: white;
-            padding: 15px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--accent);
-            transition: var(--transition);
-        }
-
-        .breakdown-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .breakdown-title {
-            font-weight: bold;
-            color: var(--dark-gray);
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .breakdown-value {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .confirmation-btns {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .confirm-btn {
-            flex: 1;
-            padding: 16px;
-            background: var(--accent-secondary);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .confirm-btn:hover {
-            background: #27ae60;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-        }
-
-        .cancel-btn {
-            flex: 1;
-            padding: 16px;
-            background: var(--warning);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .cancel-btn:hover {
-            background: #c0392b;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
-        }
-
-        /* History Section */
-        .historico-container {
-            display: none;
-            background: var(--secondary);
-            padding: 25px;
-            border-radius: var(--radius);
-            margin-top: 25px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-
-        .history-filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            background: var(--light-gray);
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .historico-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .toggle-historico {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: bold;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toggle-historico:hover {
-            background: var(--accent);
-        }
-
-        .historico-lista {
-            display: grid;
-            gap: 15px;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .historico-item {
-            background: white;
-            padding: 15px;
-            border-radius: var(--radius);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid var(--accent);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .historico-item:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--accent-secondary);
-        }
-
-        .historico-data {
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .historico-total {
-            color: var(--accent-secondary);
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .historico-detalhes {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            color: var(--dark-gray);
-            font-size: 0.95rem;
-        }
-
-        .badge {
-            background: var(--light-gray);
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .status-badge {
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            background: var(--accent-secondary);
-            color: white;
-        }
-
-        .status-badge.pending {
-            background: #f39c12;
-        }
-
-        .sem-historico {
-            text-align: center;
-            padding: 20px;
-            color: var(--dark-gray);
-            font-style: italic;
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
-            margin-top: 25px;
-        }
-
-        .admin-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .admin-tab {
-            padding: 10px 20px;
-            background: var(--light-gray);
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .admin-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .admin-section {
-            display: none;
-        }
-
-        .admin-section.active {
-            display: block;
-        }
-
-        .items-list, .clients-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .item-row, .client-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .item-actions, .client-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .edit-btn {
-            background: var(--accent);
-            color: white;
-        }
-
-        .delete-btn {
-            background: var(--warning);
-            color: white;
-        }
-
-        .admin-form {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-        }
-
-        .save-btn {
-            padding: 10px 20px;
-            background: var(--accent-secondary);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: bold;
-            transition: var(--transition);
-        }
-
-        .save-btn:hover {
-            background: #27ae60;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--dark-gray);
-            font-size: 0.9rem;
-            margin-top: 20px;
-            grid-column: 1 / -1;
-        }
-
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .calculating {
-            animation: pulse 1.5s infinite;
-        }
-
-        .slide-in {
-            animation: slideIn 0.5s forwards;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobile optimization */
-        @media (max-width: 767px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .cost-breakdown {
-                grid-template-columns: 1fr;
-            }
-            
-            .confirmation-btns {
-                flex-direction: column;
-            }
-        }
+"""
+laundry_optimizer_final.py
+===========================
+Otimizador de custos para lavanderia com precário atualizado (Julho 2025)
+Calcula a combinação mais económica de packs e peças avulsas.
+
+Requer: pulp (pip install pulp)
+"""
+
+from __future__ import annotations
+from typing import Dict, Tuple, Any
+from pulp import LpProblem, LpMinimize, LpInteger, LpVariable, lpSum, LpStatus
+import json
+import logging
+import numpy as np
+
+# --------------------------------------------------------------------------- #
+#  CATALOGO ATUALIZADO (JULHO 2025)
+# --------------------------------------------------------------------------- #
+CATALOG = {
+    # Packs mistos (engomar)
+    "packs_mistos": [
+        {"tipo": "20", "capacidade": 20, "limite_camisas": 5, "preco": 16.0},
+        {"tipo": "40", "capacidade": 40, "limite_camisas": 8, "preco": 28.0},
+        {"tipo": "60", "capacidade": 60, "limite_camisas": 12, "preco": 39.0},
+    ],
+    # Packs de camisas
+    "packs_camisas": [
+        {"tipo": "5", "capacidade": 5, "preco": 6.5},
+        {"tipo": "10", "capacidade": 10, "preco": 12.0},
+    ],
+    # Preços avulsos
+    "avulso": {
+        "peca_variada": 0.90,
+        "camisa": 1.80,
+        "vestido_simples": 3.50,
+        "calca_com_vinco": 3.50,
+        "blazer": 4.50,
+        "toalha_ou_lencol": 1.50,
+        "capa_de_edredon": 3.50,
+        "calca_com_blazer": 12.50,
+        "vestido_cerimonia": 12.50,
+        "vestido_noiva": 100.00,
+        "casaco_sobretudo": 16.90,
+        "blusao_almofadado": 13.00,
+        "blusao_penas": 20.00
+    }
+}
+
+# --------------------------------------------------------------------------- #
+#  NÚCLEO DE OTIMIZAÇÃO
+# --------------------------------------------------------------------------- #
+class LaundryOptimizer:
+    """Otimiza custos de lavanderia usando programação linear inteira."""
+    _SPECIALS = [
+        "vestido_simples", "calca_com_vinco", "blazer", 
+        "toalha_ou_lencol", "capa_de_edredon",
+        "calca_com_blazer", "vestido_cerimonia", 
+        "vestido_noiva", "casaco_sobretudo",
+        "blusao_almofadado", "blusao_penas"
+    ]
+    
+    _OPTIMIZABLE = ["peca_variada", "camisa"]
+    
+    _ITEM_KEYS = list(CATALOG["avulso"].keys())
+
+    def __init__(self, catalog: dict = CATALOG, logger: logging.Logger | None = None):
+        self.catalog = catalog
+        self.log = logger or logging.getLogger(__name__)
+
+    def optimize_order(
+        self,
+        items: Dict[str, int],
+        solver_name: str | None = None
+    ) -> Tuple[float, Dict[str, Any], Dict[str, Any]]:
+        order = {k: int(items.get(k, 0)) for k in self._ITEM_KEYS}
+        invalid = [k for k in items if k not in order]
+        if invalid:
+            raise ValueError(f"Itens desconhecidos: {invalid}")
+
+        self.log.info("Processando pedido: %s", order)
+
+        # Validação de pedido vazio
+        if all(qty == 0 for qty in order.values()):
+            self.log.warning("Pedido vazio recebido")
+            return 0.0, {"itens_fixos": {}}, {}
+
+        fixed_cost = sum(
+            order[item] * self.catalog["avulso"][item]
+            for item in self._SPECIALS
+        )
+
+        qty = {
+            "peca_variada": order["peca_variada"],
+            "camisa": order["camisa"],
+        }
+
+        # Verificar se há itens para otimizar
+        if qty["peca_variada"] == 0 and qty["camisa"] == 0:
+            self.log.info("Nenhum item otimizável necessário")
+            return fixed_cost, {"itens_fixos": {
+                k: v for k, v in order.items() 
+                if k in self._SPECIALS and v > 0
+            }}, {}
+
+        # Calcular capacidade total disponível
+        total_capacity = sum(
+            p["capacidade"] * 10  # Considerar 10x a capacidade máxima
+            for p in self.catalog["packs_mistos"]
+        )
+        total_capacity += sum(
+            p["capacidade"] * 10
+            for p in self.catalog["packs_camisas"]
+        )
         
-        /* Loading spinner */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: var(--accent);
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-            display: none;
+        # Verificar viabilidade
+        total_items = qty["peca_variada"] + qty["camisa"]
+        if total_items > total_capacity:
+            raise ValueError(f"Pedido muito grande ({total_items} itens). Capacidade máxima: {total_capacity}")
+
+        prob = LpProblem("Minimizar_Custo_Lavanderia", LpMinimize)
+
+        # Variáveis de decisão
+        x = {
+            p["tipo"]: LpVariable(f"pack_misto_{p['tipo']}", 0, cat=LpInteger)
+            for p in self.catalog["packs_mistos"]
         }
+        s = {
+            p["tipo"]: LpVariable(f"camisas_no_misto_{p['tipo']}", 0, cat=LpInteger)
+            for p in self.catalog["packs_mistos"]
+        }
+        y = {
+            p["tipo"]: LpVariable(f"pack_camisa_{p['tipo']}", 0, cat=LpInteger)
+            for p in self.catalog["packs_camisas"]
+        }
+        a_var = LpVariable("pecas_variadas_avulsas", 0, cat=LpInteger)
+        a_cam = LpVariable("camisas_avulsas", 0, cat=LpInteger)
+
+        cost_mistos = lpSum(p["preco"] * x[p["tipo"]] for p in self.catalog["packs_mistos"])
+        cost_camisas = lpSum(p["preco"] * y[p["tipo"]] for p in self.catalog["packs_camisas"])
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        cost_avulso = (
+            self.catalog["avulso"]["peca_variada"] * a_var +
+            self.catalog["avulso"]["camisa"] * a_cam
+        )
 
-        /* Modal de detalhes do pedido */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
+        prob += cost_mistos + cost_camisas + cost_avulso
 
-        .order-details-modal {
-            background: white;
-            border-radius: var(--radius);
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow);
-            padding: 20px;
-            animation: slideIn 0.3s forwards;
-        }
+        # Limite de camisas nos packs mistos
+        for p in self.catalog["packs_mistos"]:
+            prob += s[p["tipo"]] <= p["limite_camisas"] * x[p["tipo"]]
+            prob += s[p["tipo"]] >= 0
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light-gray);
-        }
+        # Cobertura de camisas
+        prob += (
+            lpSum(s.values()) + 
+            lpSum(p["capacidade"] * y[p["tipo"]] for p in self.catalog["packs_camisas"]) + 
+            a_cam >= qty["camisa"]
+        )
 
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--dark-gray);
-        }
+        # Cobertura de peças variadas
+        prob += (
+            lpSum(
+                (p["capacidade"] * x[p["tipo"]]) - s[p["tipo"]] 
+                for p in self.catalog["packs_mistos"]
+            ) + a_var >= qty["peca_variada"]
+        )
 
-        .order-items-list {
-            list-style: none;
-            margin: 15px 0;
-            padding: 0;
-        }
+        status = prob.solve(solver_name)
+        if LpStatus[status] != "Optimal":
+            raise RuntimeError(f"Erro no solver: {LpStatus[status]}")
 
-        .order-items-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
+        # Verificar valores inválidos do solver
+        if any(var.value() is None for var in prob.variables()):
+            self.log.error("Solver retornou valores inválidos")
+            raise RuntimeError("Solução inválida do solver")
 
-        .cost-summary {
-            background: var(--light-gray);
-            padding: 15px;
-            border-radius: var(--radius);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .download-pdf-btn {
-            display: inline-block;
-            background: var(--warning);
-            color: white;
-            padding: 10px 15px;
-            border-radius: var(--radius);
-            text-decoration: none;
-            margin-top: 10px;
-            transition: var(--transition);
-        }
-
-        .download-pdf-btn:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .delete-order-btn {
-            background: var(--warning);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 5px 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-left: 10px;
-        }
-
-        .delete-order-btn:hover {
-            background: #c0392b;
-        }
-
-        .receipt-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: var(--warning);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            text-decoration: none;
-            margin-right: 10px;
-            transition: var(--transition);
-        }
-
-        .receipt-btn:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-    </style>
-</head>
-<body>
-    <div class="app-container">
-        <div class="header">
-            <div class="logo">
-                <i class="fas fa-tshirt"></i>
-                <h1>Engomadoria Teresa</h1>
-            </div>
-            <div class="header-actions">
-                <button class="theme-toggle" onclick="toggleDarkMode()">
-                    <i class="fas fa-moon"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="tabs">
-            <div class="tab active" data-tab="order">Pedido Atual</div>
-            <div class="tab" data-tab="history">Histórico</div>
-            <div class="tab" data-tab="admin">Administração</div>
-        </div>
-
-        <div class="sidebar">
-            <div class="client-selector">
-                <h3 class="section-title"><i class="fas fa-user"></i> Cliente</h3>
-                <select id="client-select">
-                    <option value="">Cliente Geral</option>
-                </select>
-                <button class="new-client-btn" onclick="openNewClientForm()">
-                    <i class="fas fa-plus"></i> Novo Cliente
-                </button>
-            </div>
-
-            <!-- Espaço vazio removendo favoritos e instruções -->
-            <div class="spacer" style="height: 20px;"></div>
-        </div>
-
-        <div class="main-content">
-            <!-- Order Tab -->
-            <div class="tab-content order-tab active-tab">
-                <div class="historico-header">
-                    <h2 class="section-title"><i class="fas fa-calculator"></i> Cálculo Atual</h2>
-                    <button class="toggle-historico" onclick="toggleHistorico()">
-                        <i class="fas fa-history"></i> Ver Histórico
-                    </button>
-                </div>
-
-                <div id="items-container">
-                    <!-- Items will be added here dynamically -->
-                </div>
-
-                <div class="action-buttons">
-                    <button class="action-btn calculate-btn" onclick="calculate()">
-                        <i class="fas fa-calculator"></i> Calcular Custo
-                    </button>
-                    <button class="action-btn reset-btn" onclick="resetQuantities()">
-                        <i class="fas fa-redo"></i> Reiniciar
-                    </button>
-                </div>
-
-                <div class="spinner" id="loading-spinner"></div>
-
-                <div id="result" class="slide-in">
-                    <div class="result-header">
-                        <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
-                    </div>
-                    
-                    <div id="total-cost">
-                        Total: €0.00
-                    </div>
-
-                    <h3><i class="fas fa-receipt"></i> Composição do Custo:</h3>
-                    <div class="cost-breakdown" id="cost-breakdown">
-                        <!-- Cost breakdown will be added here -->
-                    </div>
-
-                    <div class="confirmation-btns">
-                        <button class="confirm-btn" onclick="confirmOrder()">
-                            <i class="fas fa-check-circle"></i> Confirmar Pedido
-                        </button>
-                        <button class="cancel-btn" onclick="cancelOrder()">
-                            <i class="fas fa-times-circle"></i> Cancelar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- History Tab (hidden by default) -->
-            <div class="tab-content history-tab" style="display: none;">
-                <h2 class="section-title"><i class="fas fa-history"></i> Histórico de Pedidos</h2>
-                
-                <div class="history-filters">
-                    <button class="filter-btn active" data-filter="all">Todos</button>
-                    <button class="filter-btn" data-filter="confirmed">Confirmados</button>
-                    <button class="filter-btn" data-filter="pending">Pendentes</button>
-                    <button class="filter-btn" data-filter="today">Hoje</button>
-                    <button class="filter-btn" data-filter="week">Esta Semana</button>
-                </div>
-                
-                <div class="historico-lista" id="history-list">
-                    <!-- History items will be added here -->
-                </div>
-            </div>
-
-            <!-- Admin Tab (hidden by default) -->
-            <div class="tab-content admin-tab" style="display: none;">
-                <h2 class="section-title"><i class="fas fa-cog"></i> Administração</h2>
-                
-                <div class="admin-tabs">
-                    <button class="admin-tab active" data-tab="items">Itens</button>
-                    <button class="admin-tab" data-tab="clients">Clientes</button>
-                </div>
-                
-                <!-- Items Admin -->
-                <div class="admin-section items active">
-                    <h3 class="section-title"><i class="fas fa-tshirt"></i> Gestão de Itens</h3>
-                    
-                    <div class="items-list" id="admin-items-list">
-                        <!-- Admin items will be added here -->
-                    </div>
-                    
-                    <div class="admin-form">
-                        <h3 class="section-title"><i class="fas fa-plus-circle"></i> Adicionar Novo Item</h3>
-                        <div class="form-group">
-                            <label for="item-name">Nome do Item</label>
-                            <input type="text" id="item-name" placeholder="Ex: Casaco de Inverno">
-                        </div>
-                        <div class="form-group">
-                            <label for="item-price">Preço (€)</label>
-                            <input type="number" id="item-price" step="0.01" min="0" placeholder="Ex: 12.50">
-                        </div>
-                        <button class="save-btn" onclick="addNewItem()">Guardar Item</button>
-                    </div>
-                </div>
-                
-                <!-- Clients Admin -->
-                <div class="admin-section clients">
-                    <h3 class="section-title"><i class="fas fa-users"></i> Gestão de Clientes</h3>
-                    
-                    <div class="clients-list" id="admin-clients-list">
-                        <!-- Admin clients will be added here -->
-                    </div>
-                    
-                    <div class="admin-form">
-                        <h3 class="section-title"><i class="fas fa-user-plus"></i> Adicionar Novo Cliente</h3>
-                        <div class="form-group">
-                            <label for="client-name">Nome do Cliente</label>
-                            <input type="text" id="client-name" placeholder="Ex: Carlos Mendes">
-                        </div>
-                        <div class="form-group">
-                            <label for="client-phone">Telefone</label>
-                            <input type="text" id="client-phone" placeholder="Ex: 912 345 678">
-                        </div>
-                        <div class="form-group">
-                            <label for="client-email">Email</label>
-                            <input type="email" id="client-email" placeholder="Ex: cliente@exemplo.com">
-                        </div>
-                        <button class="save-btn" onclick="addNewClient()">Guardar Cliente</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            Engomadoria Teresa &copy; 2025 | Sistema de Otimização v3.0
-        </div>
-    </div>
-
-    <script>
-        // API endpoint
-        const API_URL = "https://lavanderia-teresa.onrender.com/optimize";
+        packs_mistos = {k: int(v.value()) for k, v in x.items() if v.value() > 0}
+        packs_camisas = {k: int(v.value()) for k, v in y.items() if v.value() > 0}
         
-        // Initial items data
-        const initialItems = [
-            { id: "peca_variada", name: "Peça Variada", price: 0.90 },
-            { id: "camisa", name: "Camisa", price: 1.80 },
-            { id: "toalha_ou_lencol", name: "Toalha ou Lençol", price: 1.50 },
-            { id: "capa_de_edredon", name: "Capa de Edredom", price: 3.50 },
-            { id: "vestido_simples", name: "Vestido Simples", price: 3.50 },
-            { id: "calca_com_vinco", name: "Calça com Vinco", price: 3.50 },
-            { id: "blazer", name: "Blazer", price: 4.50 },
-            { id: "calca_com_blazer", name: "Calça com Blazer", price: 12.50 },
-            { id: "vestido_cerimonia", name: "Vestido de Cerimônia", price: 12.50 },
-            { id: "blusao_almofadado", name: "Blusão Almofadado", price: 13.00 },
-            { id: "casaco_sobretudo", name: "Casaco Sobretudo", price: 16.90 },
-            { id: "blusao_penas", name: "Blusão de Penas", price: 20.00 },
-            { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
-        ];
-
-        // Initial clients data
-        const initialClients = [
-            { id: "cl1", name: "Maria Silva", phone: "912 345 678", email: "maria@exemplo.com" },
-            { id: "cl2", name: "João Pereira", phone: "913 456 789", email: "joao@exemplo.com" },
-            { id: "cl3", name: "Ana Costa", phone: "914 567 890", email: "ana@exemplo.com" }
-        ];
-
-        // App state
-        let quantities = {};
-        let currentClient = "";
-        let currentOrder = null;
-        let items = [];
-        let clients = [];
-        let orders = [];
-
-        // Initialize the app
-        function initApp() {
-            loadFromStorage();
-            renderItems();
-            updateClientDropdown();
-            renderAdminItems();
-            renderAdminClients();
-            renderHistory();
-            
-            // Setup tab switching
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    switchTab(tab.dataset.tab);
-                });
-            });
-            
-            // Setup admin tabs
-            document.querySelectorAll('.admin-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    document.querySelectorAll('.admin-section').forEach(section => {
-                        section.classList.remove('active');
-                        if (section.classList.contains(tab.dataset.tab)) {
-                            section.classList.add('active');
-                        }
-                    });
-                });
-            });
-            
-            // Setup history filters
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    renderHistory(btn.dataset.filter);
-                });
-            });
-            
-            // Setup client selection
-            document.getElementById('client-select').addEventListener('change', function() {
-                currentClient = this.value;
-                saveToStorage();
-            });
+        avulsos = {
+            "peca_variada": int(a_var.value()),
+            "camisa": int(a_cam.value()),
         }
 
-        // Load data from localStorage
-        function loadFromStorage() {
-            // Load items
-            const savedItems = localStorage.getItem('laundryItems');
-            items = savedItems ? JSON.parse(savedItems) : [...initialItems];
-            
-            // Load clients
-            const savedClients = localStorage.getItem('laundryClients');
-            clients = savedClients ? JSON.parse(savedClients) : [...initialClients];
-            
-            // Load quantities
-            const savedQuantities = localStorage.getItem('currentQuantities');
-            quantities = savedQuantities ? JSON.parse(savedQuantities) : {};
-            
-            // Initialize quantities if needed
-            items.forEach(item => {
-                if (quantities[item.id] === undefined) {
-                    quantities[item.id] = 0;
-                }
-            });
-            
-            // Load orders
-            const savedOrders = localStorage.getItem('orderHistory');
-            orders = savedOrders ? JSON.parse(savedOrders) : [];
-            
-            // Load selected client
-            const savedClient = localStorage.getItem('currentClient');
-            if (savedClient) {
-                currentClient = savedClient;
-            }
+        camisas_em_mistos = {k: int(v.value()) for k, v in s.items() if v.value() > 0}
+
+        var_cost = prob.objective.value()
+        total_cost = round(fixed_cost + var_cost, 2)
+
+        # Função para converter tipos numpy para tipos nativos serializáveis
+        def convert_value(v):
+            if isinstance(v, (np.floating, float)):
+                return float(round(v, 2))
+            if isinstance(v, (np.integer, int)):
+                return int(v)
+            return v
+        
+        # Converter todos os valores no breakdown
+        detalhe_custos = {
+            "custos_fixos": convert_value(fixed_cost),
+            "packs_mistos": convert_value(cost_mistos.value()),
+            "packs_camisas": convert_value(cost_camisas.value()),
+            "itens_avulsos": convert_value(cost_avulso.value()),
+            "total_variavel": convert_value(var_cost),
+            "total": convert_value(total_cost)
         }
 
-        // Save data to localStorage
-        function saveToStorage() {
-            localStorage.setItem('laundryItems', JSON.stringify(items));
-            localStorage.setItem('laundryClients', JSON.stringify(clients));
-            localStorage.setItem('currentQuantities', JSON.stringify(quantities));
-            localStorage.setItem('orderHistory', JSON.stringify(orders));
-            localStorage.setItem('currentClient', currentClient);
+        breakdown = {
+            "itens_fixos": {k: convert_value(order[k]) for k in self._SPECIALS if order[k] > 0},
+            "packs_mistos": packs_mistos,
+            "packs_camisas": packs_camisas,
+            "itens_avulsos": avulsos,
+            "camisas_em_packs_mistos": camisas_em_mistos,
+            "detalhe_custos": detalhe_custos
         }
 
-        // Render items in the order section
-        function renderItems() {
-            const container = document.getElementById('items-container');
-            container.innerHTML = '';
-            
-            items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'item-card';
-                itemElement.innerHTML = `
-                    <div class="item-header">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">€${item.price.toFixed(2)}</div>
-                    </div>
-                    <div class="quantity-control">
-                        <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
-                        <input type="number" min="0" class="quantity-input" 
-                               id="input-${item.id}" value="${quantities[item.id]}" 
-                               onchange="setQuantity('${item.id}', this.value)">
-                        <button class="quantity-btn" onclick="changeQuantity('${item.id}', 1)">+</button>
-                    </div>
-                `;
-                container.appendChild(itemElement);
-            });
+        return total_cost, breakdown, {v.name: v.value() for v in prob.variables()}
+
+# --------------------------------------------------------------------------- #
+#  INTERFACE DE USO
+# --------------------------------------------------------------------------- #
+def optimizar_pedido(items: Dict[str, int]) -> Tuple[float, Dict[str, Any], Dict[str, Any]]:
+    """Função simplificada para otimização direta."""
+    return LaundryOptimizer().optimize_order(items)
+
+# --------------------------------------------------------------------------- #
+#  HANDLER PARA CHATGPT ACTIONS
+# --------------------------------------------------------------------------- #
+def gpt_optimize_handler(items: Dict[str, int]) -> Dict[str, Any]:
+    """Formata a resposta para o padrão GPT Actions"""
+    try:
+        total, detalhes, _ = optimizar_pedido(items)
+        
+        # Função para converter tipos problemáticos recursivamente
+        def convert_types(obj):
+            if isinstance(obj, (np.floating, float)):
+                return float(round(obj, 2))
+            if isinstance(obj, (np.integer, int)):
+                return int(obj)
+            if isinstance(obj, dict):
+                return {k: convert_types(v) for k, v in obj.items()}
+            if isinstance(obj, list):
+                return [convert_types(item) for item in obj]
+            return obj
+        
+        return {
+            "status": "sucesso",
+            "custo_total": round(total, 2),
+            "detalhes": convert_types(detalhes)
+        }
+    except Exception as e:
+        return {
+            "status": "erro",
+            "mensagem": str(e)
         }
 
-        // Update client dropdown
-        function updateClientDropdown() {
-            const select = document.getElementById('client-select');
-            const currentValue = select.value;
-            
-            select.innerHTML = '<option value="">Cliente Geral</option>';
-            
-            clients.forEach(client => {
-                const option = document.createElement('option');
-                option.value = client.name;
-                option.textContent = client.name;
-                select.appendChild(option);
-            });
-            
-            select.value = currentValue || currentClient;
-        }
+# --------------------------------------------------------------------------- #
+#  CLI PARA TESTES
+# --------------------------------------------------------------------------- #
+if __name__ == "__main__":
+    import argparse
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-        // Change item quantity
-        function changeQuantity(itemId, delta) {
-            quantities[itemId] = Math.max(0, quantities[itemId] + delta);
-            document.getElementById(`input-${itemId}`).value = quantities[itemId];
-            saveToStorage();
-        }
-        
-        // Set item quantity directly
-        function setQuantity(itemId, value) {
-            quantities[itemId] = Math.max(0, parseInt(value) || 0);
-            saveToStorage();
-        }
-        
-        // Reset all quantities
-        function resetQuantities() {
-            items.forEach(item => {
-                quantities[item.id] = 0;
-            });
-            renderItems();
-            saveToStorage();
-            document.getElementById('result').style.display = 'none';
-        }
-        
-        // Toggle dark mode
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.querySelector('.theme-toggle i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
-        }
-        
-        // Toggle history visibility
-        function toggleHistorico() {
-            const container = document.getElementById('historico-container');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
-        }
-        
-        // Calculate costs using the API
-        async function calculate() {
-            const spinner = document.getElementById('loading-spinner');
-            const btn = document.querySelector('.calculate-btn');
-            
-            // Show loading state
-            spinner.style.display = 'block';
-            btn.disabled = true;
-            
-            // Prepare request data
-            const requestData = {
-                items: {...quantities},
-                cliente: currentClient || "Cliente Geral"
-            };
-            
-            try {
-                // Call the API
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'sucesso') {
-                    // Create order object
-                    currentOrder = {
-                        id: Date.now(),
-                        date: new Date().toLocaleString('pt-PT'),
-                        client: currentClient || "Cliente Geral",
-                        quantities: {...quantities},
-                        total: result.custo_total,
-                        status: 'pending',
-                        details: result.detalhes,
-                        pdf_url: result.pdf_url
-                    };
-                    
-                    // Display results
-                    displayResults(result);
-                } else {
-                    alert(`Erro: ${result.mensagem}`);
-                }
-            } catch (error) {
-                console.error('API Error:', error);
-                alert('Erro de conexão com o servidor. Tente novamente.');
-            } finally {
-                // Hide loading state
-                spinner.style.display = 'none';
-                btn.disabled = false;
-            }
-        }
-        
-        // Display calculation results
-        function displayResults(result) {
-            // Calculate regular cost for savings comparison
-            let regularCost = 0;
-            for (const [itemId, qty] of Object.entries(quantities)) {
-                const item = items.find(i => i.id === itemId);
-                if (item) {
-                    regularCost += item.price * qty;
-                }
-            }
-            
-            const savings = regularCost - result.custo_total;
-            const savingsPercent = regularCost > 0 ? (savings / regularCost * 100).toFixed(1) : 0;
-            
-            // Update UI
-            document.getElementById('total-cost').textContent = `Total: €${result.custo_total.toFixed(2)}`;
-            document.getElementById('savings-display').innerHTML = 
-                `<i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)`;
-            
-            // Render cost breakdown
-            const breakdownContainer = document.getElementById('cost-breakdown');
-            breakdownContainer.innerHTML = '';
-            
-            // Add breakdown cards
-            const breakdownData = [
-                { title: "Packs Mistos", value: result.detalhes.detalhe_custos.packs_mistos },
-                { title: "Packs Camisas", value: result.detalhes.detalhe_custos.packs_camisas },
-                { title: "Itens Avulsos", value: result.detalhes.detalhe_custos.itens_avulsos },
-                { title: "Itens Fixos", value: result.detalhes.detalhe_custos.custos_fixos }
-            ];
-            
-            breakdownData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'breakdown-card';
-                card.innerHTML = `
-                    <div class="breakdown-title">${item.title}</div>
-                    <div class="breakdown-value">€${item.value.toFixed(2)}</div>
-                `;
-                breakdownContainer.appendChild(card);
-            });
-            
-            // Add receipt button
-            const receiptBtn = `<a href="${result.pdf_url}" target="_blank" class="receipt-btn">
-                <i class="fas fa-file-pdf"></i> Ver Recibo
-            </a>`;
-            
-            // Update result header
-            document.querySelector('.result-header').innerHTML = `
-                <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
-                <div>
-                    ${receiptBtn}
-                    <div class="savings-badge" id="savings-display">
-                        <i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)
-                    </div>
-                </div>
-            `;
-            
-            // Show results
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        
-        // Confirm the current order
-        function confirmOrder() {
-            if (!currentOrder) return;
-            
-            // Update status
-            currentOrder.status = 'confirmed';
-            
-            // Add to orders
-            orders.unshift(currentOrder);
-            
-            // Save and update UI
-            saveToStorage();
-            resetQuantities();
-            document.getElementById('result').style.display = 'none';
-            alert(`Pedido #${currentOrder.id} confirmado com sucesso! Total: €${currentOrder.total.toFixed(2)}`);
-            switchTab('history');
-        }
-        
-        // Cancel the current order
-        function cancelOrder() {
-            document.getElementById('result').style.display = 'none';
-            currentOrder = null;
-        }
-        
-        // Switch between tabs
-        function switchTab(tabName) {
-            // Update tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.dataset.tab === tabName) {
-                    tab.classList.add('active');
-                }
-            });
-            
-            // Show/hide content
-            document.querySelector('.order-tab').classList.remove('active-tab');
-            document.querySelector('.history-tab').style.display = 'none';
-            document.querySelector('.admin-panel').style.display = 'none';
-            
-            if (tabName === 'order') {
-                document.querySelector('.order-tab').classList.add('active-tab');
-            } else if (tabName === 'history') {
-                document.querySelector('.history-tab').style.display = 'block';
-                renderHistory();
-            } else if (tabName === 'admin') {
-                document.querySelector('.admin-panel').style.display = 'block';
-                renderAdminItems();
-                renderAdminClients();
-            }
-        }
-        
-        // Open new client form
-        function openNewClientForm() {
-            switchTab('admin');
-            document.querySelector('.admin-tab[data-tab="clients"]').click();
-            document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Render items in admin panel
-        function renderAdminItems() {
-            const container = document.getElementById('admin-items-list');
-            container.innerHTML = '';
-            
-            items.forEach(item => {
-                const itemRow = document.createElement('div');
-                itemRow.className = 'item-row';
-                itemRow.innerHTML = `
-                    <div>
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">€${item.price.toFixed(2)}</div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="edit-btn" onclick="editItem('${item.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-btn" onclick="deleteItem('${item.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(itemRow);
-            });
-        }
-        
-        // Render clients in admin panel
-        function renderAdminClients() {
-            const container = document.getElementById('admin-clients-list');
-            container.innerHTML = '';
-            
-            clients.forEach(client => {
-                const clientRow = document.createElement('div');
-                clientRow.className = 'client-row';
-                clientRow.innerHTML = `
-                    <div class="item-name">${client.name}</div>
-                    <div class="client-actions">
-                        <button class="edit-btn" onclick="editClient('${client.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-btn" onclick="deleteClient('${client.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(clientRow);
-            });
-        }
-        
-        // Render order history
-        function renderHistory(filter = 'all') {
-            const container = document.getElementById('history-list');
-            container.innerHTML = '';
-            
-            if (orders.length === 0) {
-                container.innerHTML = '<div class="sem-historico">Nenhum pedido registrado</div>';
-                return;
-            }
-            
-            // Apply filter
-            let filteredOrders = orders;
-            if (filter === 'confirmed') {
-                filteredOrders = orders.filter(order => order.status === 'confirmed');
-            } else if (filter === 'pending') {
-                filteredOrders = orders.filter(order => order.status === 'pending');
-            } else if (filter === 'today') {
-                const today = new Date().toLocaleDateString('pt-PT');
-                filteredOrders = orders.filter(order => {
-                    const orderDate = new Date(order.date.split(',')[0]).toLocaleDateString('pt-PT');
-                    return orderDate === today;
-                });
-            } else if (filter === 'week') {
-                const oneWeekAgo = new Date();
-                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-                filteredOrders = orders.filter(order => new Date(order.date) > oneWeekAgo);
-            }
-            
-            // Render orders
-            filteredOrders.forEach(order => {
-                const orderElement = document.createElement('div');
-                orderElement.className = 'historico-item';
-                orderElement.onclick = () => showOrderDetails(order.id);
-                orderElement.innerHTML = `
-                    <div class="historico-data">
-                        <span>${order.date}</span>
-                        <span class="historico-total">€${order.total.toFixed(2)}</span>
-                    </div>
-                    <div class="historico-detalhes">
-                        <span>${order.client}</span>
-                        <span class="status-badge ${order.status === 'pending' ? 'pending' : ''}">
-                            ${order.status === 'confirmed' ? 'Confirmado' : 'Pendente'}
-                        </span>
-                    </div>
-                    <div class="historico-detalhes">
-                        <span>${Object.values(order.quantities).reduce((a, b) => a + b, 0)} itens</span>
-                        <span class="badge" onclick="showOrderDetails('${order.id}')">Ver detalhes</span>
-                        <button class="delete-order-btn" onclick="deleteOrder('${order.id}', event)">Excluir</button>
-                    </div>
-                `;
-                container.appendChild(orderElement);
-            });
-        }
-        
-        // Show order details modal
-        function showOrderDetails(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
+    parser = argparse.ArgumentParser(description="Otimizador de Custos de Lavanderia")
+    parser.add_argument("--exemplo", action="store_true", help="Executar com pedido exemplo")
+    parser.add_argument("--json", type=str, help="Pedido em formato JSON")
+    args = parser.parse_args()
 
-            // Create modal content
-            const modalContent = `
-                <div class="order-details-modal">
-                    <div class="modal-header">
-                        <h3>Detalhes do Pedido #${order.id}</h3>
-                        <button class="close-modal" onclick="closeModal()">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Data:</strong> ${order.date}</p>
-                        <p><strong>Cliente:</strong> ${order.client}</p>
-                        <p><strong>Status:</strong> ${order.status === 'confirmed' ? 'Confirmado' : 'Pendente'}</p>
-                        
-                        <h4>Itens:</h4>
-                        <ul class="order-items-list">
-                            ${Object.entries(order.quantities)
-                                .filter(([_, qty]) => qty > 0)
-                                .map(([itemId, qty]) => {
-                                    const item = items.find(i => i.id === itemId);
-                                    return `<li>${item ? item.name : itemId}: ${qty}</li>`;
-                                })
-                                .join('')}
-                        </ul>
-                        
-                        <div class="cost-summary">
-                            <p><strong>Total:</strong> €${order.total.toFixed(2)}</p>
-                            ${order.pdf_url ? `<a href="${order.pdf_url}" target="_blank" class="download-pdf-btn">
-                                <i class="fas fa-file-pdf"></i> Baixar Recibo
-                            </a>` : ''}
-                            <button class="action-btn calculate-btn" onclick="recreateOrder('${order.id}')">
-                                <i class="fas fa-redo"></i> Recriar Pedido
-                            </button>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="action-btn reset-btn" onclick="closeModal()">Fechar</button>
-                    </div>
-                </div>
-            `;
+    if args.exemplo:
+        pedido = {
+            "peca_variada": 15,
+            "camisa": 8,
+            "toalha_ou_lencol": 5,
+            "capa_de_edredon": 2
+        }
+    elif args.json:
+        try:
+            pedido = json.loads(args.json)
+        except json.JSONDecodeError:
+            raise ValueError("JSON inválido")
+    else:
+        parser.error("Use --exemplo ou --json")
 
-            // Create and show modal
-            const modal = document.createElement('div');
-            modal.id = 'order-details-modal';
-            modal.className = 'modal-overlay';
-            modal.innerHTML = modalContent;
-            document.body.appendChild(modal);
-        }
-
-        // Close modal
-        function closeModal() {
-            const modal = document.getElementById('order-details-modal');
-            if (modal) modal.remove();
-        }
-
-        // Delete order from history
-        function deleteOrder(orderId, event) {
-            event.stopPropagation(); // Prevent event bubbling
-            
-            if (!confirm('Tem certeza que deseja excluir este pedido do histórico?')) return;
-            
-            orders = orders.filter(order => order.id !== orderId);
-            saveToStorage();
-            renderHistory();
-        }
-
-        // Recreate order from history
-        function recreateOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
-            
-            // Fill quantities
-            for (const [itemId, qty] of Object.entries(order.quantities)) {
-                if (quantities[itemId] !== undefined) {
-                    quantities[itemId] = qty;
-                }
-            }
-            
-            // Select client
-            if (order.client && order.client !== "Cliente Geral") {
-                const select = document.getElementById('client-select');
-                select.value = order.client;
-                currentClient = order.client;
-            }
-            
-            // Update UI
-            renderItems();
-            saveToStorage();
-            closeModal();
-            switchTab('order');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
-        
-        // Add new item
-        function addNewItem() {
-            const name = document.getElementById('item-name').value;
-            const price = parseFloat(document.getElementById('item-price').value);
-            
-            if (!name || isNaN(price)) {
-                alert('Por favor, preencha todos os campos corretamente');
-                return;
-            }
-            
-            const newItem = {
-                id: 'item_' + Date.now(),
-                name: name,
-                price: price
-            };
-            
-            items.push(newItem);
-            quantities[newItem.id] = 0;
-            saveToStorage();
-            
-            // Update UI
-            document.getElementById('item-name').value = '';
-            document.getElementById('item-price').value = '';
-            renderAdminItems();
-            renderItems();
-            alert('Item adicionado com sucesso!');
-        }
-        
-        // Add new client
-        function addNewClient() {
-            const name = document.getElementById('client-name').value;
-            const phone = document.getElementById('client-phone').value;
-            const email = document.getElementById('client-email').value;
-            
-            if (!name) {
-                alert('Por favor, preencha pelo menos o nome do cliente');
-                return;
-            }
-            
-            const newClient = {
-                id: 'cl_' + Date.now(),
-                name: name,
-                phone: phone,
-                email: email
-            };
-            
-            clients.push(newClient);
-            saveToStorage();
-            
-            // Update UI
-            document.getElementById('client-name').value = '';
-            document.getElementById('client-phone').value = '';
-            document.getElementById('client-email').value = '';
-            renderAdminClients();
-            updateClientDropdown();
-            alert('Cliente adicionado com sucesso!');
-        }
-        
-        // Edit item
-        function editItem(itemId) {
-            const item = items.find(i => i.id === itemId);
-            if (!item) return;
-            
-            const newName = prompt("Novo nome do item:", item.name);
-            if (newName === null) return;
-            
-            const newPrice = parseFloat(prompt("Novo preço do item:", item.price));
-            if (isNaN(newPrice)) return;
-            
-            item.name = newName;
-            item.price = newPrice;
-            saveToStorage();
-            
-            renderAdminItems();
-            renderItems();
-            alert('Item atualizado com sucesso!');
-        }
-        
-        // Delete item
-        function deleteItem(itemId) {
-            if (!confirm('Tem certeza que deseja excluir este item?')) return;
-            
-            items = items.filter(item => item.id !== itemId);
-            delete quantities[itemId];
-            saveToStorage();
-            
-            renderAdminItems();
-            renderItems();
-            alert('Item excluído com sucesso!');
-        }
-        
-        // Edit client
-        function editClient(clientId) {
-            const client = clients.find(c => c.id === clientId);
-            if (!client) return;
-            
-            const newName = prompt("Novo nome do cliente:", client.name);
-            if (newName === null) return;
-            
-            const newPhone = prompt("Novo telefone do cliente:", client.phone);
-            const newEmail = prompt("Novo email do cliente:", client.email);
-            
-            client.name = newName;
-            client.phone = newPhone;
-            client.email = newEmail;
-            saveToStorage();
-            
-            renderAdminClients();
-            updateClientDropdown();
-            alert('Cliente atualizado com sucesso!');
-        }
-        
-        // Delete client
-        function deleteClient(clientId) {
-            if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
-            
-            clients = clients.filter(client => client.id !== clientId);
-            saveToStorage();
-            
-            renderAdminClients();
-            updateClientDropdown();
-            alert('Cliente excluído com sucesso!');
-        }
-
-        // Initialize the app when page loads
-        window.addEventListener('DOMContentLoaded', initApp);
-    </script>
-</body>
-</html>
+    resultado = gpt_optimize_handler(pedido)
+    print(json.dumps(resultado, indent=2, ensure_ascii=False))
