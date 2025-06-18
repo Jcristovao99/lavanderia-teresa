@@ -1276,73 +1276,84 @@
             container.style.display = container.style.display === 'none' ? 'block' : 'none';
         }
         
-        // Calculate costs using the API
-        async function calculate() {
+        // Revised calculate() function
+async function calculate() {
     const spinner = document.getElementById('loading-spinner');
     const btn = document.querySelector('.calculate-btn');
     
-    // Show loading state
     spinner.style.display = 'block';
     btn.disabled = true;
     
-    // Prepare request data
+    // Clone current state to avoid race conditions
     const requestData = {
         items: {...quantities},
         cliente: currentClient || "Cliente Geral"
     };
     
     try {
-        // 1. Make API call
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(requestData)
         });
-        
-        // 2. Check for HTTP errors
+
+        // Handle HTTP errors
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.mensagem || `HTTP error! status: ${response.status}`);
         }
-        
-        // 3. Process successful response
+
         const result = await response.json();
-        console.log("API response:", result); // Debugging
         
-        // Create order object
-        currentOrder = {
-            id: Date.now(),
-            date: new Date().toLocaleString('pt-PT'),
-            client: currentClient || "Cliente Geral",
-            quantities: {...quantities},
-            total: result.custo_total,
-            status: 'pending',
-            details: result.detalhes,
-            pdf_url: result.pdf_url
-        };
+        // Ensure DOM is ready before rendering
+        setTimeout(() => {
+            displayResults(result);
+        }, 50);
         
-        // Display calculation results - CORRECTED VERSION
+    } catch (error) {
+        console.error("Full error:", error);
+        alert(`Erro: ${error.message || "Ocorreu um erro inesperado"}`);
+    } finally {
+        spinner.style.display = 'none';
+        btn.disabled = false;
+    }
+}
+
+// Robust displayResults() function
 function displayResults(result) {
-    // Calculate regular cost for savings comparison
+    // 1. Ensure critical elements exist
+    const requiredElements = [
+        '#total-cost',
+        '#cost-breakdown',
+        '.result-header',
+        '#result'
+    ];
+    
+    for (const selector of requiredElements) {
+        if (!document.querySelector(selector)) {
+            console.error(`Missing element: ${selector}`);
+            alert("Erro de configuração da interface! Recarregue a página.");
+            return;
+        }
+    }
+
+    // 2. Calculate savings
     let regularCost = 0;
     for (const [itemId, qty] of Object.entries(quantities)) {
         const item = items.find(i => i.id === itemId);
-        if (item) {
-            regularCost += item.price * qty;
-        }
+        if (item) regularCost += item.price * qty;
     }
     
     const savings = regularCost - result.custo_total;
     const savingsPercent = regularCost > 0 ? (savings / regularCost * 100).toFixed(1) : 0;
     
-    // Update UI
+    // 3. Update total cost
     document.getElementById('total-cost').textContent = `Total: €${result.custo_total.toFixed(2)}`;
     
-    // Render cost breakdown
+    // 4. Render cost breakdown
     const breakdownContainer = document.getElementById('cost-breakdown');
     breakdownContainer.innerHTML = '';
     
-    // Add breakdown cards
     const breakdownData = [
         { title: "Packs Mistos", value: result.detalhes.detalhe_custos.packs_mistos },
         { title: "Packs Camisas", value: result.detalhes.detalhe_custos.packs_camisas },
@@ -1360,25 +1371,28 @@ function displayResults(result) {
         breakdownContainer.appendChild(card);
     });
     
-    // Add receipt button
-    const receiptBtn = `<a href="${result.pdf_url}" target="_blank" class="receipt-btn">
-        <i class="fas fa-file-pdf"></i> Ver Recibo
-    </a>`;
-    
-    // Update result header - INCLUDES savings display creation
-    document.querySelector('.result-header').innerHTML = `
+    // 5. Update result header safely
+    const resultHeader = document.querySelector('.result-header');
+    resultHeader.innerHTML = `
         <h2 class="section-title"><i class="fas fa-chart-line"></i> Resultado da Otimização</h2>
         <div>
-            ${receiptBtn}
+            <a href="${result.pdf_url}" target="_blank" class="receipt-btn">
+                <i class="fas fa-file-pdf"></i> Ver Recibo
+            </a>
             <div class="savings-badge">
                 <i class="fas fa-piggy-bank"></i> Poupança: €${savings.toFixed(2)} (${savingsPercent}%)
             </div>
         </div>
     `;
     
-    // Show results
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 6. Show results
+    const resultElement = document.getElementById('result');
+    resultElement.style.display = 'block';
+    
+    // Ensure proper rendering before scrolling
+    setTimeout(() => {
+        resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
 }
         
         // Confirm the current order
