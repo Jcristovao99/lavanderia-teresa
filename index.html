@@ -1278,58 +1278,67 @@
         
         // Calculate costs using the API
         async function calculate() {
-            const spinner = document.getElementById('loading-spinner');
-            const btn = document.querySelector('.calculate-btn');
-            
-            // Show loading state
-            spinner.style.display = 'block';
-            btn.disabled = true;
-            
-            // Prepare request data
-            const requestData = {
-                items: {...quantities},
-                cliente: currentClient || "Cliente Geral"
-            };
-            
-            try {
-                // Call the API
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'sucesso') {
-                    // Create order object
-                    currentOrder = {
-                        id: Date.now(),
-                        date: new Date().toLocaleString('pt-PT'),
-                        client: currentClient || "Cliente Geral",
-                        quantities: {...quantities},
-                        total: result.custo_total,
-                        status: 'pending',
-                        details: result.detalhes,
-                        pdf_url: result.pdf_url
-                    };
-                    
-                    // Display results
-                    displayResults(result);
-                } else {
-                    alert(`Erro: ${result.mensagem}`);
-                }
-            } catch (error) {
-                console.error('API Error:', error);
-                alert('Erro de conexão com o servidor. Tente novamente.');
-            } finally {
-                // Hide loading state
-                spinner.style.display = 'none';
-                btn.disabled = false;
-            }
+    const spinner = document.getElementById('loading-spinner');
+    const btn = document.querySelector('.calculate-btn');
+    
+    // Show loading state
+    spinner.style.display = 'block';
+    btn.disabled = true;
+    
+    // Prepare request data
+    const requestData = {
+        items: {...quantities},
+        cliente: currentClient || "Cliente Geral"
+    };
+    
+    try {
+        // 1. Make API call
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(requestData)
+        });
+        
+        // 2. Check for HTTP errors
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.mensagem || `HTTP error! status: ${response.status}`);
         }
+        
+        // 3. Process successful response
+        const result = await response.json();
+        console.log("API response:", result); // Debugging
+        
+        // Create order object
+        currentOrder = {
+            id: Date.now(),
+            date: new Date().toLocaleString('pt-PT'),
+            client: currentClient || "Cliente Geral",
+            quantities: {...quantities},
+            total: result.custo_total,
+            status: 'pending',
+            details: result.detalhes,
+            pdf_url: result.pdf_url
+        };
+        
+        // Display results
+        displayResults(result);
+        
+    } catch (error) {
+        console.error("Full error details:", error);
+        
+        // Show specific error message
+        if (error.message.includes("Failed to fetch")) {
+            alert("Erro de conexão: Não foi possível contactar o servidor. Verifique sua conexão com a internet.");
+        } else {
+            alert(`Erro: ${error.message}`);
+        }
+    } finally {
+        // Hide loading state
+        spinner.style.display = 'none';
+        btn.disabled = false;
+    }
+}
         
         // Display calculation results
         function displayResults(result) {
