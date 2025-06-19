@@ -18,6 +18,18 @@
             { id: "vestido_noiva", name: "Vestido de Noiva", price: 100.00 }
         ];
 
+        // Pack definitions for price lookup
+        const packsMistos = [
+            { tipo: "20", preco: 16.0 },
+            { tipo: "40", preco: 28.0 },
+            { tipo: "60", preco: 39.0 }
+        ];
+
+        const packsCamisas = [
+            { tipo: "5", preco: 6.5 },
+            { tipo: "10", preco: 12.0 }
+        ];
+
         // Initial clients data
         const initialClients = [
             { id: "cl1", name: "Maria Silva", phone: "912 345 678", email: "maria@exemplo.com" },
@@ -317,6 +329,56 @@
                 `;
                 breakdownContainer.appendChild(card);
             });
+
+            // Render detailed items
+            const detailList = document.getElementById('order-detail-list');
+            if (detailList) {
+                detailList.innerHTML = '';
+
+                // Packs mistos
+                Object.entries(result.detalhes.packs_mistos).forEach(([tipo, qty]) => {
+                    if (qty > 0) {
+                        const pack = packsMistos.find(p => p.tipo === tipo);
+                        const preco = pack ? pack.preco : 0;
+                        const li = document.createElement('li');
+                        li.textContent = `Pack Misto ${tipo} peças x${qty} €${(preco * qty).toFixed(2)}`;
+                        detailList.appendChild(li);
+                    }
+                });
+
+                // Packs camisas
+                Object.entries(result.detalhes.packs_camisas).forEach(([tipo, qty]) => {
+                    if (qty > 0) {
+                        const pack = packsCamisas.find(p => p.tipo === tipo);
+                        const preco = pack ? pack.preco : 0;
+                        const li = document.createElement('li');
+                        li.textContent = `Pack Camisas ${tipo} x${qty} €${(preco * qty).toFixed(2)}`;
+                        detailList.appendChild(li);
+                    }
+                });
+
+                // Itens avulsos
+                Object.entries(result.detalhes.itens_avulsos).forEach(([itemId, qty]) => {
+                    if (qty > 0) {
+                        const item = items.find(i => i.id === itemId);
+                        const preco = item ? item.price : 0;
+                        const li = document.createElement('li');
+                        li.textContent = `${item ? item.name : itemId} x${qty} €${(preco * qty).toFixed(2)}`;
+                        detailList.appendChild(li);
+                    }
+                });
+
+                // Itens fixos
+                Object.entries(result.detalhes.itens_fixos).forEach(([itemId, qty]) => {
+                    if (qty > 0) {
+                        const item = items.find(i => i.id === itemId);
+                        const preco = item ? item.price : 0;
+                        const li = document.createElement('li');
+                        li.textContent = `${item ? item.name : itemId} x${qty} €${(preco * qty).toFixed(2)}`;
+                        detailList.appendChild(li);
+                    }
+                });
+            }
             
             // 6. Update result header with savings
             resultHeader.innerHTML = `
@@ -518,6 +580,45 @@
                 container.appendChild(orderElement);
             });
         }
+
+        // Helper to render item list with prices
+        function renderOrderItems(order) {
+            const parts = [];
+
+            Object.entries(order.details.packs_mistos || {}).forEach(([tipo, qty]) => {
+                if (qty > 0) {
+                    const pack = packsMistos.find(p => p.tipo === tipo);
+                    const preco = pack ? pack.preco : 0;
+                    parts.push(`Pack Misto ${tipo} peças x${qty} €${(preco * qty).toFixed(2)}`);
+                }
+            });
+
+            Object.entries(order.details.packs_camisas || {}).forEach(([tipo, qty]) => {
+                if (qty > 0) {
+                    const pack = packsCamisas.find(p => p.tipo === tipo);
+                    const preco = pack ? pack.preco : 0;
+                    parts.push(`Pack Camisas ${tipo} x${qty} €${(preco * qty).toFixed(2)}`);
+                }
+            });
+
+            Object.entries(order.details.itens_avulsos || {}).forEach(([itemId, qty]) => {
+                if (qty > 0) {
+                    const item = items.find(i => i.id === itemId);
+                    const preco = item ? item.price : 0;
+                    parts.push(`${item ? item.name : itemId} x${qty} €${(preco * qty).toFixed(2)}`);
+                }
+            });
+
+            Object.entries(order.details.itens_fixos || {}).forEach(([itemId, qty]) => {
+                if (qty > 0) {
+                    const item = items.find(i => i.id === itemId);
+                    const preco = item ? item.price : 0;
+                    parts.push(`${item ? item.name : itemId} x${qty} €${(preco * qty).toFixed(2)}`);
+                }
+            });
+
+            return parts.map(p => `<li>${p}</li>`).join('');
+        }
         
         // Show order details modal
         function showOrderDetails(orderId) {
@@ -539,13 +640,7 @@
                         
                         <h4>Itens:</h4>
                         <ul class="order-items-list">
-                            ${Object.entries(order.quantities)
-                                .filter(([_, qty]) => qty > 0)
-                                .map(([itemId, qty]) => {
-                                    const item = items.find(i => i.id === itemId);
-                                    return `<li>${item ? item.name : itemId}: ${qty}</li>`;
-                                })
-                                .join('')}
+                            ${renderOrderItems(order)}
                         </ul>
                         
                         <div class="cost-summary">
