@@ -853,13 +853,61 @@
         // Delete client
         function deleteClient(clientId) {
             if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
-            
+
             clients = clients.filter(client => client.id !== clientId);
             saveToStorage();
-            
+
             renderAdminClients();
             updateClientDropdown();
             alert('Cliente excluído com sucesso!');
+        }
+
+        // Exportar histórico de pedidos para um ficheiro JSON
+        function exportOrders() {
+            if (orders.length === 0) {
+                alert('Nenhum pedido para exportar');
+                return;
+            }
+            const data = JSON.stringify(orders, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'orders.json';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        // Importar pedidos de um ficheiro JSON
+        function importOrders(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        data.forEach(o => {
+                            if (!orders.find(ex => ex.id === o.id)) {
+                                orders.push(o);
+                            }
+                        });
+                        orders.sort((a, b) => (b.timestamp || b.id) - (a.timestamp || a.id));
+                        saveToStorage();
+                        renderHistory();
+                        alert('Pedidos importados com sucesso!');
+                    } else {
+                        alert('Arquivo de importação inválido');
+                    }
+                } catch (err) {
+                    console.error('Erro ao importar', err);
+                    alert('Falha ao importar pedidos');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         // Initialize the app when page loads

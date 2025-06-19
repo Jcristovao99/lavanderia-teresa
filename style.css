@@ -481,6 +481,30 @@
             flex-wrap: wrap;
         }
 
+        .history-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .export-btn, .import-btn {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn:hover, .import-btn:hover {
+            background: var(--accent);
+        }
+
         .filter-btn {
             padding: 8px 15px;
             background: var(--light-gray);
