@@ -49,15 +49,15 @@
                 });
             });
             
-            // Setup admin tabs
-            document.querySelectorAll('.admin-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
+            // Setup admin tabs (buttons only)
+            document.querySelectorAll('.admin-tabs .admin-tab').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.admin-tabs .admin-tab').forEach(b => b.classList.remove('active'));
+                    button.classList.add('active');
+
                     document.querySelectorAll('.admin-section').forEach(section => {
                         section.classList.remove('active');
-                        if (section.classList.contains(tab.dataset.tab)) {
+                        if (section.classList.contains(button.dataset.tab)) {
                             section.classList.add('active');
                         }
                     });
@@ -405,8 +405,9 @@
         // Open new client form
         function openNewClientForm() {
             switchTab('admin');
-            document.querySelector('.admin-tab[data-tab="clients"]').click();
-            document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth' });
+            document.querySelector('.admin-tabs .admin-tab[data-tab="clients"]').click();
+            const form = document.querySelector('.admin-section.clients .admin-form');
+            if (form) form.scrollIntoView({ behavior: 'smooth' });
         }
         
         // Render items in admin panel
