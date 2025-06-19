@@ -520,6 +520,7 @@
         
         // Show order details modal
         function showOrderDetails(orderId) {
+            orderId = Number(orderId);
             const order = orders.find(o => o.id === orderId);
             if (!order) return;
 
@@ -579,17 +580,19 @@
         // Delete order from history
         function deleteOrder(orderId, event) {
             event.stopPropagation(); // Prevent event bubbling
-            
+
             if (!confirm('Tem certeza que deseja excluir este pedido do histórico?')) return;
-            
-            orders = orders.filter(order => order.id !== orderId);
+
+            const id = Number(orderId);
+            orders = orders.filter(order => order.id !== id);
             saveToStorage();
             renderHistory();
         }
 
         // Recreate order from history
         function recreateOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
+            const id = Number(orderId);
+            const order = orders.find(o => o.id === id);
             if (!order) return;
             
             // Fill quantities
