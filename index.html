@@ -106,7 +106,17 @@
                     <button class="filter-btn" data-filter="today">Hoje</button>
                     <button class="filter-btn" data-filter="week">Esta Semana</button>
                 </div>
-                
+
+                <div class="history-actions">
+                    <button class="export-btn" onclick="exportOrders()">
+                        <i class="fas fa-file-export"></i> Exportar
+                    </button>
+                    <input type="file" id="import-orders-input" accept="application/json" style="display:none" onchange="importOrders(event)">
+                    <button class="import-btn" onclick="document.getElementById('import-orders-input').click()">
+                        <i class="fas fa-file-import"></i> Importar
+                    </button>
+                </div>
+
                 <div class="historico-lista" id="history-list">
                     <!-- History items will be added here -->
                 </div>
