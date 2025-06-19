@@ -853,13 +853,58 @@
         // Delete client
         function deleteClient(clientId) {
             if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
-            
+
             clients = clients.filter(client => client.id !== clientId);
             saveToStorage();
-            
+
             renderAdminClients();
             updateClientDropdown();
             alert('Cliente excluído com sucesso!');
+        }
+
+        // Export all data to a JSON file
+        function exportData() {
+            const data = { items, clients, orders };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'lavanderia_data.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import data from a JSON file
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.items && data.clients && data.orders) {
+                        items = data.items;
+                        clients = data.clients;
+                        orders = data.orders;
+                        quantities = {};
+                        items.forEach(it => { quantities[it.id] = 0; });
+                        saveToStorage();
+                        renderItems();
+                        renderAdminItems();
+                        renderAdminClients();
+                        renderHistory();
+                        updateClientDropdown();
+                        alert('Dados importados com sucesso!');
+                    } else {
+                        alert('Arquivo inválido.');
+                    }
+                } catch (err) {
+                    alert('Erro ao importar dados: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         // Initialize the app when page loads

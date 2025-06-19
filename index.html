@@ -144,12 +144,12 @@
                 </div>
                 
                 <!-- Clients Admin -->
-                <div class="admin-section clients">
-                    <h3 class="section-title"><i class="fas fa-users"></i> Gestão de Clientes</h3>
-                    
-                    <div class="clients-list" id="admin-clients-list">
-                        <!-- Admin clients will be added here -->
-                    </div>
+                    <div class="admin-section clients">
+                        <h3 class="section-title"><i class="fas fa-users"></i> Gestão de Clientes</h3>
+
+                        <div class="clients-list" id="admin-clients-list">
+                            <!-- Admin clients will be added here -->
+                        </div>
                     
                     <div class="admin-form">
                         <h3 class="section-title"><i class="fas fa-user-plus"></i> Adicionar Novo Cliente</h3>
@@ -166,6 +166,20 @@
                             <input type="email" id="client-email" placeholder="Ex: cliente@exemplo.com">
                         </div>
                         <button class="save-btn" onclick="addNewClient()">Guardar Cliente</button>
+                    </div>
+                </div>
+
+                <!-- Import/Export Section -->
+                <div class="admin-section backup">
+                    <h3 class="section-title"><i class="fas fa-file-export"></i> Importar/Exportar Dados</h3>
+                    <div class="admin-form">
+                        <button class="save-btn" onclick="exportData()">
+                            <i class="fas fa-download"></i> Exportar Dados
+                        </button>
+                        <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importData(event)">
+                        <button class="save-btn" onclick="document.getElementById('import-file').click()">
+                            <i class="fas fa-upload"></i> Importar Dados
+                        </button>
                     </div>
                 </div>
             </div>
