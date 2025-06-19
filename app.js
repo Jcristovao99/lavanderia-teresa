@@ -116,6 +116,23 @@
             // Load orders
             const savedOrders = localStorage.getItem('orderHistory');
             orders = savedOrders ? JSON.parse(savedOrders) : [];
+            // Ensure timestamps for filtering
+            orders.forEach(o => {
+                if (!o.timestamp) {
+                    if (typeof o.id === 'number') {
+                        o.timestamp = o.id;
+                    } else if (o.date) {
+                        const parts = o.date.split(',');
+                        const [d, m, y] = parts[0].trim().split('/');
+                        const time = parts[1] ? parts[1].trim() : '00:00:00';
+                        const str = `${m}/${d}/${y} ${time}`;
+                        const t = Date.parse(str);
+                        o.timestamp = isNaN(t) ? Date.now() : t;
+                    } else {
+                        o.timestamp = Date.now();
+                    }
+                }
+            });
             
             // Load selected client
             const savedClient = localStorage.getItem('currentClient');
@@ -256,9 +273,11 @@
                 const result = await response.json();
                 
                 // Create order object
+                const timestamp = Date.now();
                 currentOrder = {
-                    id: Date.now(),
-                    date: new Date().toLocaleString('pt-PT'),
+                    id: timestamp,
+                    timestamp,
+                    date: new Date(timestamp).toLocaleString('pt-PT'),
                     client: currentClient || "Cliente Geral",
                     quantities: {...quantities},
                     total: result.custo_total,
@@ -544,15 +563,19 @@
             } else if (filter === 'pending') {
                 filteredOrders = orders.filter(order => order.status === 'pending');
             } else if (filter === 'today') {
-                const today = new Date().toLocaleDateString('pt-PT');
+                const today = new Date();
                 filteredOrders = orders.filter(order => {
-                    const orderDate = new Date(order.date.split(',')[0]).toLocaleDateString('pt-PT');
-                    return orderDate === today;
+                    const ts = order.timestamp || order.id;
+                    const d = new Date(ts);
+                    return d.toDateString() === today.toDateString();
                 });
             } else if (filter === 'week') {
                 const oneWeekAgo = new Date();
                 oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-                filteredOrders = orders.filter(order => new Date(order.date) > oneWeekAgo);
+                filteredOrders = orders.filter(order => {
+                    const ts = order.timestamp || order.id;
+                    return new Date(ts) >= oneWeekAgo;
+                });
             }
             
             // Render orders
